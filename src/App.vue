@@ -1,8 +1,11 @@
-<script setup>
+<script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-
 import AppHeader from "@/components/Layouts/AppHeader.vue";
+
+let a:string = 'd'
+a = 3
+console.log(a);
 
 // import AppHeader from "@/components/Layouts/AppHeader";
 </script>
