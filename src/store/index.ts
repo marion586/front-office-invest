@@ -12,6 +12,7 @@ const store = createStore<Object>(<StoreOptions<any>>{
         UserModule: <Object>{
             namespaced: true,
             ...UserModule,
+            persist: true,
         },
     },
 });

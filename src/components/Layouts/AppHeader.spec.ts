@@ -16,11 +16,12 @@ describe('AppHeader.vue', () => {
 
     it('should wrap 3 link', () => {
         const links = wrapper.findAllComponents(RouterLinkStub);
-        expect(links.length).toEqual(5);
+        expect(links.length).toEqual(6);
         expect(links[0].text()).toEqual('HOME');
         expect(links[1].text()).toEqual('ABOUT');
         expect(links[2].text()).toEqual('CONNEXION');
         expect(links[3].text()).toEqual('INSCRIPTION');
         expect(links[4].text()).toEqual('MON COMPTE');
+        expect(links[5].text()).toEqual('DECONNEXION');
     });
 });

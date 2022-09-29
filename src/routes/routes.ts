@@ -1,4 +1,4 @@
-import { routeGuard, requiresAuthGuard } from './guard';
+import { routeGuard, requiresAuthGuard, logoutGuard } from './guard';
 import { RouteRecordRaw } from 'vue-router';
 
 const routes = <Array<RouteRecordRaw>>[
@@ -26,6 +26,11 @@ const routes = <Array<RouteRecordRaw>>[
         component: () => import('@/pages/user-account/index.vue'),
         beforeEnter: [requiresAuthGuard],
         meta: { requireAuth: true },
+    },
+    {
+        name: 'disconnection',
+        path: '/logout',
+        beforeEnter: [logoutGuard],
     },
 ];
 

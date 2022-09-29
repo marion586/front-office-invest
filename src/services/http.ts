@@ -1,8 +1,12 @@
 import axios, { AxiosRequestConfig, AxiosError, AxiosStatic } from 'axios';
 
 // inject token from localStorage into hearder on each request
-if (localStorage.getItem('token'))
-    (axios as AxiosStatic).defaults.headers.common['Authentication'];
+if (localStorage.getItem('token')) {
+    (axios as AxiosStatic).defaults.headers.common['Authentication'] =
+        localStorage.getItem('token') as string;
+} else {
+    delete (axios as AxiosStatic).defaults.headers.common['Authentication'];
+}
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
