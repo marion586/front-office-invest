@@ -2,7 +2,7 @@
     "compileOnSave": true,
     "compilerOptions": {
         "allowJs": true,
-        "target": "es6",
+        "target": "esnext",
         "module": "esnext",
         "strict": true,
         "types": ["vite/client"],
