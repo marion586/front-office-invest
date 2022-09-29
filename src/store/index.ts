@@ -1,17 +1,15 @@
-import { createStore } from 'vuex';
+import { createStore, StoreOptions } from 'vuex';
 import * as HomeModule from './HomeModule';
 import * as UserModule from './UserModule';
 
-console.log(HomeModule);
-
 // Create a new store instance.
-const store = createStore<any>({
+const store = createStore<Object>(<StoreOptions<any>>{
     modules: {
-        HomeModule: {
+        HomeModule: <Object>{
             namespaced: true,
             ...HomeModule,
         },
-        UserModule: {
+        UserModule: <Object>{
             namespaced: true,
             ...UserModule,
         },
