@@ -1,4 +1,4 @@
-import { routeGuard } from './guard';
+import { routeGuard, requiresAuthGuard } from './guard';
 import { RouteRecordRaw } from 'vue-router';
 
 const routes = <Array<RouteRecordRaw>>[
@@ -12,12 +12,20 @@ const routes = <Array<RouteRecordRaw>>[
         beforeEnter: [routeGuard],
     },
     {
+        name: 'authLogin',
         path: '/connexion',
         component: () => import('@/pages/login/Login.vue'),
     },
     {
         path: '/inscription',
         component: () => import('@/pages/registration/Registration.vue'),
+    },
+    {
+        name: 'my-account',
+        path: '/mon-compte',
+        component: () => import('@/pages/user-account/index.vue'),
+        beforeEnter: [requiresAuthGuard],
+        meta: { requireAuth: true },
     },
 ];
 

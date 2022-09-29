@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import * as HomeModule from './HomeModule';
+import * as UserModule from './UserModule';
 
 console.log(HomeModule);
 
@@ -9,6 +10,10 @@ const store = createStore<any>({
         HomeModule: {
             namespaced: true,
             ...HomeModule,
+        },
+        UserModule: {
+            namespaced: true,
+            ...UserModule,
         },
     },
 });
