@@ -1,6 +1,7 @@
 import { routeGuard } from './guard';
+import { RouteRecordRaw } from 'vue-router';
 
-const routes = [
+const routes = <Array<RouteRecordRaw>>[
     {
         path: '/',
         component: () => import('@/pages/index.vue'),
@@ -13,6 +14,10 @@ const routes = [
     {
         path: '/connexion',
         component: () => import('@/pages/login/Login.vue'),
+    },
+    {
+        path: '/inscription',
+        component: () => import('@/pages/registration/Registration.vue'),
     },
 ];
 

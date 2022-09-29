@@ -1,28 +1,29 @@
 <template>
     <div>
         <form @submit.prevent="handleSubmit">
-            <input :value="formParams.email" @input="handleInput" type="email" name="email" id="email">
+            <input :value="formParams.username" @input="handleInput" type="username" name="username" id="username">
             <input :value="formParams.password" @input="handleInput" type="password" name="password" id="password">
             <button type="submit">Se connecter</button>
         </form>
     </div>
 </template>
-<script setup>
-    import emailValidation from '@/utils/validation/email_validation';
+<script setup lang="ts">
+    import UserService from '@/services/userService';
+    import emailValidation from '@/utils/validation/email_validation'; 
     import { reactive, ref } from 'vue';
-    const isEmailValid = ref(false)
-    const isFormValid = ref(false);
-    let formParams = reactive({
-        email: '',
+    import { InputTextEvent } from '@/interfaces/input';
+    const isEmailValid = ref<boolean>(false)
+    const isFormValid = ref<boolean>(false);
+    let formParams = reactive<{username: string, password: string}>({
+        username: '',
         password: '',
     })
 
-
-    const handleInput = (e) => {
-        const name = e.target.name;
-        const value = e.target.value;
+    const handleInput = (e: Event) => {
+        const name: string = (e.target as HTMLInputElement).name;
+        const value: string = (e.target as HTMLInputElement).value;
         switch (name) {
-            case 'email':
+            case 'username':
                 isEmailValid.value = emailValidation(value)
                 break;
             default:
@@ -35,10 +36,19 @@
         console.log(formParams);
     }
 
+    const postLoginData = async (): Promise<void> => {
+        try {
+            const res = await UserService.login(formParams)
+            console.log(res);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const handleSubmit = () => {
-        const isDataValid = Object.values(formParams).every(value => value !== "");
+        const isDataValid: Boolean = Object.values(formParams).every(value => value !== "");
         isFormValid.value = isDataValid && isEmailValid.value ? true : false;
-        isFormValid.value === true ? console.log('ok') : console.log('not ok');
+        isFormValid.value === true ? postLoginData() : console.log('not ok');
     }
 
 

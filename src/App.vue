@@ -3,9 +3,6 @@
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import AppHeader from "@/components/Layouts/AppHeader.vue";
 
-let a:string = 'd'
-a = 3
-console.log(a);
 
 // import AppHeader from "@/components/Layouts/AppHeader";
 </script>

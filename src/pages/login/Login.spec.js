@@ -16,12 +16,12 @@ describe('Login.vue', () => {
     it('should have form who wrap input:text&&password && button:submit', () => {
         const wrapper = shallowMount(Login);
         const form = wrapper.find('form');
-        const emailInput = wrapper.find('#email');
+        const emailInput = wrapper.find('#username');
         const passwordInput = wrapper.find('#password');
         const submitButton = wrapper.find('button[type=submit]');
 
         expect(form.findAll('input').length).toBe(2);
-        expect(emailInput.attributes('type')).toEqual('email');
+        expect(emailInput.attributes('type')).toEqual('username');
         expect(passwordInput.attributes('type')).toEqual('password');
         expect(submitButton.attributes('type')).toEqual('submit');
     });
