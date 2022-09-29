@@ -1,5 +1,6 @@
 // Check for token and localstorage here
 import store from '@/store';
+import axios, { AxiosStatic } from 'axios';
 import { Router } from 'vue-router';
 
 export function routeGuard(to: Router, from: Router, next: Function) {
@@ -35,6 +36,7 @@ export function logoutGuard(
     from: Router | any,
     next: Function
 ) {
+    delete (axios as AxiosStatic).defaults.headers.common['Authentication'];
     store.dispatch('UserModule/setUserDetails', null);
     next('/');
 }

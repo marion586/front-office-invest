@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosError, AxiosStatic } from 'axios';
 
 // inject token from localStorage into hearder on each request
+console.log(localStorage.getItem('token'));
 if (localStorage.getItem('token')) {
     (axios as AxiosStatic).defaults.headers.common['Authentication'] =
         localStorage.getItem('token') as string;

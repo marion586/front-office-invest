@@ -1,11 +1,11 @@
 import axios, { AxiosStatic } from 'axios';
-import persistStore from '@/utils/persist_store';
+import { setPersistStore, getPersistedStore } from '@/utils/persist_store';
 
 interface IUserState {
     user: Object | null;
 }
 
-const userFromStore: any = JSON.parse(localStorage.getItem('user') || 'null');
+const userFromStore: any = getPersistedStore({ key: 'user', initValue: null });
 
 const mutationType: Readonly<any> = Object.freeze({
     GET_USER_DETAILS: 'GET_USER_DETAILS',
@@ -39,7 +39,7 @@ export const actions: Object = {
             commit(mutationType.GET_USER_DETAILS, payload.detail);
 
             // persist User
-            persistStore({ key: 'user', value: payload.detail });
+            setPersistStore({ key: 'user', value: payload.detail });
         } else {
             /**
              * if logout then null is passed
