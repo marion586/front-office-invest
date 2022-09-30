@@ -20,14 +20,17 @@
         "@typescript-eslint/eslint-plugin": "^5.38.1",
         "@typescript-eslint/parser": "^5.38.1",
         "@vitejs/plugin-vue": "^2.3.3",
+        "@vue/eslint-config-prettier": "^7.0.0",
         "@vue/eslint-config-typescript": "^11.0.2",
+        "@vue/test-utils": "^2.0.2",
         "eslint": "^8.24.0",
+        "eslint-plugin-prettier": "^4.2.1",
         "eslint-plugin-vue": "^9.5.1",
         "happy-dom": "^6.0.4",
+        "prettier": "^2.7.1",
         "typescript": "^4.5.4",
         "vite": "^2.9.9",
         "vitest": "^0.22.0",
-        "vue-tsc": "^0.34.7",
-        "@vue/test-utils": "^2.0.2"
+        "vue-tsc": "^0.34.7"
     }
 }
