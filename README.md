@@ -1,68 +1,16 @@
-# Vue 3
+# Vue 3 + TypeScript + Vite
 
-Minimalist boilerplate for vue with Store, Routes, Services configuration
+This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-## Script install pre configured packages
+## Recommended IDE Setup
 
-`yarn install` or `npm install`
+- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
 
-## script to start the application
+## Type Support For `.vue` Imports in TS
 
-`yarn dev` or `npm run dev`
+Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
 
-## Folder structure:
+1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
+2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
 
-- **assets**: static assets
-- **components**: all components in the page
-- **composables**: [reusable composition api](https://vuejs.org/guide/reusability/composables.html#conventions-and-best-practices)
-- **pages**: all pages
-- **routes**: route configuration
-- **services**: HTTP interaction
-- **store**: store configuration
-
-## Testing (`./src/components/HelloWorld.vue` and `./src/components/HelloWorld.test.vue`)
-
-### Component to be tested
-
-```javascript
-<script setup>
-import { ref } from "vue";
-
-defineProps({
-  name: {
-    type: String,
-    required: true,
-  },
-});
-</script>
-
-<template>
-  <h1>Hello {{ name }}</h1>
-</template>
-```
-
-### Test the component
-
-```javascript
-import { describe, it, expect } from "vitest";
-import { mount } from "@vue/test-utils";
-
-import HelloWorld from "./HelloWorld.vue";
-
-describe("HelloWorld", () => {
-  it("Should check name", () => {
-    const value = "John";
-
-    const HelloWorldTest = {
-      components: { HelloWorld },
-      template: `<hello-world name="${value}" />`,
-    };
-
-    const helloWorld = mount(HelloWorldTest);
-
-    expect(helloWorld.getComponent(HelloWorld).props()).toEqual({
-      name: value,
-    });
-  });
-});
-```
+You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).

@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
-import Registration from './Registration.vue';
+import Registration from './registration.vue';
 describe('Registration.vue', function () {
     const wrapper = mount(Registration);
     const form = wrapper.find('form');
