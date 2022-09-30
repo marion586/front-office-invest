@@ -21,6 +21,10 @@ const routes = <Array<RouteRecordRaw>>[
         component: () => import('@/pages/registration/Registration.vue'),
     },
     {
+        path: '/styleguide',
+        component: () => import('@/pages/styleguide.vue'),
+    },
+    {
         name: 'my-account',
         path: '/mon-compte',
         component: () => import('@/pages/user-account/index.vue'),

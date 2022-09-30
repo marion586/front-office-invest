@@ -4,7 +4,9 @@ import { createApp } from 'vue';
 import { Inkline, components } from '@inkline/inkline';
 import '@inkline/inkline/inkline.scss';
 
+import 'ant-design-vue/dist/antd.css';
 import './style.css';
+
 import App from './App.vue';
 import router from './routes';
 import store from './store';
