@@ -1,27 +1,25 @@
 {
-    "compileOnSave": true,
     "compilerOptions": {
-        "allowJs": true,
         "target": "esnext",
+        "useDefineForClassFields": true,
         "module": "esnext",
-        "strict": true,
-        "types": ["vite/client"],
-        "jsx": "preserve",
-        "importHelpers": true,
         "moduleResolution": "node",
-        "skipLibCheck": true,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "jsx": "preserve",
         "sourceMap": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "lib": ["esnext", "dom"],
+        "skipLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "@/*": [
+            "/@/*": [
                 // / to begin with.
                 "src/*"
             ]
-        },
-        "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+        }
     },
-    "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
-    "exclude": ["node_modules"]
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+    // "references": [{ "path": "./tsconfig.node.json" }]
 }
