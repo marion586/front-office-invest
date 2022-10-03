@@ -27,6 +27,7 @@ jobs:
 # si activer la commande suivant ne s'execute que si l'étape plus haut n'est pas sucess
     run : yarn test
 
+
 #workflow declaration
 workflows:
     version: 2.1

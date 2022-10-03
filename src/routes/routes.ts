@@ -36,6 +36,11 @@ const routes = <Array<RouteRecordRaw>>[
         path: '/logout',
         beforeEnter: [logoutGuard],
     },
+    {
+        name: 'find-property',
+        path: '/recherche-bien',
+        component : ()=> import('@/pages/find-Property/index.vue')
+    },
 ];
 
 export default routes;
