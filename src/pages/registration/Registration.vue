@@ -84,7 +84,7 @@
     import { computed } from '@vue/reactivity';
     import { reactive, ref } from 'vue';
 
-    const { isValid, validateNameField, resetError } = useFormValidation();
+    const { isValid, validateNameField } = useFormValidation();
     interface IUser {
         name?: string;
         email: string;
@@ -109,8 +109,6 @@
 
     let resetFields = reactive<IUser>({ ...registerData });
 
-    const isSubmitClicked = ref<boolean>(false);
-
     const isErrorObjEmpty: any = computed(() => {
         return Object.values(isValid).length;
     });
@@ -126,15 +124,25 @@
     function handleInput(e: Event) {
         const name: string = (e.target as HTMLInputElement).name;
         const value: string = (e.target as HTMLInputElement).value;
+
+        /**Validate input value for checking some errors */
         validateNameField(name, value);
         registerData = { ...registerData, [name]: value };
     }
 
     function sendFormData() {
         console.log('call API');
+
+        /**Reset input values */
         registerData = { ...resetFields };
     }
+
+    const isSubmitClicked = ref<boolean>(false);
     function handleSubmit() {
+        /**
+         * activate the error mode on isSubmitClicked to true
+         * dont show the errors on mounted status
+         */
         isSubmitClicked.value = true;
         const requiedFields = [
             'email',
@@ -147,6 +155,7 @@
             isFormFieldsNotEmpty = isValid[key] === true ? true : false;
         });
 
+        /**Ensure call API when all valid */
         isFormFieldsNotEmpty && isPasswordConfirmed() && sendFormData();
     }
 </script>

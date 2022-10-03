@@ -1,19 +1,15 @@
 <script setup lang="ts">
-import store from '@/store';
-import { ref, watch } from 'vue';
+    import store from '@/store';
+    import { ref, watch } from 'vue';
 
-const isLoggedIn = ref<boolean>(false);
-watch(
-    () => store.getters['UserModule/getUserDetails'],
-    function (user) {
-        isLoggedIn.value = !!user;
-        console.log(
-            isLoggedIn.value,
-            store.getters['UserModule/getUserDetails']
-        );
-    },
-    { immediate: true }
-);
+    const isLoggedIn = ref<boolean>(false);
+    watch(
+        () => store.getters['UserModule/getUserDetails'],
+        function (user) {
+            isLoggedIn.value = !!user;
+        },
+        { immediate: true }
+    );
 </script>
 
 <template>
