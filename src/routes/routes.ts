@@ -36,6 +36,11 @@ const routes = <Array<RouteRecordRaw>>[
         path: '/logout',
         beforeEnter: [logoutGuard],
     },
+    {
+        name: 'product-list',
+        path: '/product-list',
+        component: () => import('@/pages/productList/List.vue'),
+    },
 ];
 
 export default routes;
