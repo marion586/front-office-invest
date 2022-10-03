@@ -15,5 +15,6 @@
         gap: 20px;
         justify-content: space-between;
         padding: 20px;
+        @apply container;
     }
 </style>
