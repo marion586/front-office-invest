@@ -244,7 +244,6 @@
     .header {
         background-color: #fff;
         padding: 14px 15px;
-        overflow-x: hidden;
         &__menu {
             cursor: pointer;
         }
