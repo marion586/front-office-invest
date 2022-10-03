@@ -1,12 +1,11 @@
 <template>
     <div class="container-list-card">
-        <ProductCard />
-        <ProductCard />
+        <CardProducts />
     </div>
 </template>
 
 <script setup lang="ts">
-    import ProductCard from '@/components/Display/productCard/ProductCard.vue';
+    import CardProducts from './cardProducts/CardProducts.vue';
 </script>
 
 <style lang="scss">
