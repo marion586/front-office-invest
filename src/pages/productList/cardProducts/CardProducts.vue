@@ -56,13 +56,3 @@
         },
     ]);
 </script>
-
-<style lang="scss">
-    .container-list-card {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        justify-content: space-between;
-        padding: 20px;
-    }
-</style>
