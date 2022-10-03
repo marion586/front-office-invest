@@ -28,7 +28,7 @@
     });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .container-head-product {
         display: flex;
         justify-content: space-between;
