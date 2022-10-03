@@ -1,5 +1,5 @@
 <template>
-    <div class="container-card">
+    <div class="card-item max-w-lg">
         <HeadProduct Text="Agence" label="Label Immo" />
         <img :src="DataCard.image" alt=" card product img" />
         <div class="type-card">
@@ -53,11 +53,11 @@
     const DataCard = ref(DataCardProps.DataCard);
 </script>
 
-<style lang="scss">
-    .container-card {
+<style lang="scss" scoped>
+    .card-item {
         display: flex;
         flex-direction: column;
-        width: 398px;
+        width: auto;
         height: auto;
         padding: 16px;
         gap: 18px;
@@ -66,7 +66,7 @@
         img {
             border-radius: 8px;
             width: auto;
-            height: 160px;
+            height: auto;
         }
         .type-card {
             display: flex;
@@ -118,11 +118,6 @@
                 line-height: 16px;
                 color: #a39f9f;
             }
-        }
-    }
-    @media only screen and (min-width: 252px) and (max-width: 398px) {
-        .container {
-            width: auto;
         }
     }
 </style>
