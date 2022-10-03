@@ -1,20 +1,25 @@
-import { shallowMount } from '@vue/test-utils';
-import { describe, expect, it } from 'vitest';
+import { shallowMount, VueWrapper, RouterLinkStub } from '@vue/test-utils';
+import { describe, expect, it, beforeEach } from 'vitest';
 import Login from './Login.vue';
 
 describe('Login.vue', () => {
+    let wrapper: VueWrapper;
+    beforeEach(() => {
+        wrapper = shallowMount(Login, {
+            global: {
+                stubs: { RouterLink: RouterLinkStub },
+            },
+        });
+    });
     it('should render Login.vue', () => {
-        const wrapper = shallowMount(Login);
         expect(wrapper.exists()).toBeTruthy();
     });
 
     it('should wrap be a valid form {<form></form>}', () => {
-        const wrapper = shallowMount(Login);
         expect(wrapper.find('form').exists()).toBeTruthy();
     });
 
     it('should have form who wrap input:text&&password && button:submit', () => {
-        const wrapper = shallowMount(Login);
         const form = wrapper.find('form');
         const emailInput = wrapper.find('#username');
         const passwordInput = wrapper.find('#password');
