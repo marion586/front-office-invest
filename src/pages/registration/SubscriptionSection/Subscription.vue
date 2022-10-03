@@ -2,20 +2,16 @@
     <div>
         <SubscriptionCard
             v-if="step === 0"
-            @changeStep="
+            @change-step="
                 () => {
                     step = 1;
                 }
             "
+            v-on:click-back="$emit('click-back')"
+            @click-choose="handleClickChoose"
+            :userType="userType"
         />
-        <SubscriptionForm
-            v-if="step === 1"
-            @changeStep="
-                () => {
-                    step = 0;
-                }
-            "
-        />
+        <SubscriptionForm v-if="step === 1" />
     </div>
 </template>
 <script lang="ts" setup>
@@ -25,11 +21,16 @@
 
     defineProps({
         userType: {
+            default: '',
             type: String,
             require: true,
         },
     });
 
     const step = ref<number>(0);
+
+    function handleClickChoose(cardType: string) {
+        step.value = 1;
+    }
 </script>
 <style lang=""></style>
