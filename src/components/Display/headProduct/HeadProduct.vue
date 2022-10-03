@@ -58,7 +58,6 @@
             align-items: center;
             padding: 10px;
             gap: 10px;
-
             width: 38px;
             height: 38px;
             background: var(--color-gray);
