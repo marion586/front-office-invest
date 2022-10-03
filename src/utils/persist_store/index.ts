@@ -9,13 +9,11 @@ interface ISetStoreParams {
 }
 
 export function getPersistedStore({ key, initValue }: ISetStoreParams): any {
-    const parsedInitValue: any =
-        typeof initValue === 'string' ? initValue : JSON.stringify(initValue);
-    return JSON.parse(localStorage.getItem(key) || parsedInitValue);
+    const stringifyInitValue: string = JSON.stringify(initValue);
+    return JSON.parse(localStorage.getItem(key) || stringifyInitValue);
 }
 
 export function setPersistStore({ key, value }: IParams): void {
-    const dataToPersist: string =
-        typeof value === 'string' ? value : JSON.stringify(value);
+    const dataToPersist: string = JSON.stringify(value);
     localStorage.setItem(key, dataToPersist);
 }
