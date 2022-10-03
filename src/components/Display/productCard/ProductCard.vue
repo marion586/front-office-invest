@@ -13,7 +13,7 @@
         display: flex;
         flex-direction: column;
         width: 398px;
-        height: 447.64px;
+        height: auto;
         padding: 16px;
         gap: 18px;
         background: #ffffff;
