@@ -11,14 +11,7 @@
             @click-choose="handleClickChoose"
             :userType="userType"
         />
-        <SubscriptionForm
-            v-if="step === 1"
-            @change-step="
-                () => {
-                    step = 0;
-                }
-            "
-        />
+        <SubscriptionForm v-if="step === 1" />
     </div>
 </template>
 <script lang="ts" setup>
