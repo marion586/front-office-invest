@@ -1,11 +1,9 @@
 <template>
-    <div class="container-list-card">
-        <ProductCard
-            :DataCard="card"
-            v-for="(card, index) in dataCard"
-            :key="index"
-        />
-    </div>
+    <ProductCard
+        :DataCard="card"
+        v-for="(card, index) in dataCard"
+        :key="index"
+    />
 </template>
 
 <script setup lang="ts">
