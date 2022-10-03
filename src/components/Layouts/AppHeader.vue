@@ -1,7 +1,6 @@
 <script setup lang="ts">
     import store from '@/store';
     import { ref, watch } from 'vue';
-    import IconMenu from '@/components/Icon/IconMenu.vue';
     import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
     import AAffix from 'ant-design-vue/lib/affix';
     import AMenu from 'ant-design-vue/lib/menu';
@@ -10,7 +9,18 @@
     import AMenuItem from 'ant-design-vue/lib/menu/src/MenuItem';
     import ArrowBottom from '@/components/Icon/ArrowBottom.vue';
 
+    /* icon */
+    import IconMenu from '@/components/Icon/IconMenu.vue';
+    import Search from '@/components/Icon/Search.vue';
+    /* end icon */
+
     const isLoggedIn = ref<boolean>(false);
+    const isMenu = ref<boolean>(false);
+
+    const handleShowMenu = () => {
+        isMenu.value = !isMenu.value;
+    };
+
     watch(
         () => store.getters['UserModule/getUserDetails'],
         function (user) {
@@ -22,6 +32,7 @@
         },
         { immediate: true }
     );
+
     const dataMenu = [
         {
             label: 'Accueil',
@@ -123,46 +134,101 @@
                 <div>
                     <Paragraphe type="bold"> Accueil </Paragraphe>
                 </div>
-                <div class="header__menu">
+                <div class="header__menu" @click="handleShowMenu">
                     <IconMenu />
+                </div>
+                <div
+                    class="header__content-menu-mobile"
+                    :class="{ 'menu-active': isMenu }"
+                >
+                    <a-menu mode="inline">
+                        <template v-for="(d, index) in dataMenu">
+                            <template v-if="!d.submenu">
+                                <a-menu-item :key="`alipay-${index}`">
+                                    <router-link :to="d.path">
+                                        {{ d.label }}
+                                    </router-link>
+                                </a-menu-item>
+                            </template>
+                            <a-sub-menu :key="`sub-${index}`" v-else>
+                                <template #title>
+                                    <span>{{ d.label }}</span>
+                                </template>
+                                <a-menu-item-group
+                                    v-for="(s, key) in d.submenu"
+                                    :key="key"
+                                >
+                                    <a-menu-item :key="`setting:${key}`">
+                                        <router-link :to="s.path">
+                                            {{ s.label }}
+                                        </router-link>
+                                    </a-menu-item>
+                                </a-menu-item-group>
+                            </a-sub-menu>
+                        </template>
+                    </a-menu>
                 </div>
             </div>
             <div class="header__desc">
                 <Paragraphe type="bold"> Immo </Paragraphe>
                 <div class="header__content-menu">
                     <a-menu mode="horizontal">
-                        <a-sub-menu key="sub1">
+                        <template v-for="(d, index) in dataMenu">
+                            <template v-if="!d.submenu">
+                                <a-menu-item :key="`alipay-${index}`">
+                                    <router-link :to="d.path">
+                                        {{ d.label }}
+                                    </router-link>
+                                </a-menu-item>
+                            </template>
+                            <a-sub-menu :key="`sub-${index}`" v-else>
+                                <template #title>
+                                    <span>{{ d.label }}</span>
+                                    <ArrowBottom
+                                        v-if="d.submenu && d.submenu.length > 0"
+                                    />
+                                </template>
+                                <a-menu-item-group
+                                    v-for="(s, key) in d.submenu"
+                                    :key="key"
+                                >
+                                    <a-menu-item :key="`setting:${key}`">
+                                        <router-link :to="s.path">
+                                            {{ s.label }}
+                                        </router-link>
+                                    </a-menu-item>
+                                </a-menu-item-group>
+                            </a-sub-menu>
+                        </template>
+                    </a-menu>
+                </div>
+                <div class="header__user header__menu-rigth">
+                    <a-menu mode="horizontal">
+                        <a-menu-item key="20">
+                            <router-link to="/">
+                                <Search />
+                            </router-link>
+                        </a-menu-item>
+                        <a-sub-menu key="sub-100">
                             <template #title>
-                                <span>Immobilier</span>
+                                <figure class="header__avatar">
+                                    <img src="" alt="" />
+                                </figure>
                                 <ArrowBottom />
                             </template>
-                            <a-menu-item-group title="Item 1">
-                                <a-menu-item key="setting:1"
-                                    >Option 1</a-menu-item
+                            <a-menu-item :key="`setting:100`">
+                                <router-link to="/connexion"
+                                    >Connexion</router-link
                                 >
-                                <a-menu-item key="setting:2"
-                                    >Option 2</a-menu-item
+                            </a-menu-item>
+                            <a-menu-item :key="`setting:1001`">
+                                <router-link to="/logout"
+                                    >Deconnection</router-link
                                 >
-                            </a-menu-item-group>
-                            <a-menu-item-group title="Item 2">
-                                <a-menu-item key="setting:3"
-                                    >Option 3</a-menu-item
-                                >
-                                <a-menu-item key="setting:4"
-                                    >Option 4</a-menu-item
-                                >
-                            </a-menu-item-group>
+                            </a-menu-item>
                         </a-sub-menu>
                     </a-menu>
-                    <router-link
-                        v-for="(d, index) in dataMenu"
-                        :key="index"
-                        :to="d.path"
-                    >
-                        {{ d.label }}
-                    </router-link>
                 </div>
-                <div class="header__user"></div>
             </div>
         </header>
         <!-- <router-link to="/">HOME</router-link> |
@@ -177,7 +243,8 @@
 <style lang="scss" scoped>
     .header {
         background-color: #fff;
-        padding: 14px 12px;
+        padding: 14px 15px;
+        overflow-x: hidden;
         &__menu {
             cursor: pointer;
         }
@@ -189,12 +256,48 @@
         }
         &__desc {
             display: none;
+            max-width: 1170px;
+            width: 100%;
+            margin: auto;
             @screen lg {
                 @apply flex justify-between;
+            }
+            p {
+                @apply flex items-center;
             }
         }
         &__content-menu {
             @apply flex gap-[35px];
+        }
+        &__avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: var(--color-primary);
+        }
+        &__content-menu-mobile {
+            position: fixed;
+            width: calc(100vw - 50px);
+            transform: translateX(100%);
+            top: 49px;
+            right: 0;
+            background-color: #fff;
+            height: calc(100vh - 49px);
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+            overflow: auto;
+            transition: transform 0.25s ease;
+        }
+        .menu-active {
+            transform: translateX(0);
+            transition: transform 0.25s ease;
+        }
+        &__menu-rigth {
+            body & {
+                .ant-menu-overflow {
+                    @apply gap-[10px];
+                }
+            }
         }
         &::v-deep {
             .ant-menu-horizontal {
@@ -212,6 +315,13 @@
             .ant-menu-overflow {
                 align-items: center;
                 line-height: normal;
+                @apply gap-[35px];
+            }
+            .ant-menu-overflow-item {
+                padding: 0;
+            }
+            .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover {
+                color: var(--color-secondary);
             }
         }
     }
