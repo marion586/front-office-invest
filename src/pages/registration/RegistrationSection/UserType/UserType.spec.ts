@@ -23,16 +23,21 @@ describe('UserType.vue', () => {
         expect(buttons[1].text()).toEqual('PROFESSIONNEL');
     });
 
-    it('BUTTON should have event click', () => {
-        const wrapper: VueWrapper | any = mount(UserType);
+    it('BUTTON should have event click with emit', async () => {
+        const wrapper: VueWrapper = mount(UserType);
         const buttons: DOMWrapper<HTMLButtonElement>[] =
             wrapper.findAll('button');
-
         const particulierBtn: DOMWrapper<HTMLButtonElement> = buttons[0];
-        const mockFn: Mock = vitest.fn();
-        wrapper.vm.handleChoices = mockFn;
-        particulierBtn.trigger('click');
+        const proBtn: DOMWrapper<HTMLButtonElement> = buttons[1];
 
-        expect(mockFn).toBeCalledTimes(1);
+        particulierBtn.trigger('click');
+        expect(wrapper.emitted('on-click-choices')?.at(-1)).toEqual([
+            'particulier',
+        ]);
+
+        proBtn.trigger('click');
+        expect(wrapper.emitted('on-click-choices')?.at(-1)).toEqual([
+            'professionnel',
+        ]);
     });
 });

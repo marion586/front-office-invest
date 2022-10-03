@@ -1,35 +1,29 @@
-import { mount } from '@vue/test-utils';
+import { mount, VueWrapper, shallowMount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
-import Registration from './registration.vue';
-describe('Registration.vue', function () {
-    const wrapper = mount(Registration);
-    const form = wrapper.find('form');
+import UserType from './RegistrationSection/UserType/UserType.vue';
+import registration from './registration.vue';
+import Subscription from './SubscriptionSection/Subscription.vue';
 
-    it('should render Registration', function () {
+describe('registration.vue', () => {
+    it('should render rgistration cmp', () => {
+        const wrapper: VueWrapper = shallowMount(registration);
         expect(wrapper.exists()).toBe(true);
     });
-    it('should wrap <form> element', function () {
-        expect(form.exists()).toBe(true);
-    });
 
-    it('<fomr >should wrap emai && name && typeUser && logo && address && password && confirm pwd && nameEntreprise && numberEntreprise element', function () {
-        const name = form.find('input[name=name]');
-        const email = form.find('input[name=email]');
-        const typeUser = form.find('input[name=typeUser]');
-        const logo = form.find('input[name=logo]');
-        const adress = form.find('input[name=adress]');
-        const password = form.find('input[name=passoword]');
-        const confirmPassword = form.find('input[name=confirmPassword]');
-        const nameEntreprise = form.find('input[name=nameEntrepise]');
-        const numberEntreprise = form.find('input[name=numberEntreprise]');
-        expect(name.exists()).toBe(true);
-        // email.exists() &&
-        //     typeUser.exists() &&
-        //     logo.exists() &&
-        //     adress.exists() &&
-        //     password.exists() &&
-        //     confirmPassword.exists() &&
-        //     nameEntreprise.exists() &&
-        //     numberEntreprise.exists();
+    it('should render UserType cmp and not Sub cmp when usertype not assigned', async () => {
+        const wrapper: VueWrapper = shallowMount(registration);
+        const userTypeWrapper: VueWrapper = wrapper.findComponent(UserType);
+        const SubscriptionWrapper: VueWrapper =
+            wrapper.findComponent(Subscription);
+        // render on mount
+        (wrapper.vm as any).usertype = '';
+
+        await wrapper.vm.$nextTick();
+        expect(userTypeWrapper.exists()).toBe(true);
+        expect(SubscriptionWrapper.exists()).toBe(false);
+        // unmount on choice made
+        (wrapper.vm as any).usertype = 'particulier';
+        await wrapper.vm.$nextTick();
+        expect(userTypeWrapper.exists()).toBe(false);
     });
 });
