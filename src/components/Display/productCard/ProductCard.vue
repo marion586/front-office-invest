@@ -70,7 +70,7 @@
         img {
             border-radius: 8px;
             width: auto;
-            height: auto;
+            height: 160px;
         }
         &__type {
             display: flex;

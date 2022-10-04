@@ -1,13 +1,13 @@
 <template>
-    <div class="container">
-        <div class="container__left">
+    <div class="container-head">
+        <div class="container-head__left">
             <avatar src="https://joeschmoe.io/api/v1/random" :size="40" />
-            <div class="container__left--profile">
+            <div class="container-head__left--profile">
                 <Title type="h4" :label="label" weight="bold" />
                 <label>{{ Text }}</label>
             </div>
         </div>
-        <div class="container__right">
+        <div class="container-head__right">
             <span>H</span>
         </div>
     </div>
@@ -29,7 +29,7 @@
 </script>
 
 <style lang="scss" scoped>
-    .container {
+    .container-head {
         display: flex;
         justify-content: space-between;
         align-items: center;
