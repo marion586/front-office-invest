@@ -1,13 +1,13 @@
 <template>
-    <div class="container-head-product">
-        <div class="wrapper">
+    <div class="container-head">
+        <div class="container-head__left">
             <avatar src="https://joeschmoe.io/api/v1/random" :size="40" />
-            <div class="content">
+            <div class="container-head__left--profile">
                 <Title type="h4" :label="label" weight="bold" />
                 <label>{{ Text }}</label>
             </div>
         </div>
-        <div class="heart-icon">
+        <div class="container-head__right">
             <span>H</span>
         </div>
     </div>
@@ -29,15 +29,15 @@
 </script>
 
 <style lang="scss" scoped>
-    .container-head-product {
+    .container-head {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        .wrapper {
+        &__left {
             display: flex;
             gap: 25px;
             align-items: center;
-            .content {
+            &--profile {
                 display: flex;
                 flex-direction: column;
                 gap: 4px;
@@ -51,7 +51,7 @@
                 }
             }
         }
-        .heart-icon {
+        &__right {
             display: flex;
             flex-direction: row;
             justify-content: center;

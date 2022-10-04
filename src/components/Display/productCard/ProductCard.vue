@@ -1,28 +1,32 @@
 <template>
-    <div class="card-item max-w-lg">
+    <div class="card max-w-lg">
         <HeadProduct Text="Agence" label="Label Immo" />
-        <img :src="DataCard.image" alt=" card product img" />
-        <div class="type-card">
+        <img
+            class="card__image"
+            :src="DataCard.image"
+            alt=" card product img"
+        />
+        <div class="card__type">
             <Title type="h4" :label="DataCard.type" weight="bold" />
             <span> {{ DataCard.price }} £</span>
         </div>
 
-        <div class="value-card">
-            <div class="value-item-card">
+        <div class="card__value">
+            <div class="card__value--item">
                 <span>H</span> <span>{{ DataCard.roomCount }}</span>
             </div>
-            <div class="value-item-card">
+            <div class="card__value--item">
                 <span>H</span> <span>{{ DataCard.bedroomCount }}</span>
             </div>
-            <div class="value-item-card">
+            <div class="card__value--item">
                 <span>H</span> <span>{{ DataCard.surface }} m2</span>
             </div>
         </div>
-        <div class="action-card">
+        <div class="card__action">
             <span> ({{ DataCard.interested }}) interessé</span>
             <span> ({{ DataCard.offerSentCount }}) offre envoyé </span>
         </div>
-        <div class="adress-card">
+        <div class="card__adress">
             <span>H</span>
             <span>{{ DataCard.adress }} </span>
         </div>
@@ -54,7 +58,7 @@
 </script>
 
 <style lang="scss" scoped>
-    .card-item {
+    .card {
         display: flex;
         flex-direction: column;
         width: auto;
@@ -66,9 +70,9 @@
         img {
             border-radius: 8px;
             width: auto;
-            height: auto;
+            height: 160px;
         }
-        .type-card {
+        &__type {
             display: flex;
             justify-content: space-between;
             span {
@@ -83,10 +87,10 @@
                 line-height: 17px;
             }
         }
-        .value-card {
+        &__value {
             display: flex;
             gap: 18px;
-            .value-item-card {
+            &--item {
                 display: flex;
                 align-items: center;
                 gap: 5px;
@@ -97,7 +101,7 @@
                 }
             }
         }
-        .action-card {
+        &__action {
             display: flex;
             flex-direction: column;
             span {
@@ -108,7 +112,7 @@
                 color: #797575;
             }
         }
-        .adress-card {
+        &__adress {
             display: flex;
             align-items: center;
             gap: 5px;
