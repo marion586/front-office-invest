@@ -216,27 +216,30 @@
                                 </figure>
                                 <ArrowBottom />
                             </template>
-                            <a-menu-item :key="`setting:100`">
-                                <router-link to="/connexion"
-                                    >Connexion</router-link
-                                >
-                            </a-menu-item>
-                            <a-menu-item :key="`setting:1001`">
-                                <router-link to="/logout"
-                                    >Deconnection</router-link
-                                >
-                            </a-menu-item>
+                            <a-menu-item-group v-if="!isLoggedIn">
+                                <a-menu-item :key="`setting:100`">
+                                    <router-link to="/connexion"
+                                        >Connexion</router-link
+                                    >
+                                </a-menu-item>
+                                <a-menu-item :key="`setting:1001`">
+                                    <router-link to="/inscription"
+                                        >Inscription</router-link
+                                    >
+                                </a-menu-item>
+                            </a-menu-item-group>
+                            <a-menu-item-group v-else>
+                                <a-menu-item :key="`setting:1001`">
+                                    <router-link to="/logout"
+                                        >Deconnection</router-link
+                                    >
+                                </a-menu-item>
+                            </a-menu-item-group>
                         </a-sub-menu>
                     </a-menu>
                 </div>
             </div>
         </header>
-        <!-- <router-link to="/">HOME</router-link> |
-        <router-link to="/about">ABOUT</router-link> |
-        <router-link v-if="!isLoggedIn" to="/connexion">CONNEXION</router-link> |
-        <router-link v-if="!isLoggedIn" to="/inscription">INSCRIPTION</router-link>
-        | <router-link to="/mon-compte">MON COMPTE</router-link> |
-        <router-link v-if="isLoggedIn" to="/logout">DECONNEXION</router-link> -->
     </a-affix>
 </template>
 
@@ -321,6 +324,9 @@
             }
             .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover {
                 color: var(--color-secondary);
+            }
+            .ant-menu-vertical {
+                padding-top: 10px;
             }
         }
     }

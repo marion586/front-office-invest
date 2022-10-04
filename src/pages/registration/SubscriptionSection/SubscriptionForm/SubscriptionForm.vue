@@ -8,14 +8,14 @@
 
         <p>CVC</p>
         <div id="card-cvc-element"></div>
-        <button
+        <!-- <button
             v-if="isAllCardFieldsValid"
             style="border: 1px solid; padding: 10px"
             @click="processPayement"
         >
             <span v-if="loadPayement">chargement...</span
             ><span v-else>Payement</span>
-        </button>
+        </button> -->
     </div>
 </template>
 <script lang="ts" setup>

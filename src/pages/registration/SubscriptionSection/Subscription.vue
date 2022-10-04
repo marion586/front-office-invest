@@ -2,13 +2,7 @@
     <div>
         <SubscriptionCard
             v-if="step === 0"
-            @change-step="
-                () => {
-                    step = 1;
-                }
-            "
-            v-on:click-back="$emit('click-back')"
-            @click-choose="handleClickChoose"
+            @on-choose-card="handleChooseCard"
         />
         <SubscriptionForm v-if="step === 1" />
     </div>
@@ -23,7 +17,7 @@
 
     const step = ref<number>(0);
 
-    function handleClickChoose(cardType: string) {
+    function handleChooseCard() {
         step.value = 1;
     }
 </script>
