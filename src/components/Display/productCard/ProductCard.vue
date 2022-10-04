@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-    import HeadProduct from '@/components/Display/headProduct/HeadProduct.vue';
+    import HeadProduct from '@/components/Display/HeadProduct/HeadProduct.vue';
     import { ref, PropType } from 'vue';
     import Title from '../../Common/Title/Title.vue';
     interface DataProps {
@@ -48,13 +48,12 @@
         offerSentCount: number;
         adress: string;
     }
-    const DataCardProps = defineProps({
+    defineProps({
         DataCard: {
             type: Object as PropType<DataProps>,
             required: true,
         },
     });
-    const DataCard = ref(DataCardProps.DataCard);
 </script>
 
 <style lang="scss" scoped>

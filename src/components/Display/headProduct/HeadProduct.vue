@@ -4,7 +4,9 @@
             <avatar src="https://joeschmoe.io/api/v1/random" :size="40" />
             <div class="container-head__left--profile">
                 <Title type="h4" :label="label" weight="bold" />
-                <label>{{ Text }}</label>
+                <Paragraphe>
+                    {{ Text }}
+                </Paragraphe>
             </div>
         </div>
         <div class="container-head__right">
@@ -14,7 +16,8 @@
 </template>
 
 <script setup lang="ts">
-    import Title from '../../Common/Title/Title.vue';
+    import Title from '@/components/Common/Title/Title.vue';
+    import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
     import avatar from 'ant-design-vue/lib/avatar';
     defineProps({
         label: {
