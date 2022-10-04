@@ -3,6 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 
 const routes = <Array<RouteRecordRaw>>[
     {
+        name: 'home',
         path: '/',
         component: () => import('@/pages/index.vue'),
     },
@@ -17,8 +18,15 @@ const routes = <Array<RouteRecordRaw>>[
         component: () => import('@/pages/login/Login.vue'),
     },
     {
+        name: 'authRegistration',
         path: '/inscription',
         component: () => import('@/pages/registration/Registration.vue'),
+    },
+    {
+        name: 'authSubscription',
+        path: '/abonnement',
+        component: () =>
+            import('@/pages/registration/SubscriptionSection/Subscription.vue'),
     },
     {
         path: '/styleguide',

@@ -23,6 +23,11 @@
 </template>
 <script lang="ts" setup>
     import { onMounted, ref } from 'vue';
+    import { Router, useRouter } from 'vue-router';
+    import { Store, useStore } from 'vuex';
+
+    const store: Store<any> = useStore();
+    const router: Router = useRouter();
     const cardTypes = ref<Array<string>>([]);
     const particularCardTypes: string[] = [
         'Economique',
@@ -40,14 +45,6 @@
         initCard();
     });
 
-    const props = defineProps({
-        userType: {
-            default: '',
-            type: String,
-            require: true,
-        },
-    });
-
     const emit = defineEmits<{
         (e: 'click-choose', cardType: string): void;
         (e: 'click-back'): void;
@@ -57,11 +54,13 @@
         emit('click-choose', cardType);
     }
     function onClickBack() {
-        emit('click-back');
+        router.go(-1);
     }
 
     function initCard() {
-        switch (props.userType) {
+        const usertype: string =
+            store.getters['UserModule/getRegisteredUser'].usertype;
+        switch (usertype) {
             case 'particulier':
                 cardTypes.value = [...particularCardTypes];
                 break;

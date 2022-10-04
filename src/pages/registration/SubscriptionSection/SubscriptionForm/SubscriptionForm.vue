@@ -13,12 +13,10 @@
             style="border: 1px solid; padding: 10px"
             @click="processPayement"
         >
-            Payement
+            <span v-if="loadPayement">chargement...</span
+            ><span v-else>Payement</span>
         </button>
     </div>
-    <!-- <StripeElement :element="cardElement" @change="event = $event" />
-    <button @click="registerCard">Add</button> -->
-    <!-- <div v-if="event && event.error">{{ event.error.message }}</div> -->
 </template>
 <script lang="ts" setup>
     import { loadStripe, Stripe } from '@stripe/stripe-js';
@@ -29,6 +27,7 @@
     let cardNbElement: any = reactive({});
     let cardExpElement: any = reactive({});
     let cardCVCElement: any = reactive({});
+    const loadPayement = ref<boolean>(false);
 
     let validCardFields = reactive<{
         cardNbElement: boolean;
@@ -57,49 +56,54 @@
     );
 
     async function initStripeApi() {
-        stripe = (await loadStripe(STRIPE_KEY)) as Stripe;
-        let element = (stripe as Stripe).elements();
-        // number
-        cardNbElement = element.create('cardNumber', {
-            classes: {
-                base: 'card-number-stripe',
-            },
-        });
-        (cardNbElement as any).mount('#card-number-element');
-        cardNbElement.on('change', function (event: object) {
-            validCardFields.cardNbElement = (event as any).complete
-                ? true
-                : false;
-        });
+        try {
+            stripe = (await loadStripe(STRIPE_KEY)) as Stripe;
+            // create elt
+            let element = (stripe as Stripe).elements();
+            cardNbElement = element.create('cardNumber', {
+                classes: {
+                    base: 'card-number-stripe',
+                },
+            });
+            cardExpElement = element.create('cardExpiry', {
+                classes: {
+                    base: 'card-expiry-stripe',
+                },
+            });
+            cardCVCElement = element.create('cardCvc', {
+                classes: {
+                    base: 'card-cvc-stripe',
+                },
+            });
 
-        // expiry
-        cardExpElement = element.create('cardExpiry', {
-            classes: {
-                base: 'card-expiry-stripe',
-            },
-        });
-        (cardExpElement as any).mount('#card-expiry-element');
-        cardExpElement.on('change', function (event: object) {
-            validCardFields.cardExpElement = (event as any).complete
-                ? true
-                : false;
-        });
+            // mount elt
+            (cardNbElement as any).mount('#card-number-element');
+            (cardExpElement as any).mount('#card-expiry-element');
+            (cardCVCElement as any).mount('#card-cvc-element');
 
-        // cvc
-        cardCVCElement = element.create('cardCvc', {
-            classes: {
-                base: 'card-cvc-stripe',
-            },
-        });
-        (cardCVCElement as any).mount('#card-cvc-element');
-        cardCVCElement.on('change', function (event: object) {
-            validCardFields.cardCVCElement = (event as any).complete
-                ? true
-                : false;
-        });
+            // trigger event elt
+            cardNbElement.on('change', function (event: object) {
+                validCardFields.cardNbElement = (event as any).complete
+                    ? true
+                    : false;
+            });
+            cardExpElement.on('change', function (event: object) {
+                validCardFields.cardExpElement = (event as any).complete
+                    ? true
+                    : false;
+            });
+            cardCVCElement.on('change', function (event: object) {
+                validCardFields.cardCVCElement = (event as any).complete
+                    ? true
+                    : false;
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async function processPayement() {
+        loadPayement.value = true;
         try {
             const res = await (stripe as Stripe).createToken(cardNbElement);
             console.log(res);
@@ -110,8 +114,10 @@
                 // TODO res.token
                 console.log(res.token);
             }
+            loadPayement.value = false;
         } catch (error) {
             // TODO handle error
+            loadPayement.value = false;
             console.log(error);
         }
     }
