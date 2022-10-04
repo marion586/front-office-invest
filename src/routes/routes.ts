@@ -36,6 +36,21 @@ const routes = <Array<RouteRecordRaw>>[
         path: '/logout',
         beforeEnter: [logoutGuard],
     },
+    {
+        name: "detail",
+        path: "/detail",
+        component: () => import("@/pages/detail/index.vue"),
+        children: [
+            {
+                path: "/Detail/A",
+                component: () => import("@/pages/detail/component/ComponentA.vue"),
+            },
+            {
+                path: "/Detail/B",
+                component: () => import("@/pages/detail/component/ComponentB.vue"),
+            },
+        ]
+    }
 ];
 
 export default routes;

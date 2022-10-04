@@ -10,6 +10,7 @@ import Title from "@/components/Common/Title/Title.vue";
     <Button> primary </Button>
     <Button type="secondary"> Secondary </Button>
     <Input label="Input label" placeholder="input" />
+    <h1>qsdfmlqsdf</h1>
   </div>
 </template>
 

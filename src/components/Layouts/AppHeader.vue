@@ -23,4 +23,6 @@ watch(
     <router-link v-if="!isLoggedIn" to="/inscription">INSCRIPTION</router-link>
     | <router-link to="/mon-compte">MON COMPTE</router-link> |
     <router-link v-if="isLoggedIn" to="/logout">DECONNEXION</router-link>
+    <router-link  to="/detail">detail</router-link>
+
 </template>
