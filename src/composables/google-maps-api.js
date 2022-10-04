@@ -1,6 +1,6 @@
 export const  useGoogleMapAPI = function(){
-    // console.log(process.env);
-    // const API_KEY = process.env.GOOLE_MAPS_API_KEY;
+    // console.log(import.meta.env.GOOLE_MAPS_API_KEY);
+    // const API_KEY = import.meta.env.GOOLE_MAPS_API_KEY;
     const API_KEY = "AIzaSyDYsKnr7KjV2OvyyQsYy4mShI5EDNH-vb0";
     const CALLBACK_NAME = 'gmapsCallback';
     let initialized = !!window.google;
@@ -44,6 +44,23 @@ export const  useGoogleMapAPI = function(){
 export const removeScript = ()=>{
     document.querySelectorAll("head > script").forEach(item=>{
         item.remove()
-    })  
-    
+    })   
+}
+/**
+ * 
+ * @param {HTMLImputElement} input - input element of the field
+ * @param {Array} fields - list on fields de return
+ * @param {Object} options - autocomple optionss
+ */
+export const autocomplet = (input,fields, options={
+        //const newBounds = new google.maps.LatLngBounds(southwest, northeast);
+        //new google.maps.LatLngBounds(southwest : Object, northeast : Object)
+        bounds : new google.maps.LatLngBounds(),
+    }
+)=>{
+    const complete = new google.maps.Places.Autoocomplete(input,options);
+    if(window.google){
+
+    }
+
 }
