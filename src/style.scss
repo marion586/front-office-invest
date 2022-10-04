@@ -1,0 +1,33 @@
+body {
+    .ant-menu-submenu {
+        > ul {
+            padding-bottom: 15px !important;
+        }
+        .ant-menu-item {
+            height: auto;
+            line-height: normal;
+        }
+    }
+    .ant-menu-horizontal > .ant-menu-item::after,
+    .ant-menu-horizontal > .ant-menu-submenu::after {
+        bottom: -14px;
+        width: 100%;
+        left: 0;
+    }
+    .ant-menu-horizontal > .ant-menu-item-selected::after {
+    }
+}
+
+.ant-menu-horizontal > .ant-menu-item a:hover {
+    color: var(--color-secondary);
+}
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover::after,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover::after,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-active::after,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-active::after,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-open::after,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-open::after,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-selected::after,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-selected::after {
+    border-bottom: 2px solid var(--color-secondary);
+}

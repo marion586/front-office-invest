@@ -41,6 +41,11 @@ const routes = <Array<RouteRecordRaw>>[
         path: '/recherche-bien',
         component : ()=> import('@/pages/find-Property/index.vue')
     },
+    {
+        name: 'product-list',
+        path: '/product-list',
+        component: () => import('@/pages/productList/List.vue'),
+    }
 ];
 
 export default routes;
