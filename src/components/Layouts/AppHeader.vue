@@ -128,16 +128,6 @@
 </script>
 
 <template>
-<<<<<<< HEAD
-    <router-link to="/">HOME</router-link> |
-    <router-link to="/about">ABOUT</router-link> |
-    <router-link v-if="!isLoggedIn" to="/connexion">CONNEXION</router-link> |
-    <router-link v-if="!isLoggedIn" to="/inscription">INSCRIPTION</router-link>
-    | <router-link to="/mon-compte">MON COMPTE</router-link> |
-    <router-link v-if="isLoggedIn" to="/logout">DECONNEXION</router-link>
-    <router-link  to="/detail">detail</router-link>
-
-=======
     <a-affix :offset-top="0">
         <header class="header">
             <div class="header__mobile">
@@ -241,6 +231,7 @@
                 </div>
             </div>
         </header>
+        <router-link  to="/detail">detail</router-link>
         <!-- <router-link to="/">HOME</router-link> |
         <router-link to="/about">ABOUT</router-link> |
         <router-link v-if="!isLoggedIn" to="/connexion">CONNEXION</router-link> |
@@ -248,7 +239,6 @@
         | <router-link to="/mon-compte">MON COMPTE</router-link> |
         <router-link v-if="isLoggedIn" to="/logout">DECONNEXION</router-link> -->
     </a-affix>
->>>>>>> e59104d25f212d45f68fc9937f1b20c0598697bf
 </template>
 
 <style lang="scss" scoped>
