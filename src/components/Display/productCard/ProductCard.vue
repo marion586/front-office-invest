@@ -1,11 +1,9 @@
 <template>
     <div class="card max-w-lg">
         <HeadProduct Text="Agence" label="Label Immo" />
-        <img
-            class="card__image"
-            :src="DataCard.image"
-            alt=" card product img"
-        />
+        <figure class="card__image">
+            <img :src="DataCard.image" alt=" card product img" />
+        </figure>
         <div class="card__type">
             <Title type="h4" :label="DataCard.type" weight="bold" />
             <span> {{ DataCard.price }} £</span>
@@ -66,11 +64,16 @@
         gap: 18px;
         background: #ffffff;
         border-radius: 8px;
-        img {
-            border-radius: 8px;
+        &__image {
             width: auto;
             height: 160px;
+            img {
+                border-radius: 8px;
+                width: 100%;
+                height: 100%;
+            }
         }
+
         &__type {
             display: flex;
             justify-content: space-between;
