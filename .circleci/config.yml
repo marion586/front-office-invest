@@ -18,14 +18,15 @@ jobs:
             - checkout
             - run: yarn install
             - run: yarn add -D eslint @babel/eslint-parser
-            - run: |
-                      pwd
-                      yarn lint --ext .js,.vue --ignore-pattern .gitignore --ignore-pattern '*.test.js' --ignore-pattern '*.spec.js' --ignore-pattern 'nuxt.config.*' --ignore-pattern 'static/*' --ignore-pattern 'asset/*' .
+            - run: yarn test
+#            - run: |
+#                      yarn run eslint --ext .js,.vue --ignore-pattern .gitignore --ignore-pattern '*.test.js' --ignore-pattern '*.spec.js' --ignore-pattern 'nuxt.config.*' --ignore-pattern 'static/*' --ignore-pattern 'asset/*' .
 #                      yarn lint -c ./.eslintrc --ext .vue,.js --fix --ignore-pattern ./gitignore  --ignore-pattern '*.spec.js' --ignore-pattern '*.test.js' .
 #                yarn test
                 # yarn lint --ext .vue,.js --debug --ignore-path ./.gitignore
 # si activer la commande suivant ne s'execute que si l'étape plus haut n'est pas sucess
-    run : yarn test
+    
+
 
 #workflow declaration
 workflows:

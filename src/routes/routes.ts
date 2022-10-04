@@ -50,7 +50,12 @@ const routes = <Array<RouteRecordRaw>>[
                 component: () => import("@/pages/detail/component/ComponentB.vue"),
             },
         ]
-    }
+    },
+    {
+        name: 'product-list',
+        path: '/product-list',
+        component: () => import('@/pages/productList/List.vue'),
+    },
 ];
 
 export default routes;

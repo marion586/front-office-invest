@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vitest } from 'vitest';
+import { beforeEach, describe, expect, it, Mock, vitest } from 'vitest';
 import { Http } from '../http';
 
 describe('instance Http', () => {
@@ -20,7 +20,7 @@ describe('test static method', () => {
     }
 
     let ins: TestClass;
-    let mockStaticMethod = vitest.fn();
+    let mockStaticMethod: Mock<any[], any> = vitest.fn();
 
     beforeEach(() => {
         Http.get = mockStaticMethod;
@@ -32,8 +32,8 @@ describe('test static method', () => {
         const expectedValue = 'mock static method value';
         mockStaticMethod.mockReturnValue(expectedValue);
 
-        const getResult = ins.get();
-        const postResult = ins.post();
+        const getResult: Promise<any> = ins.get();
+        const postResult: Promise<any> = ins.post();
 
         expect(getResult).toEqual(expectedValue);
         expect(postResult).toEqual(expectedValue);

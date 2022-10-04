@@ -6,11 +6,19 @@ import Title from "@/components/Common/Title/Title.vue";
 
 <template>
   <div>
-    <Title type="h1" label="title h1" :weight="700" />
-    <Button> primary </Button>
-    <Button type="secondary"> Secondary </Button>
-    <Input label="Input label" placeholder="input" />
-    <h1>qsdfmlqsdf</h1>
+    <div>
+      <Title type="h2" label="title" :weight="600" />
+      <Title type="h1" label="title h1" :weight="700" />
+    </div>
+    <div>
+      <Title type="h2" label="Button" :weight="600" />
+      <Button> primary </Button>
+      <Button type="secondary"> Secondary </Button>
+    </div>
+    <div>
+      <Title type="h2" label="Input" :weight="600" />
+      <Input label="Input label" placeholder="input" />
+    </div>
   </div>
 </template>
 

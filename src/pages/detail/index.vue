@@ -3,7 +3,7 @@
     <router-view />
 </template>
 <script setup>
-    import { defineComponent, ref, computed } from '@vue/runtime-core';
+    import { defineComponent, computed } from '@vue/runtime-core';
     import BreadCrumb from '@/components/Display/BreadCrumb/BreadCrumb.vue';
 
     const breadcrumbs = computed(() => {

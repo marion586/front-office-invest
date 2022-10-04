@@ -4,7 +4,7 @@ import { nextTick } from 'vue';
 import AppHeader from './AppHeader.vue';
 
 describe('AppHeader.vue', async () => {
-    const wrapper = mount(AppHeader, {
+    const wrapper: VueWrapper | any = mount(AppHeader, {
         global: {
             stubs: {
                 RouterLink: RouterLinkStub,

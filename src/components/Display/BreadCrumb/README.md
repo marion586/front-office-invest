@@ -1,4 +1,4 @@
--Takes props ":items" type Array
+-Takes props ":items" type of Array
 -If items element have routes, add <router-view/> to allow navigation through them
 - props ":items" example:
      const breadcrumbs = computed(() => {
