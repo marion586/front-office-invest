@@ -3,8 +3,13 @@
         <div class="container-head__left">
             <avatar src="https://joeschmoe.io/api/v1/random" :size="40" />
             <div class="container-head__left--profile">
-                <Title type="h4" :label="label" weight="bold" />
-                <Paragraphe>
+                <Title
+                    type="h4"
+                    data-test="title"
+                    :label="label"
+                    weight="bold"
+                />
+                <Paragraphe data-test="para">
                     {{ Text }}
                 </Paragraphe>
             </div>
