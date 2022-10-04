@@ -44,7 +44,7 @@ const routes = <Array<RouteRecordRaw>>[
     {
         name: 'make-offer',
         path: '/faire-une-offre',
-        component: () => import('@/pages/makeOffer/MakeOffer.vue'),
+        component: () => import('@/pages/make-offer/MakeOffer.vue'),
     },
 ];
 
