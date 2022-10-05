@@ -15,7 +15,10 @@
             </div>
         </div>
         <div class="container-head__right">
-            <span>H</span>
+            <Heart
+                :isShowSvg="isShowSvg"
+                @show-svg="(value) => showSvg(value)"
+            />
         </div>
     </div>
 </template>
@@ -24,6 +27,8 @@
     import Title from '@/components/Common/Title/Title.vue';
     import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
     import avatar from 'ant-design-vue/lib/avatar';
+    import Heart from '@/components/Icon/Heart.vue';
+    import { ref } from 'vue';
     defineProps({
         label: {
             type: String,
@@ -34,6 +39,10 @@
             required: true,
         },
     });
+    const isShowSvg = ref<boolean>(true);
+    const showSvg = (value: boolean) => {
+        isShowSvg.value = !value;
+    };
 </script>
 
 <style lang="scss" scoped>

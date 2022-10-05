@@ -1,4 +1,5 @@
 <template>
+    
     <div class="card max-w-lg">
         <HeadProduct Text="Agence" label="Label Immo" />
         <figure class="card__image">
