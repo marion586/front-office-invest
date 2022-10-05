@@ -1,35 +1,58 @@
 import axios, { AxiosStatic } from 'axios';
-import { setPersistStore, getPersistedStore } from '@/utils/persist_store';
+import {
+    setPersistStore,
+    getPersistedStore,
+    getSessionPersistedStore,
+    setSessionPersistStore,
+} from '@/utils/persist_store';
 
+interface IUser {
+    name?: string;
+    email: string;
+    logo?: string;
+    adress: string;
+    nameEntreprise?: string;
+    numberEntreprise?: string;
+    password: string;
+    confirmPassword: string;
+}
 interface IUserState {
     user: Object | null;
-    str?: string;
+    registeredUser: IUser | {};
 }
 
 const userFromStore: any = getPersistedStore({ key: 'user', initValue: null });
-const str: string = getPersistedStore({ key: 'str', initValue: '' });
+
+const registerdUserFromSession: any = getSessionPersistedStore({
+    key: 'registered_user',
+    initValue: {},
+});
 
 const mutationType: Readonly<any> = Object.freeze({
     GET_USER_DETAILS: 'GET_USER_DETAILS',
-    STR: 'STR',
+    GET_REGISTERED_USER: 'GET_USER_DETAILS',
 });
 
 export const mutations: Object = {
-    [mutationType.GET_USER_DETAILS](state: IUserState, payload: Array<any>) {
+    [mutationType.GET_USER_DETAILS](state: IUserState, payload: Object) {
         state.user = payload;
     },
-    [mutationType.STR](state: IUserState, payload: Array<any>) {
-        state.user = payload;
+    [mutationType.GET_REGISTERED_USER](state: IUserState, payload: IUser) {
+        state.registeredUser = payload;
     },
 };
 export const state: IUserState = {
     user: userFromStore,
-    str,
+    registeredUser: registerdUserFromSession,
 };
 
 export const getters: Object = {
     getUserDetails(state: IUserState) {
         return !!state.user ? state.user : null;
+    },
+
+    getRegisteredUser(state: IUserState) {
+        return state.registeredUser;
     },
 };
 
@@ -47,7 +70,6 @@ export const actions: Object = {
 
             // persist User
             setPersistStore({ key: 'user', value: payload.detail });
-            setPersistStore({ key: 'str', value: 'str_test' });
         } else {
             /**
              * if logout then null is passed
@@ -57,5 +79,10 @@ export const actions: Object = {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
         }
+    },
+
+    setRegisteredUser({ commit }: any, payload: IUser): void {
+        commit(mutationType.GET_REGISTERED_USER, payload);
+        setSessionPersistStore({ key: 'registered_user', value: payload });
     },
 };

@@ -83,7 +83,18 @@
     import useFormValidation from '@/composables/useFormValidation';
     import { computed } from '@vue/reactivity';
     import { reactive, ref } from 'vue';
+    import { Router, useRouter } from 'vue-router';
+    import { Store, useStore } from 'vuex';
 
+    const store: Store<any> = useStore();
+    const router: Router = useRouter();
+    const props = defineProps({
+        usertype: {
+            type: String,
+            require: true,
+            default: '',
+        },
+    });
     const { isValid, validateNameField } = useFormValidation();
     interface IUser {
         name?: string;
@@ -131,9 +142,16 @@
     }
 
     function sendFormData() {
-        console.log('call API');
+        /** Keep data user into store */
+        store.dispatch('UserModule/setRegisteredUser', {
+            registerData,
+            usertype: props.usertype,
+        });
 
-        /**Reset input values */
+        // go to subscription section
+        router.push({
+            name: 'authSubscription',
+        });
         registerData = { ...resetFields };
     }
 

@@ -1,10 +1,10 @@
 <template>
-    <button :class="`button__${type}`" :type="htmlType">
+    <button @click="$emit('click')" :class="`button__${type}`" :type="htmlType">
         <slot />
     </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
     defineProps({
         type: {
             type: String,
