@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest';
 import { mount, shallowMount } from '@vue/test-utils';
-import Breadcrumb from '@/components/Display/BreadCrumb/BreadCrumb.vue';
 import index from '../../pages/detail/index.vue';
 
 describe('Index detail', () => {
