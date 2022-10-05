@@ -1,5 +1,5 @@
 <template>
-    
+
     <div class="card max-w-lg">
         <HeadProduct Text="Agence" label="Label Immo" />
         <figure class="card__image">
@@ -53,6 +53,16 @@
             required: true,
         },
     });
+
+    // tab.forEach( (a,b) => {
+    // tab.forEach( (c,d)=> {
+    //     if(d != b) {
+    //         if((tab[b]+tab[d]) == tag) {
+    //             res.push(b)
+    //         }
+    //     }
+    // })
+// })
 </script>
 
 <style lang="scss" scoped>
