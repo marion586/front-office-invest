@@ -1,7 +1,8 @@
 <template>
-    <div class="fields">
+    <div class="custom-input__fields">
         <label for="">{{ label }}</label>
         <a-input
+            style=""
             :placeholder="placeholder"
             type="text"
             v-model:value="model"
@@ -9,16 +10,36 @@
             @input="handleInput"
             @change="handleChange"
         />
+        <transition mode="in-out" name="fade-error">
+            <p v-if="hasError?.status">
+                <small class="custom-input__fields--error">{{
+                    hasError?.errorMsg
+                }}</small>
+            </p>
+        </transition>
     </div>
 </template>
 
 <script lang="ts" setup>
     import AInput from 'ant-design-vue/lib/input';
-    import { onMounted, ref } from 'vue';
-    const username = ref(null);
-    onMounted(() => {
-        console.log(username.value);
-    });
+    import { onMounted, PropType, ref, watch } from 'vue';
+
+    // const hasError = ref<boolean>(false);
+
+    interface IHasError {
+        borderColor: string | number;
+        placeholderColor: string | number;
+    }
+    const initialErrorState: IHasError = {
+        borderColor: 'var(--color-stroke-gray)',
+        placeholderColor: '#c7c7c7',
+    };
+    const errorTheme = ref<IHasError>({ ...initialErrorState });
+
+    interface IHasErrorProps {
+        status: boolean;
+        errorMsg: string;
+    }
     const props = defineProps({
         label: {
             type: String,
@@ -36,7 +57,29 @@
             type: String,
             default: '',
         },
+        hasError: {
+            type: Object as PropType<IHasErrorProps>,
+            // default: false,
+        },
     });
+    watch(
+        () => props.hasError,
+        () => {
+            if (props.hasError?.status) {
+                errorTheme.value = {
+                    borderColor: 'salmon',
+                    placeholderColor: 'salmon',
+                };
+            } else {
+                errorTheme.value = { ...initialErrorState };
+            }
+        }
+    );
+    // onMounted(() => {
+    //     setTimeout(() => {
+    //         hasError.value = true;
+    //     }, 1500);
+    // });
 
     const emit = defineEmits<{
         (event: 'onInput', value: object): void;
@@ -59,7 +102,25 @@
 </script>
 
 <style lang="scss" scoped>
-    .fields {
+    .custom-input__fields {
+        .fade-error-enter-active {
+            transition: all 0.3s ease-in;
+        }
+        .fade-error-leave-active {
+            transition: all 0.2s ease-out;
+        }
+
+        .fade-error-enter-from,
+        .fade-error-leave-to {
+            transform: translateY(-10px);
+            opacity: 0;
+        }
+
+        &--error {
+            color: salmon;
+            width: 100%;
+            @apply flex justify-end;
+        }
         @apply mb-[18px];
         label {
             font-size: 14px;
@@ -69,13 +130,18 @@
         }
         &:deep() {
             .ant-input {
-                border: 1px solid var(--color-stroke-gray);
+                border: 1px solid v-bind('errorTheme.placeholderColor');
                 font-size: 14px;
                 height: 38px;
                 border-radius: 4px;
                 &::placeholder {
                     font-size: 14px;
                     font-weight: 300;
+                    color: v-bind('errorTheme.placeholderColor');
+                }
+                &:focus {
+                    box-shadow: unset;
+                    border: 1px solid var(--color-primary);
                 }
             }
         }

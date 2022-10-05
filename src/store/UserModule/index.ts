@@ -30,7 +30,7 @@ const registerdUserFromSession: any = getSessionPersistedStore({
 
 const mutationType: Readonly<any> = Object.freeze({
     GET_USER_DETAILS: 'GET_USER_DETAILS',
-    GET_REGISTERED_USER: 'GET_USER_DETAILS',
+    GET_REGISTERED_USER: 'GET_REGISTERED_USER',
 });
 
 export const mutations: Object = {
@@ -49,7 +49,8 @@ export const state: IUserState = {
 export const getters: Object = {
     getUserDetails(state: IUserState) {
         console.log('inside store');
-        return !!state.user ? state.user : null;
+        return state.user;
+        // return !!state.user ? state.user : null;
     },
 
     getRegisteredUser(state: IUserState) {
@@ -60,6 +61,7 @@ export const getters: Object = {
 export const actions: Object = {
     setUserDetails({ commit }: any, payload: any): void {
         if (payload) {
+            console.log('setUserDetails');
             // inject token into Headers
             const token: string = `Bearer ${payload.token}`;
             (axios as AxiosStatic).defaults.headers.common['Authentication'] =
@@ -76,7 +78,6 @@ export const actions: Object = {
              * if logout then null is passed
              */
             commit(mutationType.GET_USER_DETAILS, null);
-            setPersistStore({ key: 'str', value: '' });
             localStorage.removeItem('token');
             localStorage.removeItem('user');
         }

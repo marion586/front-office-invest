@@ -14,12 +14,21 @@
                     :model="formParams.username"
                     name-input="username"
                     @on-input="handleInput"
+                    :has-error="{
+                        status: errors.username !== '' && activeError,
+                        errorMsg: errors.username,
+                    }"
                 />
                 <Input
                     label="Mot de passe"
+                    name-input="password"
                     placeholder="Mot de passe"
                     :model="formParams.password"
                     @on-input="handleInput"
+                    :has-error="{
+                        status: errors.password !== '' && activeError,
+                        errorMsg: errors.password,
+                    }"
                 />
                 <router-link to="/" class="auth__link">
                     <Paragraphe is="span" type="bold"
@@ -31,7 +40,7 @@
                 </Button>
                 <div class="auth__link-bottom">
                     <span>Ou</span><br />
-                    <router-link to="/">
+                    <router-link to="/inscription">
                         <Paragraphe is="span">Créer un compte</Paragraphe>
                     </router-link>
                 </div>
@@ -41,25 +50,6 @@
             <img src="" alt="" />
         </figure>
     </div>
-    <!-- <div>
-        <form @submit.prevent="handleSubmit">
-            <input
-                :value="formParams.username"
-                @input="handleInput"
-                type="username"
-                name="username"
-                id="username"
-            />
-            <input
-                :value="formParams.password"
-                @input="handleInput"
-                type="password"
-                name="password"
-                id="password"
-            />
-            <button type="submit">Se connecter</button>
-        </form>
-    </div> -->
 </template>
 <script setup lang="ts">
     import Input from '@/components/Common/Input/Input.vue';
@@ -77,39 +67,59 @@
     const route = useRoute();
     const router = useRouter();
 
+    // interface
+    interface IFormParams {
+        username: string;
+        password: string;
+    }
+
     // ref
-    const username = ref(null);
-    const isEmailValid = ref<boolean>(false);
+    // const isEmailValid = ref<boolean>(false);
+    const activeError = ref<boolean>(false);
     const isFormValid = ref<boolean>(false);
-    let formParams = ref<{ username: string; password: string }>({
+    let formParams = reactive<IFormParams>({
         username: '',
         password: '',
     });
+    const errors = reactive<IFormParams>({
+        username: 'Ce champ est obligatoire',
+        password: 'Ce champ est obligatoire',
+    });
 
     // fn
-    const handleInput = (e: object) => {
-        // const name: string = (e.target as HTMLInputElement).name;
-        // const value: string = (e.target as HTMLInputElement).value;
-        // switch (name) {
-        //     case 'username':
-        //         isEmailValid.value = emailValidation(value);
-        //         break;
-        //     default:
-        //         break;
-        // }
-        formParams = {
-            ...formParams,
-            ...e,
-        };
+    const handleInput = (e: IFormParams | Object) => {
+        for (const key in e) {
+            (formParams as any)[key] = (e as any)[key];
+            if ((formParams as any)[key] === '') {
+                (errors as any)[key] = 'Ce champ est obligatoire';
+            } else {
+                switch (key) {
+                    case 'username':
+                        let isEmailValid: boolean = emailValidation(
+                            (formParams as any)[key]
+                        );
+                        if (!isEmailValid) {
+                            (errors as any)[key] = 'Votre email est invalid';
+                        } else {
+                            (errors as any)[key] = '';
+                        }
+                        break;
+                    default:
+                        (errors as any)[key] = '';
+                        break;
+                }
+            }
+        }
     };
 
     const handleUserLogin = async (): Promise<void> => {
         try {
             const { token, user } = await UserService.login(formParams);
-            store.dispatch('UserModule/setUserDetails', {
-                detail: user,
-                token,
-            });
+            user &&
+                store.dispatch('UserModule/setUserDetails', {
+                    detail: user,
+                    token,
+                });
             const redirectTo = route.query.redirect?.toString();
             redirectTo ? router.push(redirectTo) : router.push('/');
         } catch (error) {
@@ -117,14 +127,15 @@
         }
     };
 
-    const handleSubmit = (e: any) => {
-        console.log('event', e);
-
-        const isDataValid: Boolean = Object.values(formParams).every(
-            (value) => value !== ''
+    const handleSubmit = () => {
+        console.log(errors);
+        activeError.value = true;
+        const isDataValid: Boolean = Object.values({ ...errors }).every(
+            (value) => value === ''
         );
-        isFormValid.value = isDataValid && isEmailValid.value ? true : false;
-        isFormValid.value === true ? handleUserLogin() : console.log('not ok');
+        console.log(isDataValid);
+        // isFormValid.value = isDataValid ? true : false;
+        isDataValid === true ? handleUserLogin() : console.log('not ok');
     };
 </script>
 <style lang="scss" scoped>
