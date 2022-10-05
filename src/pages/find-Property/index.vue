@@ -1,27 +1,34 @@
 
 <template>
-    <div class="w-full flex container">
-        <div class="md:w-3/5 sm:w-full p-5">
-            <Map class="w-full map-container" />
+    <div class="w-full flex">
+        <div class="md:w-2/3 sm:w-full ">
+            <Map 
+                v-if="data.isMapReady"
+                class="w-full map-container p-5"
+                :mapCenterCoordinate="data.PlaceCoordinates"
+                :needMarkerLayer="true"
+                :markersCoordinates="data.PlaceCoordinates"
+            />
         </div>
-        <div class="md:w-2/5 sm:w-full p-5">
+        <div class="md:w-1/3 sm:w-full p-5">
             <h1>{{text.title}}</h1>
-            <div class="container flex-col justify-center">
+            <div class="flex flex-wrap justify-center">
                 <div 
-                    class="container flex-col"
+                    class="container flex-col pt-5"
                     v-for="(field, idx) in data.fields"
                     :key="idx"
+                    :class="field.class"
                 >
-                    <div>
-                        <label :for="field.placeholder">Je cherche</label>
+                    <div  class="w-full pb-2">
+                        <label :for="field.placeholder">{{ field.placeholder }}</label>
                     </div>
                     <div>
-                        <a-select 
+                        <a-select
+                            class="w-full"
                             :id="field.placeholder"
                             v-model="value"
                             show-search
                             :placeholder="field.placeholder"
-                            style="width: 200px"
                             :options="field.options"
                             :filter-option="filterOption"
                             @change="field.handler"
@@ -31,7 +38,7 @@
                     </div>
                 </div>
                 <div>
-                    <button>
+                    <button class="m-10">
                         Rechercher
                     </button>
                 </div>
@@ -45,7 +52,7 @@
 
 import ASelect from "ant-design-vue/lib/select";
 import {reactive,onMounted, onUnmounted} from "vue";
-import {useGoogleMapAPI, removeScript} from "@/composables/google-maps-api";
+import {geocode, removeScript} from "@/composables/google-maps-api";
 import Map from "@/components/section/map/index.vue";
 
 //reactive states
@@ -53,41 +60,44 @@ const text = reactive   ({
     title : "recherche de bien",
 });
 const data = reactive({
+    isMapReady: false,
+    PlaceCoordinates : [],
     fields : [{
         placeholder : "type de bien",
         options : [],
+        class : "w-full",
         handler : ()=>{}
     },
     {
         placeholder : "Ou se trouve le bien ?",
         options : [],
+        class : "w-full",
         handler : ()=>{}
     },
     {
-        placeholder : "Prix mix",
+        placeholder : "Prix min",
         options : [],
+        class : "w-1/2",
         handler : ()=>{}
     },
      {
-        placeholder : "Prix mix",
+        placeholder : "Prix max",
         options : [],
+        class : "w-1/2",
+
         handler : ()=>{}
     },
     ]
 })
 
-
-const googleApi = reactive({
-    readyState : false,
-    promiseResult : null
-})
 //lifecycle
- onMounted(async () =>{
-
-   googleApi.promiseResult = await useGoogleMapAPI();
-    googleApi.readyState = true;
-     googleApi.readyState && console.log(window.google);
-    
+ onMounted( () =>{
+    const proomise = geocode("Bruxelles Belgique");
+    proomise.then(result =>{
+        console.log(result)
+        data.isMapReady = true,
+        data.PlaceCoordinates.push(result.coordinates);
+    });    
 })
 
 

@@ -152,7 +152,7 @@ const data = reactive({
                 data.map.fitBounds(polygon.getBounds());
             }
                 //control 
-                // const drawControl = new L.Control.Draw({
+                // const drawControl = new L.Draw({
                 //     draw: data.drawOption,
                 //     edit: {
                 //         featureGroup: drawnItems,

@@ -64,3 +64,26 @@ export const autocomplet = (input,fields, options={
     }
 
 }
+
+export const geocode =  (address="")=>{
+    const p1 = new Promise((resolve)=>{
+        const result = useGoogleMapAPI();
+        result.then((map)=>{
+        const geocoder = new map.maps.Geocoder();
+            geocoder.geocode({'address' : address}, function(results,status){
+                if (status === 'OK') {
+                    const pointer = results[0];
+                    const resp ={
+                        regularName : pointer.address_components,
+                        coordinates : {
+                            lat : pointer.geometry.location.lat(),
+                            lng : pointer.geometry.location.lng(),
+                        }
+                    }
+                    resolve(resp);
+                }
+            })
+        })
+    })
+    return p1;
+}
