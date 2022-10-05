@@ -45,15 +45,21 @@
                     ><span>Icon</span> 38, 1000 Brussel, Belgium</span
                 >
                 <div class="detail__caracteristics">
-                    <span class="detail__iconCaracteristics"
-                        >Icon <span>2</span></span
-                    >
-                    <span class="detail__iconCaracteristics"
-                        >Icon <span>2</span></span
-                    >
+                    <BedIcon /> 
+                    <span class="relative bottom-[3px] font-semibold mx-[12px] ">2</span>
+                    <ToiletIcon /> 
+                    <span class="relative bottom-[3px] font-semibold mx-[12px]">2</span>
+                    <SurfaceIcon/> 
+                    <span class="relative bottom-[3px] font-semibold mx-[12px]">2</span>
+                    
+                    <!-- </span>
+                    <span class="detail__iconCaracteristics"> -->
+                    <!-- <span class="detail__iconCaracteristics">
+                        Icon 
+                    <span>2</span></span>
                     <span class="detail__iconCaracteristics"
                         >Icon <span>30 m²</span></span
-                    >
+                    > -->
                 </div>
             </div>
             <hr class="my-[10px]" />
@@ -68,7 +74,9 @@
     import BreadCrumb from '@/components/Display/BreadCrumb/BreadCrumb.vue';
     import HeadProduct from '@/components/Display/headProduct/HeadProduct.vue';
     import ButtonDetail from '@/pages/detail/component/ButtonDetail.vue';
-
+    import BedIcon from '@/components/Icon/Bed.vue';
+    import ToiletIcon from '@/components/Icon/Toilet.vue';
+    import SurfaceIcon from '@/components/Icon/Surface.vue';
 
     const breadcrumbs = computed(() => {
         return [
