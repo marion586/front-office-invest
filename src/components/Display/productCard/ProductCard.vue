@@ -35,7 +35,7 @@
 <script setup lang="ts">
     import HeadProduct from '@/components/Display/HeadProduct/HeadProduct.vue';
     import { ref, PropType } from 'vue';
-    import Title from '../../Common/Title/Title.vue';
+    import Title from '@/components/Common/Title/Title.vue';
     interface DataProps {
         image: string;
         type: string;

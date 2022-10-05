@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { mount, VueWrapper, shallowMount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 import RegistrationForm from './RegistrationForm.vue';
 describe('RegistrationForm.vue', function () {
@@ -31,5 +31,10 @@ describe('RegistrationForm.vue', function () {
         //     confirmPassword.exists() &&
         //     nameEntreprise.exists() &&
         //     numberEntreprise.exists();
+    });
+
+    it('RegistrationForm should have props usertype', () => {
+        const wrapper: VueWrapper = shallowMount(RegistrationForm);
+        expect(wrapper.props('usertype')).toEqual('');
     });
 });
