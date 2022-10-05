@@ -1,14 +1,25 @@
 <template>
     <div class="fields">
         <label for="">{{ label }}</label>
-        <a-input :placeholder="placeholder" />
+        <a-input
+            :placeholder="placeholder"
+            type="text"
+            v-model:value="model"
+            :name="nameInput"
+            @input="handleInput"
+            @change="handleChange"
+        />
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
     import AInput from 'ant-design-vue/lib/input';
-
-    defineProps({
+    import { onMounted, ref } from 'vue';
+    const username = ref(null);
+    onMounted(() => {
+        console.log(username.value);
+    });
+    const props = defineProps({
         label: {
             type: String,
             default: '',
@@ -17,11 +28,39 @@
             type: String,
             default: '',
         },
+        model: {
+            type: String,
+            default: '',
+        },
+        nameInput: {
+            type: String,
+            default: '',
+        },
     });
+
+    const emit = defineEmits<{
+        (event: 'onInput', value: object): void;
+        (event: 'change'): void;
+    }>();
+
+    const handleInput = (event: Event) => {
+        const value = {
+            [(event.target as HTMLInputElement).name]: (
+                event.target as HTMLInputElement
+            ).value,
+        };
+
+        emit('onInput', value);
+    };
+
+    const handleChange = () => {
+        emit('change');
+    };
 </script>
 
 <style lang="scss" scoped>
     .fields {
+        @apply mb-[18px];
         label {
             font-size: 14px;
             font-weight: 600;

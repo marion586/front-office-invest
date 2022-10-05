@@ -1,37 +1,41 @@
 <template>
-  <button :class="`button__${type}`">
-    <slot />
-  </button>
+    <button :class="`button__${type}`" :type="htmlType">
+        <slot />
+    </button>
 </template>
 
 <script setup>
-defineProps({
-  type: {
-    type: String,
-    default: "primary",
-  },
-  width: {
-    type: String,
-    default: "auto",
-  },
-});
+    defineProps({
+        type: {
+            type: String,
+            default: '',
+        },
+        htmlType: {
+            type: String,
+            default: 'primary',
+        },
+        width: {
+            type: String,
+            default: 'auto',
+        },
+    });
 </script>
 
 <style lang="scss" scoped>
-button {
-  width: v-bind(width);
-  font-size: 14px;
-  padding: 6px 20px;
-  background-color: var(--color-primary);
-  color: #fff;
-  font-weight: 500;
-}
-.button {
-  &__primary {
-    border-radius: 4px;
-  }
-  &__secondary {
-    border-radius: 20px;
-  }
-}
+    button {
+        width: v-bind(width);
+        font-size: 14px;
+        padding: 6px 20px;
+        background-color: var(--color-primary);
+        color: #fff;
+        font-weight: 500;
+    }
+    .button {
+        &__primary {
+            border-radius: 4px;
+        }
+        &__secondary {
+            border-radius: 20px;
+        }
+    }
 </style>
