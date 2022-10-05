@@ -1,24 +1,17 @@
 <template>
-    <button :class="`button__${type}`" :type="htmlType">
+    <button @click="$emit('click')" :class="`button__${type}`" :type="htmlType">
         <slot />
     </button>
 </template>
 
-<script setup>
-    defineProps({
-        type: {
-            type: String,
-            default: '',
-        },
-        htmlType: {
-            type: String,
-            default: 'primary',
-        },
-        width: {
-            type: String,
-            default: 'auto',
-        },
-    });
+<script setup lang="ts">
+    interface Props {
+        type?: string;
+        htmlType?: 'button' | 'submit' | 'reset';
+        width?: string;
+    }
+
+    defineProps<Props>();
 </script>
 
 <style lang="scss" scoped>

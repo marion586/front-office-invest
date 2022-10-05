@@ -60,8 +60,10 @@
     import UserService from '@/services/userService';
     import store from '@/store';
     import emailValidation from '@/utils/validation/email_validation';
-    import { reactive, ref } from 'vue';
+    import { onMounted, reactive, ref } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
+
+    import '@/assets/style/auth.scss';
 
     // route
     const route = useRoute();
@@ -138,50 +140,4 @@
         isDataValid === true ? handleUserLogin() : console.log('not ok');
     };
 </script>
-<style lang="scss" scoped>
-    .auth {
-        background-color: #fff;
-        min-height: calc(100vh);
-        @apply grid grid-cols-1 items-center mt-[-50px];
-        @screen lg {
-            @apply grid-cols-2;
-        }
-        &__image {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            overflow: hidden;
-            background-color: var(--color-gray);
-            margin: auto;
-        }
-        &__form-container {
-            @apply container;
-            @screen lg {
-                max-width: 400px;
-                width: 100%;
-                margin: auto;
-            }
-        }
-        &__head {
-            text-align: center;
-            @apply mb-[40px];
-        }
-        &__link {
-            text-align: right;
-            display: block;
-            margin-bottom: 40px;
-        }
-        &__link-bottom {
-            @apply text-center mt-[20px];
-        }
-        &__bg {
-            display: none;
-            background-color: var(--color-gray);
-            width: 100%;
-            height: 100%;
-            @screen lg {
-                @apply inline-block;
-            }
-        }
-    }
-</style>
+<style lang="scss"></style>
