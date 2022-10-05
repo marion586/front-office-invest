@@ -70,7 +70,7 @@
     import UserService from '@/services/userService';
     import store from '@/store';
     import emailValidation from '@/utils/validation/email_validation';
-    import { reactive, ref } from 'vue';
+    import { onMounted, reactive, ref } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
 
     // route

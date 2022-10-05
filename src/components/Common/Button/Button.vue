@@ -5,20 +5,13 @@
 </template>
 
 <script setup lang="ts">
-    defineProps({
-        type: {
-            type: String,
-            default: '',
-        },
-        htmlType: {
-            type: String,
-            default: 'primary',
-        },
-        width: {
-            type: String,
-            default: 'auto',
-        },
-    });
+    interface Props {
+        type?: string;
+        htmlType?: 'button' | 'submit' | 'reset';
+        width?: string;
+    }
+
+    defineProps<Props>();
 </script>
 
 <style lang="scss" scoped>

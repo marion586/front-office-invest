@@ -304,7 +304,7 @@
                 }
             }
         }
-        &::v-deep {
+        &:deep() {
             .ant-menu-horizontal {
                 border-bottom: 0;
             }
