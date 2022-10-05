@@ -1,5 +1,17 @@
 <template>
     <div>
+        <form @submit.prevent="handleSubmit" class="auth__form">
+            <Input
+                label="Nom"
+                placeholder="Nom"
+                :model="registerData.name"
+                name-input="name"
+                @on-input="handleInput"
+            />
+            <Button type="secondary" html-type="submit" width="100%">
+                Connexion
+            </Button>
+        </form>
         <form @submit.prevent="handleSubmit">
             <input
                 placeholder="Nom"
@@ -80,7 +92,10 @@
     </div>
 </template>
 <script lang="ts" setup>
+    import Button from '@/components/Common/Button/Button.vue';
+    import Input from '@/components/Common/Input/Input.vue';
     import useFormValidation from '@/composables/useFormValidation';
+
     import { computed } from '@vue/reactivity';
     import { reactive, ref } from 'vue';
     import { Router, useRouter } from 'vue-router';
@@ -132,13 +147,13 @@
         );
     }
 
-    function handleInput(e: Event) {
-        const name: string = (e.target as HTMLInputElement).name;
-        const value: string = (e.target as HTMLInputElement).value;
+    function handleInput(e: object) {
+        // const name: string = (e.target as HTMLInputElement).name;
+        // const value: string = (e.target as HTMLInputElement).value;
 
         /**Validate input value for checking some errors */
-        validateNameField(name, value);
-        registerData = { ...registerData, [name]: value };
+        // validateNameField(name, value);
+        registerData = { ...registerData, ...e };
     }
 
     function sendFormData() {
