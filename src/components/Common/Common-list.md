@@ -1,6 +1,6 @@
 # **COMMON LIST**
 
-## 1. Button:
+## 1. Button:         
 props {
   type?: string;
   htmlType?: 'button' | 'submit' | 'reset';
