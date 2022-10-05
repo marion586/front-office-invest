@@ -249,6 +249,9 @@
     .header {
         background-color: #fff;
         padding: 14px 15px;
+        position: relative;
+        z-index: 9;
+        box-shadow: 0 0 3px var(--color-primary);
         &__menu {
             cursor: pointer;
         }

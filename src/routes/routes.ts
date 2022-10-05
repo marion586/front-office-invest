@@ -45,6 +45,21 @@ const routes = <Array<RouteRecordRaw>>[
         beforeEnter: [logoutGuard],
     },
     {
+        name: "detail",
+        path: "/detail",
+        component: () => import("@/pages/detail/index.vue"),
+        children: [
+            {
+                path: "/Detail/A",
+                component: () => import("@/pages/detail/component/ComponentA.vue"),
+            },
+            {
+                path: "/Detail/B",
+                component: () => import("@/pages/detail/component/ComponentB.vue"),
+            },
+        ]
+    },
+    {
         name: 'product-list',
         path: '/product-list',
         component: () => import('@/pages/productList/List.vue'),
