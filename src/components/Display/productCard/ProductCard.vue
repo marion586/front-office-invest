@@ -1,5 +1,4 @@
 <template>
-
     <div class="card max-w-lg">
         <HeadProduct Text="Agence" label="Label Immo" />
         <figure class="card__image">
@@ -35,7 +34,7 @@
 <script setup lang="ts">
     import HeadProduct from '@/components/Display/HeadProduct/HeadProduct.vue';
     import { ref, PropType } from 'vue';
-    import Title from '@/components/Common/Title/Title.vue';
+    import Title from '../../Common/Title/Title.vue';
     interface DataProps {
         image: string;
         type: string;
@@ -53,16 +52,6 @@
             required: true,
         },
     });
-
-    // tab.forEach( (a,b) => {
-    // tab.forEach( (c,d)=> {
-    //     if(d != b) {
-    //         if((tab[b]+tab[d]) == tag) {
-    //             res.push(b)
-    //         }
-    //     }
-    // })
-// })
 </script>
 
 <style lang="scss" scoped>
