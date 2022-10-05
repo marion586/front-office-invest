@@ -42,4 +42,8 @@
         &__content {
         }
     }
+    .ant-select-selector {
+        border-radius: 17px !important;
+        background-color: red;
+    }
 </style>
