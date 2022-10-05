@@ -31,12 +31,13 @@ export const init = (id)=>{
  */
 
 
-class map{
+export default class Map{
     containerid;
     map;
-    constructor(containerId=""){
+    constructor(containerId){
         this.containerid = containerId;
-        this.init();
+        console.log("map is instantiate")
+
     }
     setContainerId(id){
         this.containerid = id;
@@ -46,15 +47,14 @@ class map{
             zoom: 15,
             center: [51.505, -0.09],
             maxZoom: 19,
-            });
-            L.tileLayer(
-                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                {
-                    maxZoom: 19,
-                    attribution:
-                        '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>',
-                }
+        });
+        L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+                maxZoom: 19,
+                attribution:
+                '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+            }
             ).addTo(this.map)
     }
 }
-export default new  map;

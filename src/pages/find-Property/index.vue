@@ -46,7 +46,7 @@
 import ASelect from "ant-design-vue/lib/select";
 import {reactive,onMounted, onUnmounted} from "vue";
 import {useGoogleMapAPI, removeScript} from "@/composables/google-maps-api";
-
+import Map from "@/components/section/map/index.vue";
 
 //reactive states
 const text = reactive   ({
