@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import store from '@/store';
-    import { ref, watch } from 'vue';
+    import { ref, watch, onMounted } from 'vue';
     import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
     import AAffix from 'ant-design-vue/lib/affix';
     import AMenu from 'ant-design-vue/lib/menu';
@@ -20,7 +20,9 @@
     const handleShowMenu = () => {
         isMenu.value = !isMenu.value;
     };
-
+    onMounted(() => {
+        console.log('update');
+    });
     watch(
         () => store.getters['UserModule/getUserDetails'],
         function (user) {
@@ -30,7 +32,7 @@
                 store.getters['UserModule/getUserDetails']
             );
         },
-        { immediate: true }
+        { immediate: true, deep: true }
     );
 
     const dataMenu = [
@@ -44,7 +46,7 @@
             submenu: [
                 {
                     label: 'Vendre un bien',
-                    path: '/',
+                    path: '/mon-compte',
                 },
                 {
                     label: 'Acquérir un bien',
@@ -301,7 +303,7 @@
                 }
             }
         }
-        &::v-deep {
+        &:deep() {
             .ant-menu-horizontal {
                 border-bottom: 0;
             }
