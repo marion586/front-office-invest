@@ -2,7 +2,7 @@
 <script lang="ts" setup>
 import SideBar from '@/components/Display/SideBar/index.vue';
 import { ref } from 'vue';
-import Default from '@/components/Icon/Default.vue';
+import DefaultMenu from '@/components/Icon/DefaultMenuIcon.vue';
 
 interface SubMenu{
       id : number,
@@ -20,7 +20,7 @@ const menu = ref<Array<Menu>>([
       {
             id : 0,
             label : "Information de base",
-            icon : Default,
+            icon : DefaultMenu,
             subMenu : [
                   {
                         id : 0,
@@ -43,17 +43,17 @@ const menu = ref<Array<Menu>>([
       {
             id : 1,
             label : "Information de base",
-            icon : Default
+            icon : DefaultMenu
       },
       {
             id : 2,
             label : "Description de l'annonce",
-            icon : Default
+            icon : DefaultMenu
       },
       {
             id : 3,
             label : "Documents relatifs aux biens",
-            icon : Default
+            icon : DefaultMenu
       }
 ])
 

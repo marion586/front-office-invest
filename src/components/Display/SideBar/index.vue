@@ -4,9 +4,10 @@ import Menu from '@/components/Icon/Menu.vue'
 import AMenu from "ant-design-vue/lib/menu";
 import ASubMenu from 'ant-design-vue/lib/menu/src/SubMenu';
 import AMenuItem from "ant-design-vue/lib/menu/src/MenuItem";
-import Button from '@/components/Common/Button/Button.vue';
 
 let show = ref<Boolean>(false);
+let oldClass = ref<String>('mc__content-menu')
+let none = ref<String>('mc__none')
 
 defineProps<{
       data : any
@@ -25,20 +26,20 @@ function setShow(): void {
                   <div class="mc__menu" @click="setShow">
                         <Menu />
                   </div>
-                  <div class="mc__content-menu" v-if="show">
+                  <div :class="[ oldClass, show ? none : '']">
                         <a-menu 
                               mode="inline"
                         >
                               <template v-for="item in data" :key="item.id">
                                     <a-menu-item :key="item.id" v-if="!item.subMenu">
                                           <template #icon>
-                                                <Button /> &nbsp;
+                                                <component :is="item.icon" /> &nbsp;
                                           </template>
                                           {{item.label}}
                                     </a-menu-item>
                                     <a-sub-menu v-else>
                                           <template #icon>
-                                                {{item.icon}} &nbsp;
+                                                <component :is="item.icon" /> &nbsp;
                                           </template>
                                           <template #title>
                                                 {{item.label}}
@@ -65,8 +66,18 @@ function setShow(): void {
       }
 
       &__menu {
-            @apply cursor-pointer max-w-[20px] flex justify-center;
+            @apply cursor-pointer max-w-[20px] flex justify-center sm:ml-[10px] md:ml-[20px];
       }
+      &__content-menu{
+            @apply mt-[10px]
+      }
+      &__none{
+            display: none;
+      }
+      &__m-none{
+            @apply md:hidden
+      }
+
 }
 
 .bg-btn {
