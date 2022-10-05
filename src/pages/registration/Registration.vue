@@ -12,6 +12,12 @@
                 @on-click-choices="handleChoices"
             />
             <RegistrationForm :usertype="usertype" v-else />
+            <div class="auth__link-bottom">
+                <span>Ou</span><br />
+                <router-link to="/">
+                    <Paragraphe is="span">Connexion</Paragraphe>
+                </router-link>
+            </div>
         </div>
         <figure class="auth__bg">
             <img src="" alt="" />
