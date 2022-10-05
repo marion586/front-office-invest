@@ -216,16 +216,25 @@
                                 </figure>
                                 <ArrowBottom />
                             </template>
-                            <a-menu-item :key="`setting:100`">
-                                <router-link to="/connexion"
-                                    >Connexion</router-link
-                                >
-                            </a-menu-item>
-                            <a-menu-item :key="`setting:1001`">
-                                <router-link to="/logout"
-                                    >Deconnection</router-link
-                                >
-                            </a-menu-item>
+                            <a-menu-item-group v-if="!isLoggedIn">
+                                <a-menu-item :key="`setting:100`">
+                                    <router-link to="/connexion"
+                                        >Connexion</router-link
+                                    >
+                                </a-menu-item>
+                                <a-menu-item :key="`setting:1001`">
+                                    <router-link to="/inscription"
+                                        >Inscription</router-link
+                                    >
+                                </a-menu-item>
+                            </a-menu-item-group>
+                            <a-menu-item-group v-else>
+                                <a-menu-item :key="`setting:1001`">
+                                    <router-link to="/logout"
+                                        >Deconnection</router-link
+                                    >
+                                </a-menu-item>
+                            </a-menu-item-group>
                         </a-sub-menu>
                     </a-menu>
                 </div>
@@ -245,6 +254,9 @@
     .header {
         background-color: #fff;
         padding: 14px 15px;
+        position: relative;
+        z-index: 9;
+        box-shadow: 0 0 3px var(--color-primary);
         &__menu {
             cursor: pointer;
         }
@@ -299,7 +311,7 @@
                 }
             }
         }
-        &::v-deep {
+        &:deep() {
             .ant-menu-horizontal {
                 border-bottom: 0;
             }
@@ -322,6 +334,9 @@
             }
             .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover {
                 color: var(--color-secondary);
+            }
+            .ant-menu-vertical {
+                padding-top: 10px;
             }
         }
     }
