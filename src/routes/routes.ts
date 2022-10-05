@@ -3,6 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 
 const routes = <Array<RouteRecordRaw>>[
     {
+        name: 'home',
         path: '/',
         component: () => import('@/pages/index.vue'),
     },
@@ -17,8 +18,15 @@ const routes = <Array<RouteRecordRaw>>[
         component: () => import('@/pages/login/Login.vue'),
     },
     {
+        name: 'authRegistration',
         path: '/inscription',
         component: () => import('@/pages/registration/Registration.vue'),
+    },
+    {
+        name: 'authSubscription',
+        path: '/abonnement',
+        component: () =>
+            import('@/pages/registration/SubscriptionSection/Subscription.vue'),
     },
     {
         path: '/styleguide',
@@ -35,6 +43,21 @@ const routes = <Array<RouteRecordRaw>>[
         name: 'disconnection',
         path: '/logout',
         beforeEnter: [logoutGuard],
+    },
+    {
+        name: "detail",
+        path: "/detail",
+        component: () => import("@/pages/detail/index.vue"),
+        children: [
+            {
+                path: "/Detail/A",
+                component: () => import("@/pages/detail/component/ComponentA.vue"),
+            },
+            {
+                path: "/Detail/B",
+                component: () => import("@/pages/detail/component/ComponentB.vue"),
+            },
+        ]
     },
     {
         name: 'product-list',
