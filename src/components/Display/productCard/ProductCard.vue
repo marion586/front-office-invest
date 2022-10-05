@@ -1,28 +1,32 @@
 <template>
-    <div class="container-card">
+    <div class="card max-w-lg">
         <HeadProduct Text="Agence" label="Label Immo" />
-        <img :src="DataCard.image" alt=" card product img" />
-        <div class="type-card">
+        <img
+            class="card__image"
+            :src="DataCard.image"
+            alt=" card product img"
+        />
+        <div class="card__type">
             <Title type="h4" :label="DataCard.type" weight="bold" />
             <span> {{ DataCard.price }} £</span>
         </div>
 
-        <div class="value-card">
-            <div class="value-item-card">
+        <div class="card__value">
+            <div class="card__value--item">
                 <span>H</span> <span>{{ DataCard.roomCount }}</span>
             </div>
-            <div class="value-item-card">
+            <div class="card__value--item">
                 <span>H</span> <span>{{ DataCard.bedroomCount }}</span>
             </div>
-            <div class="value-item-card">
+            <div class="card__value--item">
                 <span>H</span> <span>{{ DataCard.surface }} m2</span>
             </div>
         </div>
-        <div class="action-card">
+        <div class="card__action">
             <span> ({{ DataCard.interested }}) interessé</span>
             <span> ({{ DataCard.offerSentCount }}) offre envoyé </span>
         </div>
-        <div class="adress-card">
+        <div class="card__adress">
             <span>H</span>
             <span>{{ DataCard.adress }} </span>
         </div>
@@ -32,7 +36,7 @@
 <script setup lang="ts">
     import HeadProduct from '@/components/Display/headProduct/HeadProduct.vue';
     import { ref, PropType } from 'vue';
-    import Title from '../../Common/Title/Title.vue';
+    import Title from '@/components/Common/Title/Title.vue';
     interface DataProps {
         image: string;
         type: string;
@@ -53,11 +57,11 @@
     const DataCard = ref(DataCardProps.DataCard);
 </script>
 
-<style lang="scss">
-    .container-card {
+<style lang="scss" scoped>
+    .card {
         display: flex;
         flex-direction: column;
-        width: 398px;
+        width: auto;
         height: auto;
         padding: 16px;
         gap: 18px;
@@ -68,7 +72,7 @@
             width: auto;
             height: 160px;
         }
-        .type-card {
+        &__type {
             display: flex;
             justify-content: space-between;
             span {
@@ -83,10 +87,10 @@
                 line-height: 17px;
             }
         }
-        .value-card {
+        &__value {
             display: flex;
             gap: 18px;
-            .value-item-card {
+            &--item {
                 display: flex;
                 align-items: center;
                 gap: 5px;
@@ -97,7 +101,7 @@
                 }
             }
         }
-        .action-card {
+        &__action {
             display: flex;
             flex-direction: column;
             span {
@@ -108,21 +112,16 @@
                 color: #797575;
             }
         }
-        .adress-card {
+        &__adress {
             display: flex;
             align-items: center;
             gap: 5px;
             :last-child {
                 font-weight: 400;
-                font-size: 14px;
+                font-size: 12px;
                 line-height: 16px;
                 color: #a39f9f;
             }
-        }
-    }
-    @media only screen and (min-width: 252px) and (max-width: 398px) {
-        .container {
-            width: auto;
         }
     }
 </style>

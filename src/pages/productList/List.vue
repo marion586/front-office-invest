@@ -1,6 +1,8 @@
 <template>
-    <div class="container-list-card">
-        <CardProducts />
+    <div class="container">
+        <div class="card-wrapper">
+            <CardProducts />
+        </div>
     </div>
 </template>
 
@@ -8,12 +10,9 @@
     import CardProducts from './cardProducts/CardProducts.vue';
 </script>
 
-<style lang="scss">
-    .container-list-card {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        justify-content: space-between;
-        padding: 20px;
+<style lang="scss" scoped>
+    .card-wrapper {
+        padding: 40px;
+        @apply grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4;
     }
 </style>

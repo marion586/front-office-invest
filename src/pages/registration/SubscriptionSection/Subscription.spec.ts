@@ -23,7 +23,7 @@ describe('Subscription.vue', () => {
 
     it('should have props [usertype]', async () => {
         const wrapper: VueWrapper = shallowMount(Subscription);
-        expect(wrapper.props('userType')).toEqual(undefined);
+        expect(wrapper.props('userType')).toEqual('');
         wrapper.setProps({ userType: 'particulier' });
         await wrapper.vm.$nextTick();
         expect(wrapper.props('userType')).toEqual('particulier');
