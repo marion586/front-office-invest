@@ -12,6 +12,7 @@
             :name="nameInput"
             @input="handleInput"
             @change="handleChange"
+            :value="value"
         />
         <transition mode="in-out" name="fade-error">
             <p v-if="hasError?.status">
@@ -61,10 +62,6 @@
         hasError: {
             type: Object as PropType<IHasErrorProps>,
             required: false,
-            // default: {
-            //     status: false,
-            //     errorMsg: '',
-            // },
         },
         required: {
             type: Boolean,
@@ -74,7 +71,11 @@
             type: String,
             default: 'text',
         },
+        value: {
+            type: [Number, String],
+        },
     });
+
     watch(
         () => props.hasError,
         () => {
@@ -135,7 +136,7 @@
         @apply mb-[18px];
         label {
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
             color: var(--color-gray-icon);
             margin-bottom: 10px;
         }

@@ -1,20 +1,53 @@
 <template>
     <div>
         <form @submit.prevent="handleSubmit" class="auth__form">
-            <Input
-                v-for="(field, index) in formParams"
-                :key="index"
-                :label="field.label"
-                :required="field.required"
-                :placeholder="field.placeholder"
-                :name-input="field.name"
-                :inputType="field?.type"
-                @input="handleInput"
-                :has-error="{
-                    status: !!(errors as any)[field.name] && (errors as any)[field.name] !== '' && activeError,
-                    errorMsg: (errors as any)[field.name] || '',
-                }"
-            />
+            <div
+                class="auth__form__title-section"
+                v-if="usertype === 'professionnel'"
+            >
+                <Paragraphe>Information sur l'entreprise</Paragraphe>
+                <hr />
+            </div>
+            <div class="auth__form__select-field">
+                <label>
+                    <span class="auth__form__select-field--required">*</span>
+                    Type</label
+                >
+                <Select
+                    placeholder="Selectionnez"
+                    name="select"
+                    :options="professionnalUserOption"
+                    @change="handleChangeSelect"
+                    :defaultValue="particularUsertype"
+                    :disabled="usertype === 'particulier'"
+                />
+            </div>
+
+            <div v-for="(field, index) in formParams">
+                <div
+                    class="auth__form__title-section"
+                    v-if="
+                        usertype === 'professionnel' &&
+                        field.name === 'firstname'
+                    "
+                >
+                    <Paragraphe>Information personnelle</Paragraphe>
+                    <hr />
+                </div>
+                <Input
+                    :key="index"
+                    :label="field.label"
+                    :required="field.required"
+                    :placeholder="field.placeholder"
+                    :name-input="field.name"
+                    :inputType="field?.type"
+                    @input="handleInput"
+                    :has-error="{
+                        status: !!(errors as any)[field.name] && (errors as any)[field.name] !== '' && activeError,
+                        errorMsg: (errors as any)[field.name] || '',
+                    }"
+                />
+            </div>
             <Button type="secondary" html-type="submit" width="100%"
                 ><span>S'inscrire</span></Button
             >
@@ -25,13 +58,18 @@
     import Button from '@/components/Common/Button/Button.vue';
     import Input from '@/components/Common/Input/Input.vue';
     import LoadingButton from '@/components/Icon/LoadingButton.vue';
-    import { onMounted, PropType, reactive, ref } from 'vue';
+    import { SelectValue } from 'ant-design-vue/lib/select';
+    import { onMounted, watchEffect, PropType, reactive, ref } from 'vue';
     import { Router, useRouter } from 'vue-router';
     import { Store, useStore } from 'vuex';
+    import Select from '../../../../components/Common/Select/Select.vue';
     import {
         particularUserForm,
         professionnalUserForm,
+        particularErrorFields,
+        professsionnalErrorFields,
     } from './registration.data';
+    import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
 
     const store: Store<any> = useStore();
     const router: Router = useRouter();
@@ -41,26 +79,48 @@
             require: true,
         },
     });
+    const particularUsertype = ref<SelectValue>();
+    const professionnalUserOption = ref<SelectValue>();
+    let errors = reactive<Object>({});
+    let tmpErrors = reactive<Object>({});
+
+    watchEffect(() => {
+        if (props.usertype === 'particulier') {
+            particularUsertype.value = {
+                value: 'particulier',
+                label: 'Particulier',
+            };
+        } else {
+            professionnalUserOption.value = [
+                { value: 'agent', label: 'Agent' },
+                { value: 'notaire', label: 'Notaire' },
+            ];
+        }
+    });
     onMounted(() => {
         switch (props.usertype) {
             case 'particulier':
                 formParams.value = [...particularUserForm];
+                errors = Object.assign(errors, particularErrorFields);
+                tmpErrors = Object.assign(tmpErrors, particularErrorFields);
                 break;
             case 'professionnel':
                 formParams.value = [...professionnalUserForm];
+                errors = Object.assign(errors, professsionnalErrorFields);
+                tmpErrors = Object.assign(tmpErrors, professsionnalErrorFields);
                 break;
             default:
                 break;
         }
     });
 
-    const errors = reactive<Object>({
-        name: 'Le nom est obligatoire',
-        firstname: 'Le prénom est obligation',
-    });
     const activeError = ref<boolean>(false);
 
     const formParams = ref<Array<IUserField>>([]);
+
+    function handleChangeSelect(obj: object) {
+        console.log(obj);
+    }
 
     // function isPasswordConfirmed(): boolean {
     //     return (
@@ -79,9 +139,11 @@
                         1,
                         { ...field, value: (e as any)[key] }
                     );
-                    if (field.required && field.errorMsg) {
+                    if (field.required) {
                         const isEmpty = (e as any)[key] === '';
-                        (errors as any)[key] = isEmpty ? field.errorMsg : '';
+                        (errors as any)[key] = isEmpty
+                            ? (tmpErrors as any)[key]
+                            : '';
                     }
                 }
             });
@@ -103,16 +165,37 @@
     }
 
     function handleSubmit() {
-        /**
-         * activate the error mode on isSubmitClicked to true
-         * dont show the errors on mounted status
-         */
         activeError.value = true;
-        const isFormValid = Object.values(errors).every((v) => v === '');
-        isFormValid ? console.log('ok') : console.log('not ok');
+        const isFormInputValid = Object.values(errors).every((v) => v === '');
+        isFormInputValid ? console.log('ok') : console.log('not ok');
         /**Ensure call API when all valid */
         // isFormFieldsNotEmpty && isPasswordConfirmed() && sendFormData();
     }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+    .auth__form {
+        &__title-section {
+            :deep() {
+                text-transform: uppercase;
+                color: var(--color-gray-icon);
+                margin: 40px 0 10px 0;
+                font-weight: 700;
+                // font-size: 50px;
+            }
+        }
+        &__select-field {
+            margin-bottom: 18px;
+            &--required {
+                color: red;
+                margin-right: 5px;
+            }
+            label {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--color-gray-icon);
+                margin-bottom: 10px;
+            }
+        }
+    }
+</style>

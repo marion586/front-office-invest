@@ -28,7 +28,7 @@
                     type="rotate"
                     from="0 20 20"
                     to="360 20 20"
-                    dur="0.5s"
+                    dur="1s"
                     repeatCount="indefinite"
                 ></animateTransform>
             </path>
