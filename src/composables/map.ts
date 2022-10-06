@@ -2,7 +2,7 @@ import 'leaflet';
 import L, { Control, FeatureGroup, LatLngBoundsExpression, LatLngExpression, LatLngLiteral, LayerGroup, MapOptions, } from 'leaflet';
 import 'leaflet-easyprint';
 import '@geoman-io/leaflet-geoman-free';
-
+import "leaflet-draw";
 interface layerType{
     type : string,
     latlng : LatLngExpression[]
@@ -12,22 +12,24 @@ interface layerType{
 
 export default class Map {
     containerid : string;
+    editableLayers = new L.FeatureGroup();
+
     mapOptions : {[key : string] : any} = {
         zoom: 15,
         center: [51.505, -0.09],
         maxZoom: 19,
-        pmIgnore: false
+        pmIgnore: false,
     };
     map: L.Map ;
-    draw : LatLngExpression[]
     featureGroup : FeatureGroup;
     layers : layerType[] = [];
     constructor(containerId : string){
         this.containerid = containerId;
-        this.draw = [];
         this.featureGroup = L.featureGroup();
         this.map = L.map(this.containerid, this.mapOptions);
+        this.map.pm.setLang('fr');
         this.init();
+
     }
 
     setContainerId(id : string){
@@ -62,7 +64,7 @@ export default class Map {
     }
     
     createPolygon(coordinates : LatLngExpression[]){
-        L.polygon(coordinates).addTo(this.map)
+        return L.polygon(coordinates).addTo(this.map)
     }
     
     addPrintControl(){
@@ -76,24 +78,54 @@ export default class Map {
 
     //for drawing toolbar we use leaflet-geoman plugin
     addDrawControl(){
-        this.map.pm.addControls({
-            position : 'topleft',
-            drawCircleMarker : false,
-            drawPolyline : false,
-            drawText : false,
-            rotateMode : false
-        })     
+        let drawControl = new (L.Control as any).Draw({
+            draw : {
+                //ignoored draw options 
+                rectangle : false,
+                circle : false,
+                polyline : false,
+                circlemarker : false
+            },
+            edit: {
+                featureGroup: this.editableLayers,
+            }
+        });
+        this.map.addControl(drawControl);   
     }
+
     /**
      * listenning grawing event and add to drawn layer data 
      */
     DrawingLayerListener(){
-        this.map.on("pm:create",(e)=>{
+        let selectedFeature : any = null;
+        this.map.on("draw:created",(e : any)=>{
+            console.log(e)
+            const layer = e.layer;
+            selectedFeature = e.layer;
+                if(e.layerType === "polygon"){
 
-                this.layers.push({
-                        type : e.shape,
-                        latlng : (e.layer as any)._latlngs[0]
-                    })
+                    let p = new L.Polygon(layer._latlngs[0]);
+                    this.featureGroup.addLayer(p);
+                    this.featureGroup.addTo(this.map);
+                    p.addTo(this.map);
+
+                }else if(e.layerType === "marker"){
+
+                    let  m = new L.Marker(layer._latlng)
+                    this.featureGroup.addLayer(m);
+                }
             })
+            this.map.on("click", (e)=>{
+                selectedFeature = e.target;
+                console.log(e)
+                if(selectedFeature){
+                    selectedFeature.editing.disable();
+                    // and Here I'll add the code to store my edited polygon in the DB or whatever I want to do with it
+                }
+                selectedFeature = e.target;
+                e.target.editing.enable();
+            });
     }
+
+
 }

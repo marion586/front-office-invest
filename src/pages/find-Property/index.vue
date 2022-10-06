@@ -25,7 +25,7 @@
                     <div>
                         <a-select
                             class="w-full"
-                            :id="field.placeholder"
+                            :id="field.id"
                             v-model="value"
                             show-search
                             :placeholder="field.placeholder"
@@ -52,7 +52,7 @@
 
 import ASelect from "ant-design-vue/lib/select";
 import {reactive,onMounted, onUnmounted} from "vue";
-import {geocode, removeScript} from "@/composables/google-maps-api";
+import {geocode, removeScript, autocomplet} from "@/composables/google-maps-api";
 import Map from "@/components/section/map/index.vue";
 
 //reactive states
@@ -63,24 +63,28 @@ const data = reactive({
     isMapReady: false,
     PlaceCoordinates : [],
     fields : [{
+        id : "propertyType",
         placeholder : "type de bien",
         options : [],
         class : "w-full",
         handler : ()=>{}
     },
     {
+        id : "propertyLocation",
         placeholder : "Ou se trouve le bien ?",
         options : [],
         class : "w-full",
         handler : ()=>{}
     },
     {
+        id: "minPrice",
         placeholder : "Prix min",
         options : [],
         class : "w-1/2",
         handler : ()=>{}
     },
      {
+        id : "maxPrice",
         placeholder : "Prix max",
         options : [],
         class : "w-1/2",
@@ -103,6 +107,7 @@ const data = reactive({
 
 onUnmounted(()=>{
     removeScript();
+    autocomplet("autocomplet");
 })
 
 //functions

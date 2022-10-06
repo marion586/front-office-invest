@@ -58,18 +58,25 @@ export const autocomplet = (input,fields, options={
         bounds : new google.maps.LatLngBounds(),
     }
 )=>{
-    const complete = new google.maps.Places.Autoocomplete(input,options);
-    if(window.google){
+    const result = useGoogleMapAPI();
+        result.then((google)=>{
+            const autocomple = new google.maps.places.Autocomplete(input)                                         
+        })
 
     }
 
-}
 
+/**
+ * converte address to geographical coordinates (lat long)
+ * @param {String} address Some address 
+ * @returns {Promise} 
+ * @return_Formate {regularName : Array, coordinates : {lat,long}}
+ */
 export const geocode =  (address="")=>{
     const p1 = new Promise((resolve)=>{
         const result = useGoogleMapAPI();
-        result.then((map)=>{
-        const geocoder = new map.maps.Geocoder();
+        result.then((google)=>{
+        const geocoder = new google.maps.Geocoder();
             geocoder.geocode({'address' : address}, function(results,status){
                 if (status === 'OK') {
                     const pointer = results[0];

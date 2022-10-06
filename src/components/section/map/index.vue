@@ -3,6 +3,7 @@ import {reactive,onMounted} from "vue";
 import 'leaflet/dist/leaflet.css';
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
 import Map from "@/composables/map";
+import 'leaflet-draw/dist/leaflet.draw.css';
 
 const props = defineProps({
     mapCenterCoordinate : {
@@ -29,6 +30,7 @@ onMounted(() => {
             })
     }
     map.addMarker([51.505, -0.09]);
+    map.addDrawControl();
     map.addPrintControl();
     map.DrawingLayerListener();
     })
