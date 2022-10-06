@@ -1,11 +1,9 @@
 <template>
-    <div class="card max-w-lg">
+    <div class="card max-w-xl">
         <HeadProduct Text="Agence" label="Label Immo" />
-        <img
-            class="card__image"
-            :src="DataCard.image"
-            alt=" card product img"
-        />
+        <figure class="card__image">
+            <img :src="DataCard.image" alt=" card product img" />
+        </figure>
         <div class="card__type">
             <Title type="h4" :label="DataCard.type" weight="bold" />
             <span> {{ DataCard.price }} £</span>
@@ -34,9 +32,9 @@
 </template>
 
 <script setup lang="ts">
-    import HeadProduct from '@/components/Display/headProduct/HeadProduct.vue';
+    import HeadProduct from '@/components/Display/HeadProduct/HeadProduct.vue';
     import { ref, PropType } from 'vue';
-    import Title from '@/components/Common/Title/Title.vue';
+    import Title from '../../Common/Title/Title.vue';
     interface DataProps {
         image: string;
         type: string;
@@ -48,13 +46,12 @@
         offerSentCount: number;
         adress: string;
     }
-    const DataCardProps = defineProps({
+    defineProps({
         DataCard: {
             type: Object as PropType<DataProps>,
             required: true,
         },
     });
-    const DataCard = ref(DataCardProps.DataCard);
 </script>
 
 <style lang="scss" scoped>
@@ -67,11 +64,16 @@
         gap: 18px;
         background: #ffffff;
         border-radius: 8px;
-        img {
-            border-radius: 8px;
+        &__image {
             width: auto;
             height: 160px;
+            img {
+                border-radius: 8px;
+                width: 100%;
+                height: 100%;
+            }
         }
+
         &__type {
             display: flex;
             justify-content: space-between;

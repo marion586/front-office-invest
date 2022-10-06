@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-    import ProductCard from '@/components/Display/productCard/ProductCard.vue';
+    import ProductCard from '@/components/Display/ProductCard/ProductCard.vue';
     import { ref } from 'vue';
     interface DataProps {
         image: string;

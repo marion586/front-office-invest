@@ -3,19 +3,32 @@
         <div class="container-head__left">
             <avatar src="https://joeschmoe.io/api/v1/random" :size="40" />
             <div class="container-head__left--profile">
-                <Title type="h4" :label="label" weight="bold" />
-                <label>{{ Text }}</label>
+                <Title
+                    type="h4"
+                    data-test="title"
+                    :label="label"
+                    weight="bold"
+                />
+                <Paragraphe data-test="para">
+                    {{ Text }}
+                </Paragraphe>
             </div>
         </div>
         <div class="container-head__right">
-            <span>H</span>
+            <Heart
+                :isShowSvg="isShowSvg"
+                @show-svg="(value) => showSvg(value)"
+            />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import Title from '../../Common/Title/Title.vue';
+    import Title from '@/components/Common/Title/Title.vue';
+    import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
     import avatar from 'ant-design-vue/lib/avatar';
+    import Heart from '@/components/Icon/Heart.vue';
+    import { ref } from 'vue';
     defineProps({
         label: {
             type: String,
@@ -26,6 +39,10 @@
             required: true,
         },
     });
+    const isShowSvg = ref<boolean>(true);
+    const showSvg = (value: boolean) => {
+        isShowSvg.value = !value;
+    };
 </script>
 
 <style lang="scss" scoped>
