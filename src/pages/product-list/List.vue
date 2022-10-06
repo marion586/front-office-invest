@@ -4,7 +4,8 @@
             <Filter>
                 <template #left>
                     <div class="list__container-icon">
-                        <Cart />
+                        <Cart v-if="!isShowCart" />
+                        <ListBullet v-if="isShowCart" />
                     </div>
                     <div class="list__container-subtitle">
                         <Title
@@ -16,13 +17,21 @@
                 </template>
 
                 <template #right>
-                    <Button type="secondary">
+                    <template v-if="!isShowCart">
+                        <Button @click="showCart" type="secondary">
+                            <div>
+                                <Cart color="#fff" />
+                                <span> Sur carte </span>
+                            </div>
+                        </Button>
+                    </template>
+                    <Button v-if="isShowCart" type="secondary">
                         <div>
-                            <Cart color="#fff" />
-                            <span> Sur carte </span>
+                            <ListBullet color="#fff" />
+                            <span> Sur Liste</span>
                         </div>
                     </Button>
-                    <div class="list__container-content">
+                    <div v-if="!isShowCart" class="list__container-content">
                         <Title type="h4" label="Filtrer par:" weight="bold" />
                         <div class="list__container-content-select">
                             <Select
@@ -34,9 +43,13 @@
                     </div>
                 </template>
             </Filter>
-            <div class="list__container-product">
+            <div v-if="!isShowCart" class="list__container-product">
                 <CardProducts />
             </div>
+
+            <figure v-if="isShowCart" class="list__container-cart">
+                <img src="../../assets/Rectangle.png" alt="" />
+            </figure>
         </div>
     </div>
 </template>
@@ -50,11 +63,11 @@
     import { ref } from 'vue';
 
     import Button from '@/components/Common/Button/Button.vue';
+    import ListBullet from '@/components/Icon/ListBullet.vue';
     interface Option {
         value: string;
         label: string;
     }
-
     const options = ref<Option[]>([
         {
             value: 'Prix asc',
@@ -65,6 +78,12 @@
             label: 'Prix dsc',
         },
     ]);
+    let isShowCart = ref<boolean>(false);
+    const showCart = (e) => {
+        console.log(e);
+        isShowCart.value = !isShowCart.value;
+        console.log(isShowCart.value);
+    };
 </script>
 
 <style lang="scss" scoped>
