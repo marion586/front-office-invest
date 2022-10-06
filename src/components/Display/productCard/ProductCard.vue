@@ -31,17 +31,19 @@
             <Map />
             <span>{{ DataCard.adress }} </span>
         </div>
+
+        <Button v-if="isInfo" width="100%" type="primary"> Information </Button>
     </div>
 </template>
 
 <script setup lang="ts">
     import HeadProduct from '@/components/Display/HeadProduct/HeadProduct.vue';
-    import { ref, PropType } from 'vue';
+    import { ref, PropType, inject } from 'vue';
     import Title from '@/components/Common/Title/Title.vue';
     import Room from '@/components/Icon/Room.vue';
     import Bath from '@/components/Icon/Bath.vue';
     import Map from '@/components/Icon/Map.vue';
-
+    import Button from '@/components/Common/Button/Button.vue';
     interface DataProps {
         image: string;
         type: string;
@@ -59,6 +61,8 @@
             required: true,
         },
     });
+
+    const isInfo = inject('isInfo');
 </script>
 
 <style lang="scss" scoped>
