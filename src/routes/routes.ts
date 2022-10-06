@@ -64,6 +64,11 @@ const routes = <Array<RouteRecordRaw>>[
         path: '/liste-produit',
         component: () => import('@/pages/product-list/List.vue'),
     },
+    {
+        name: 'not-found',
+        path: '/:path(.*)*',
+        component: () => import('@/pages/error/404.vue'),
+    },
 ];
 
 export default routes;
