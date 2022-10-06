@@ -1,8 +1,8 @@
 <template>
-    <div class="container">
-        <div class="container__content flex flex-col py-5 gap-4">
+    <div class="list">
+        <div class="list__container">
             <Filter />
-            <div class="card-wrapper">
+            <div class="list__container-product">
                 <CardProducts />
             </div>
         </div>
@@ -15,7 +15,13 @@
 </script>
 
 <style lang="scss" scoped>
-    .card-wrapper {
-        @apply grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4;
+    .list {
+        @apply container;
+        &__container {
+            @apply flex flex-col py-5 gap-4;
+            &-product {
+                @apply grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4;
+            }
+        }
     }
 </style>
