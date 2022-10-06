@@ -12,7 +12,7 @@
         <div class="filter__right">
             <Button type="secondary">
                 <div>
-                    <Cart />
+                    <Cart color="#fff" />
                     <span> Sur carte </span>
                 </div>
             </Button>
@@ -73,8 +73,10 @@
             @apply flex flex-col items-end gap-2;
             button {
                 @apply hidden sm:block;
+                width: 126px;
+                padding: 6px 10px;
                 div {
-                    @apply flex flex-row items-center gap-2;
+                    @apply flex flex-row justify-center items-center gap-3;
                 }
                 height: 33px;
             }
