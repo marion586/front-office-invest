@@ -1,5 +1,5 @@
 <template>
-    <div class="card max-w-lg">
+    <div class="card max-w-xl">
         <HeadProduct Text="Agence" label="Label Immo" />
         <figure class="card__image">
             <img :src="DataCard.image" alt=" card product img" />
