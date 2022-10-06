@@ -40,7 +40,6 @@
     import Title from '@/components/Common/Title/Title.vue';
     import Room from '@/components/Icon/Room.vue';
     import Bath from '@/components/Icon/Bath.vue';
-    import Surface from '@/components/Icon/Surface.vue';
     import Map from '@/components/Icon/Map.vue';
 
     interface DataProps {
