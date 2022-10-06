@@ -41,7 +41,11 @@
                 <div class="auth__link-bottom">
                     <span>Ou</span><br />
                     <router-link to="/inscription">
-                        <Paragraphe is="span">Créer un compte</Paragraphe>
+                        <Paragraphe is="span"
+                            ><span class="auth__link-bottom__redirect"
+                                >Créer un compte</span
+                            ></Paragraphe
+                        >
                     </router-link>
                 </div>
             </form>
@@ -60,7 +64,7 @@
     import UserService from '@/services/userService';
     import store from '@/store';
     import emailValidation from '@/utils/validation/email_validation';
-    import { onMounted, reactive, ref } from 'vue';
+    import { reactive, ref } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
 
     import '@/assets/style/auth.scss';
@@ -76,9 +80,7 @@
     }
 
     // ref
-    // const isEmailValid = ref<boolean>(false);
     const activeError = ref<boolean>(false);
-    const isFormValid = ref<boolean>(false);
     let formParams = reactive<IFormParams>({
         username: '',
         password: '',
@@ -136,7 +138,6 @@
             (value) => value === ''
         );
         console.log(isDataValid);
-        // isFormValid.value = isDataValid ? true : false;
         isDataValid === true ? handleUserLogin() : console.log('not ok');
     };
 </script>

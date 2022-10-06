@@ -1,11 +1,14 @@
 <template>
     <div class="custom-input__fields">
-        <label for="">{{ label }}</label>
+        <label
+            ><span v-if="required" class="custom-input__fields--required"
+                >*</span
+            >{{ label }}</label
+        >
         <a-input
             style=""
             :placeholder="placeholder"
-            type="text"
-            v-model:value="model"
+            :type="inputType"
             :name="nameInput"
             @input="handleInput"
             @change="handleChange"
@@ -22,9 +25,7 @@
 
 <script lang="ts" setup>
     import AInput from 'ant-design-vue/lib/input';
-    import { onMounted, PropType, ref, watch } from 'vue';
-
-    // const hasError = ref<boolean>(false);
+    import { PropType, ref, watch } from 'vue';
 
     interface IHasError {
         borderColor: string | number;
@@ -59,7 +60,19 @@
         },
         hasError: {
             type: Object as PropType<IHasErrorProps>,
-            // default: false,
+            required: false,
+            // default: {
+            //     status: false,
+            //     errorMsg: '',
+            // },
+        },
+        required: {
+            type: Boolean,
+            default: false,
+        },
+        inputType: {
+            type: String,
+            default: 'text',
         },
     });
     watch(
@@ -74,15 +87,11 @@
                 errorTheme.value = { ...initialErrorState };
             }
         }
+        // { immediate: true }
     );
-    // onMounted(() => {
-    //     setTimeout(() => {
-    //         hasError.value = true;
-    //     }, 1500);
-    // });
 
     const emit = defineEmits<{
-        (event: 'onInput', value: object): void;
+        (event: 'input', value: object): void;
         (event: 'change'): void;
     }>();
 
@@ -92,8 +101,7 @@
                 event.target as HTMLInputElement
             ).value,
         };
-
-        emit('onInput', value);
+        emit('input', value);
     };
 
     const handleChange = () => {
@@ -115,7 +123,10 @@
             transform: translateY(-10px);
             opacity: 0;
         }
-
+        &--required {
+            color: red;
+            margin-right: 5px;
+        }
         &--error {
             color: salmon;
             width: 100%;

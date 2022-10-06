@@ -2,193 +2,117 @@
     <div>
         <form @submit.prevent="handleSubmit" class="auth__form">
             <Input
-                label="Nom"
-                placeholder="Nom"
-                :model="registerData.name"
-                name-input="name"
-                @on-input="handleInput"
-            />
-            <Button type="secondary" html-type="submit" width="100%">
-                Connexion
-            </Button>
-        </form>
-        <form @submit.prevent="handleSubmit">
-            <input
-                placeholder="Nom"
+                v-for="(field, index) in formParams"
+                :key="index"
+                :label="field.label"
+                :required="field.required"
+                :placeholder="field.placeholder"
+                :name-input="field.name"
+                :inputType="field?.type"
                 @input="handleInput"
-                type="text"
-                name="name"
-                id="name"
-                :value="registerData.name"
+                :has-error="{
+                    status: !!(errors as any)[field.name] && (errors as any)[field.name] !== '' && activeError,
+                    errorMsg: (errors as any)[field.name] || '',
+                }"
             />
-            <input
-                placeholder="email"
-                @input="handleInput"
-                type="text"
-                name="email"
-                id="email"
-                :value="registerData.email"
-            />
-            <input
-                placeholder="logo"
-                @input="handleInput"
-                type="text"
-                name="logo"
-                id="logo"
-                :value="registerData.logo"
-            />
-            <input
-                placeholder="addresse"
-                @input="handleInput"
-                type="text"
-                name="adress"
-                id="adress"
-                :value="registerData.adress"
-            />
-            <input
-                placeholder="nom inc."
-                @input="handleInput"
-                type="text"
-                name="nameEntreprise"
-                id="nameEntreprise"
-                :value="registerData.nameEntreprise"
-            />
-            <input
-                placeholder="nb inc."
-                @input="handleInput"
-                type="text"
-                name="numberEntreprise"
-                id="numberEntreprise"
-                :value="registerData.numberEntreprise"
-            />
-            <input
-                @input="handleInput"
-                placeholder="Mot de passe"
-                type="text"
-                name="password"
-                id="password"
-                :value="registerData.password"
-            />
-            <input
-                @input="handleInput"
-                placeholder="confirmer mot de passe"
-                type="text"
-                name="confirmPassword"
-                id="confirmPassword"
-                :value="registerData.confirmPassword"
-            />
-            <!-- SHOW ERROR -->
-            <p
-                v-if="
-                    isSubmitClicked &&
-                    (isValid?.name === false || !isErrorObjEmpty)
-                "
+            <Button type="secondary" html-type="submit" width="100%"
+                ><span>S'inscrire</span></Button
             >
-                Nom obligatoire
-            </p>
-
-            <button type="submit">Enregister</button>
         </form>
     </div>
 </template>
 <script lang="ts" setup>
     import Button from '@/components/Common/Button/Button.vue';
     import Input from '@/components/Common/Input/Input.vue';
-    import useFormValidation from '@/composables/useFormValidation';
-
-    import { computed } from '@vue/reactivity';
-    import { reactive, ref } from 'vue';
+    import LoadingButton from '@/components/Icon/LoadingButton.vue';
+    import { onMounted, PropType, reactive, ref } from 'vue';
     import { Router, useRouter } from 'vue-router';
     import { Store, useStore } from 'vuex';
+    import {
+        particularUserForm,
+        professionnalUserForm,
+    } from './registration.data';
 
     const store: Store<any> = useStore();
     const router: Router = useRouter();
     const props = defineProps({
         usertype: {
-            type: String,
+            type: String as PropType<'particulier' | 'professionnel'>,
             require: true,
-            default: '',
         },
     });
-    const { isValid, validateNameField } = useFormValidation();
-    interface IUser {
-        name?: string;
-        email: string;
-        logo?: string;
-        adress: string;
-        nameEntreprise?: string;
-        numberEntreprise?: string;
-        password: string;
-        confirmPassword: string;
-    }
-
-    let registerData = reactive<IUser>({
-        name: '',
-        email: '',
-        logo: '',
-        adress: '',
-        nameEntreprise: '',
-        numberEntreprise: '',
-        password: '',
-        confirmPassword: '',
+    onMounted(() => {
+        switch (props.usertype) {
+            case 'particulier':
+                formParams.value = [...particularUserForm];
+                break;
+            case 'professionnel':
+                formParams.value = [...professionnalUserForm];
+                break;
+            default:
+                break;
+        }
     });
 
-    let resetFields = reactive<IUser>({ ...registerData });
-
-    const isErrorObjEmpty: any = computed(() => {
-        return Object.values(isValid).length;
+    const errors = reactive<Object>({
+        name: 'Le nom est obligatoire',
+        firstname: 'Le prénom est obligation',
     });
+    const activeError = ref<boolean>(false);
 
-    function isPasswordConfirmed(): boolean {
-        return (
-            registerData?.password !== '' &&
-            registerData?.confirmPassword !== '' &&
-            registerData?.password === registerData?.confirmPassword
-        );
-    }
+    const formParams = ref<Array<IUserField>>([]);
+
+    // function isPasswordConfirmed(): boolean {
+    //     return (
+    //         // registerData?.password !== '' &&
+    //         // registerData?.confirmPassword !== '' &&
+    //         // registerData?.password === registerData?.confirmPassword
+    //     );
+    // }
 
     function handleInput(e: object) {
-        // const name: string = (e.target as HTMLInputElement).name;
-        // const value: string = (e.target as HTMLInputElement).value;
-
-        /**Validate input value for checking some errors */
-        // validateNameField(name, value);
-        registerData = { ...registerData, ...e };
+        for (const key in e) {
+            formParams.value.forEach((field) => {
+                if (key === field.name) {
+                    formParams.value.splice(
+                        formParams.value.indexOf(field),
+                        1,
+                        { ...field, value: (e as any)[key] }
+                    );
+                    if (field.required && field.errorMsg) {
+                        const isEmpty = (e as any)[key] === '';
+                        (errors as any)[key] = isEmpty ? field.errorMsg : '';
+                    }
+                }
+            });
+        }
+        console.log(errors);
     }
 
     function sendFormData() {
         /** Keep data user into store */
-        store.dispatch('UserModule/setRegisteredUser', {
-            registerData,
-            usertype: props.usertype,
-        });
-
-        // go to subscription section
-        router.push({
-            name: 'authSubscription',
-        });
-        registerData = { ...resetFields };
+        // store.dispatch('UserModule/setRegisteredUser', {
+        //     registerData,
+        //     usertype: props.usertype,
+        // });
+        // // go to subscription section
+        // router.push({
+        //     name: 'authSubscription',
+        // });
+        // registerData = { ...resetFields };
     }
 
-    const isSubmitClicked = ref<boolean>(false);
     function handleSubmit() {
         /**
          * activate the error mode on isSubmitClicked to true
          * dont show the errors on mounted status
          */
-        isSubmitClicked.value = true;
-        const requiedFields = [
-            'email',
-            'adress',
-            'password',
-            'confirmPassword',
-        ] as Array<string>;
-        let isFormFieldsNotEmpty: boolean = false;
-        requiedFields.forEach((key) => {
-            isFormFieldsNotEmpty = isValid[key] === true ? true : false;
-        });
-
+        activeError.value = true;
+        const isFormValid = Object.values(errors).every((v) => v === '');
+        isFormValid ? console.log('ok') : console.log('not ok');
         /**Ensure call API when all valid */
-        isFormFieldsNotEmpty && isPasswordConfirmed() && sendFormData();
+        // isFormFieldsNotEmpty && isPasswordConfirmed() && sendFormData();
     }
 </script>
+
+<style lang="scss" scoped></style>
