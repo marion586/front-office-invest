@@ -18,7 +18,7 @@
                     name="select"
                     :options="professionnalUserOption"
                     @change="handleChangeSelect"
-                    :defaultValue="particularUsertype"
+                    :defaultValue="particularUserOption"
                     :disabled="usertype === 'particulier'"
                 />
             </div>
@@ -70,23 +70,45 @@
         professsionnalErrorFields,
     } from './registration.data';
     import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
+    /**
+     * END IMPORT
+     */
 
+    /**
+     * utils
+     */
     const store: Store<any> = useStore();
     const router: Router = useRouter();
+
+    /**Props */
     const props = defineProps({
         usertype: {
             type: String as PropType<'particulier' | 'professionnel'>,
             require: true,
         },
     });
-    const particularUsertype = ref<SelectValue>();
+
+    /**ref & reactive */
+    /**OPTION */
+    const particularUserOption = ref<SelectValue>();
     const professionnalUserOption = ref<SelectValue>();
+
+    /**errros */
     let errors = reactive<Object>({});
     let tmpErrors = reactive<Object>({});
+    const activeError = ref<boolean>(false);
 
+    /**FIELDS */
+    const formParams = ref<Array<IUserField>>([]);
+    let finalFormParams = ref<Object>({});
+
+    /**
+     * INITIALIZATION STATE
+     */
     watchEffect(() => {
+        /**init usertype option on watchEffect (its immediatly reactive) */
         if (props.usertype === 'particulier') {
-            particularUsertype.value = {
+            particularUserOption.value = {
                 value: 'particulier',
                 label: 'Particulier',
             };
@@ -98,6 +120,9 @@
         }
     });
     onMounted(() => {
+        /**
+         * Init fields, errors and memorize errors on mount
+         */
         switch (props.usertype) {
             case 'particulier':
                 formParams.value = [...particularUserForm];
@@ -114,23 +139,12 @@
         }
     });
 
-    const activeError = ref<boolean>(false);
-
-    const formParams = ref<Array<IUserField>>([]);
-
     function handleChangeSelect(obj: object) {
         console.log(obj);
     }
 
-    // function isPasswordConfirmed(): boolean {
-    //     return (
-    //         // registerData?.password !== '' &&
-    //         // registerData?.confirmPassword !== '' &&
-    //         // registerData?.password === registerData?.confirmPassword
-    //     );
-    // }
-
     function handleInput(e: object) {
+        /**check error on input event and assign value */
         for (const key in e) {
             formParams.value.forEach((field) => {
                 if (key === field.name) {
@@ -165,9 +179,20 @@
     }
 
     function handleSubmit() {
+        /**
+         * HANDLE ERROR AND EMPTY FIELD
+         */
         activeError.value = true;
         const isFormInputValid = Object.values(errors).every((v) => v === '');
         isFormInputValid ? console.log('ok') : console.log('not ok');
+
+        const mappedArray = formParams.value.map((field) => [
+            field.name,
+            field.value,
+        ]);
+        finalFormParams.value = Object.fromEntries(mappedArray);
+
+        console.log(finalFormParams.value);
         /**Ensure call API when all valid */
         // isFormFieldsNotEmpty && isPasswordConfirmed() && sendFormData();
     }

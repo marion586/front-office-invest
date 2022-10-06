@@ -3,7 +3,7 @@
         <button
             :disabled="disabled"
             @click="!disabled && $emit('on-click')"
-            :class="`button__${type} ${disabled ? 'disabled' : ''}`"
+            :class="`button__${type} ${disabled ? '--disabled' : ''}`"
             :type="htmlType"
         >
             <slot />
@@ -24,6 +24,12 @@
 
 <style lang="scss" scoped>
     button {
+        &:disabled {
+            background-color: rgb(148 159 181 / 77%);
+            &:hover {
+                cursor: not-allowed;
+            }
+        }
         width: v-bind(width);
         font-size: 14px;
         padding: 6px 20px;

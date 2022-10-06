@@ -71,13 +71,6 @@ const formParams: Array<IUserField> = [
         required: true,
         value: '',
     },
-    {
-        name: 'logo',
-        label: 'Logo',
-        placeholder: '',
-        required: false,
-        value: '',
-    },
 
     {
         name: 'password',
