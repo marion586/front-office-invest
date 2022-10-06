@@ -8,13 +8,19 @@ import AMenuItem from "ant-design-vue/lib/menu/src/MenuItem";
 let show = ref<Boolean>(false);
 let oldClass = ref<String>('mc__content-menu')
 let none = ref<String>('mc__none')
+let activeKey=ref<Array<String>>(["s-00"])
 
 defineProps<{
-      data : any
+      data : any,
+      active : String
 }>()
 
 function setShow(): void {
       show.value = !show.value;
+}
+function selectedKeys(key : string) : void{
+      activeKey.value = [key];
+      console.log("<<<<<<<<<<<<<<<\n", activeKey.value);
 }
 
 </script>
@@ -29,9 +35,10 @@ function setShow(): void {
                   <div :class="[ oldClass, show ? none : '']">
                         <a-menu 
                               mode="inline"
+                              :selectedKeys="activeKey"
                         >
                               <template v-for="item in data" :key="item.id">
-                                    <a-menu-item :key="item.id" v-if="!item.subMenu">
+                                    <a-menu-item :key="item.id" v-if="!item.subMenu" @click="selectedKeys(item.id)">
                                           <template #icon>
                                                 <component :is="item.icon" /> &nbsp;
                                           </template>
@@ -44,7 +51,7 @@ function setShow(): void {
                                           <template #title>
                                                 {{item.label}}
                                           </template>
-                                          <a-menu-item v-for="mItem in item.subMenu" :key="`item+${mItem.id}`">
+                                          <a-menu-item v-for="mItem in item.subMenu" :key="mItem.id" @click="selectedKeys(mItem.id)">
                                                 {{mItem.label}}
                                           </a-menu-item>
                                     </a-sub-menu>
@@ -58,7 +65,7 @@ function setShow(): void {
 <style scoped lang="scss">
 .mc {
       &__container {
-            @apply bg-[white] m-[10px] p-[12px] rounded-[8px] max-w-[315px];
+            @apply bg-[white] p-[12px] rounded-[8px] max-w-[315px];
       }
 
       &__content {
@@ -66,7 +73,7 @@ function setShow(): void {
       }
 
       &__menu {
-            @apply cursor-pointer max-w-[20px] flex justify-center sm:ml-[10px] md:ml-[20px];
+            @apply cursor-pointer max-w-[20px] flex justify-center sm:ml-[10px] md:ml-[20px] md:hidden;
       }
       &__content-menu{
             @apply mt-[10px]

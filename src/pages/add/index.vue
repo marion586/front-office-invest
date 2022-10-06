@@ -5,12 +5,12 @@ import { ref } from 'vue';
 import DefaultMenu from '@/components/Icon/DefaultMenuIcon.vue';
 
 interface SubMenu{
-      id : number,
+      id : string,
       label : string,
 }
 
 interface Menu {
-      id : number,
+      id : string,
       label : string,
       icon : string,
       subMenu ?: SubMenu[]
@@ -18,40 +18,40 @@ interface Menu {
 
 const menu = ref<Array<Menu>>([
       {
-            id : 0,
+            id : "m-0",
             label : "Information de base",
             icon : DefaultMenu,
             subMenu : [
                   {
-                        id : 0,
+                        id : "s-00",
                         label : "Type de bien"
                   },
                   {
-                        id : 1,
+                        id : "s-01",
                         label : "Adresse"
                   },
                   {
-                        id : 2,
+                        id : "s-02",
                         label : "Photos"
                   },
                   {
-                        id : 3,
+                        id : "s-03",
                         label : "Prix"
                   },
             ]
       },
       {
-            id : 1,
+            id : "m-1",
             label : "Information de base",
             icon : DefaultMenu
       },
       {
-            id : 2,
+            id : "m-2",
             label : "Description de l'annonce",
             icon : DefaultMenu
       },
       {
-            id : 3,
+            id : "m-3",
             label : "Documents relatifs aux biens",
             icon : DefaultMenu
       }
@@ -61,11 +61,16 @@ const menu = ref<Array<Menu>>([
 
 
 <template>
-      <div class="">
+      <div class="mc-container">
             <SideBar :data="menu" />
       </div>
 </template>
 
 <style scoped lang="scss">
+      .mc{
+            &__container {
+                  @apply m-[12px]
+            }
+      }
 
 </style>
