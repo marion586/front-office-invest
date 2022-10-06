@@ -3,11 +3,15 @@ import FormMakeOffer from './formulaire/FormMakeOffer.vue';
 </script>
 
 <template>
-    <div>
+    <div class="make__offer">
         <FormMakeOffer />
     </div>
 </template>
 
 <style lang="scss" scoped>
-    
+    .make{
+        &__offer{
+            background: #fff;
+        }
+    }
 </style>
