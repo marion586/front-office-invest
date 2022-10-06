@@ -79,7 +79,7 @@
                 height: 33px;
             }
             &-content {
-                @apply flex items-center gap-3;
+                @apply flex items-center gap-4;
                 &-select {
                     width: 126px;
                     .select {
@@ -90,6 +90,9 @@
                                 height: 33px;
                                 border-radius: 15px;
                                 background-color: #f2f2f2;
+                                span {
+                                    font-weight: bold;
+                                }
                             }
                             .ant-select-selection-placeholder {
                                 @apply flex items-center;
