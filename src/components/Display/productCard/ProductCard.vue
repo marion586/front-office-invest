@@ -11,13 +11,16 @@
 
         <div class="card__value">
             <div class="card__value--item">
-                <span>H</span> <span>{{ DataCard.roomCount }}</span>
+                <Room />
+                <span>{{ DataCard.roomCount }}</span>
             </div>
             <div class="card__value--item">
-                <span>H</span> <span>{{ DataCard.bedroomCount }}</span>
+                <Bath />
+                <span>{{ DataCard.bedroomCount }}</span>
             </div>
             <div class="card__value--item">
-                <span>H</span> <span>{{ DataCard.surface }} m2</span>
+                <Surface />
+                <span>{{ DataCard.surface }} m2</span>
             </div>
         </div>
         <div class="card__action">
@@ -25,7 +28,7 @@
             <span> ({{ DataCard.offerSentCount }}) offre envoyé </span>
         </div>
         <div class="card__adress">
-            <span>H</span>
+            <Map />
             <span>{{ DataCard.adress }} </span>
         </div>
     </div>
@@ -34,7 +37,12 @@
 <script setup lang="ts">
     import HeadProduct from '@/components/Display/HeadProduct/HeadProduct.vue';
     import { ref, PropType } from 'vue';
-    import Title from '../../Common/Title/Title.vue';
+    import Title from '@/components/Common/Title/Title.vue';
+    import Room from '@/components/Icon/Room.vue';
+    import Bath from '@/components/Icon/Bath.vue';
+    import Surface from '@/components/Icon/Surface.vue';
+    import Map from '@/components/Icon/Map.vue';
+
     interface DataProps {
         image: string;
         type: string;
