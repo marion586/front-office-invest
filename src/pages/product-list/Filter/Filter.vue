@@ -2,8 +2,8 @@
     <div class="filter">
         <div class="filter__left">
             <div class="filter__left-icon">
-                <Cart v-if="!filterObject.isShowCart" />
-                <ListBullet v-if="filterObject.isShowCart" />
+                <Cart v-if="filterObject.isListCards" @click="showCart" />
+                <ListBullet v-if="filterObject.isShowCart" @click="showInfo" />
             </div>
             <div class="filter__left-subtitle">
                 <Title type="h4" label="Acquérir un bien" weight="bold" />
@@ -23,7 +23,10 @@
             </Button>
             <Button
                 @on-click="filterObject.showCart"
-                v-if="filterObject.isShowCart || filterObject.isShowInfo"
+                v-if="
+                    (filterObject.isShowCart || filterObject.isShowInfo) &&
+                    !isMap
+                "
                 type="secondary"
             >
                 <div>
@@ -31,6 +34,7 @@
                     <span> Sur Liste</span>
                 </div>
             </Button>
+            <FullScreen v-if="isMap" />
             <div v-if="filterObject.isListCards" class="filter__right-content">
                 <Title type="h4" label="Filtrer par:" weight="bold" />
                 <div class="filter__right-content-select">
@@ -52,6 +56,7 @@
     import Button from '@/components/Common/Button/Button.vue';
     import ListBullet from '@/components/Icon/ListBullet.vue';
     import { inject, ref } from 'vue';
+    import FullScreen from '../../../components/Icon/FullScreen.vue';
 
     interface Option {
         value: string;
@@ -83,6 +88,15 @@
     const showCart = () => {
         emit('on-show-cart');
     };
+    const showInfo = () => {
+        emit('on-show-info');
+    };
+    defineProps({
+        isMap: {
+            tpe: Boolean,
+            default: false,
+        },
+    });
 </script>
 
 <style lang="scss" scoped>
@@ -102,8 +116,9 @@
         }
         &__right {
             @apply flex flex-col items-end gap-2;
+
             button {
-                @apply hidden sm:block;
+                @apply hidden md:block;
                 width: 126px;
                 padding: 6px 10px;
                 div {
@@ -111,6 +126,7 @@
                 }
                 height: 33px;
             }
+
             &-content {
                 @apply flex items-center gap-4;
                 &-select {

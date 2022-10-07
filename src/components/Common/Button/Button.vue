@@ -1,14 +1,12 @@
 <template>
-    <div>
-        <button
-            :disabled="disabled"
-            @click="!disabled && $emit('on-click')"
-            :class="`button__${type} ${disabled ? 'disabled' : ''}`"
-            :type="htmlType"
-        >
-            <slot />
-        </button>
-    </div>
+    <button
+        :disabled="disabled"
+        @click="!disabled && $emit('on-click')"
+        :class="`button__${type} ${disabled ? 'disabled' : ''}`"
+        :type="htmlType"
+    >
+        <slot />
+    </button>
 </template>
 
 <script setup lang="ts">

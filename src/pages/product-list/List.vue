@@ -1,7 +1,7 @@
 <template>
     <div class="list">
         <div class="list__container">
-            <Filter @on-show-cart="showCart" />
+            <Filter @on-show-cart="showCart" @on-show-info="showInfo" />
             <div v-if="isListCards" class="list__container-product">
                 <CardProducts :DataCard="dataCard" />
             </div>
@@ -86,7 +86,7 @@
         isListCards.value = !isListCards.value;
     };
     const showInfo = () => {
-        isShowInfo.value = !isShowInfo.value;
+        isShowInfo.value = true;
         isShowCart.value = false;
         isListCards.value = false;
     };

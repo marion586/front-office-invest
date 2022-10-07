@@ -73,7 +73,7 @@
         </div>
 
         <div class="product-info__right">
-            <Filter />
+            <Filter :isMap="true" />
             <Map
                 class="my-map"
                 :mapCenterCoordinate="data.PlaceCoordinates"
