@@ -32,22 +32,22 @@ const menu = ref<Array<Menu>>([
             icon : DefaultMenu,
             subMenu : [
                   {
-                        id : 1,
+                        id : 0,
                         label : "Type de bien",
                         component : PropertyType
                   },
                   {
-                        id : 2,
+                        id : 1,
                         label : "Adresse",
                         component : Adress
                   },
                   {
-                        id : 3,
+                        id : 2,
                         label : "Photos",
                         component : Photos
                   },
                   {
-                        id : 4,
+                        id : 3,
                         label : "Prix",
                         component : Price
                   },

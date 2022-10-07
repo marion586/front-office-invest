@@ -1,10 +1,14 @@
 <script lang="ts" setup>
 import ASteps from "ant-design-vue/lib/steps";
 import { ref } from "vue";
+import ArrowMenu from '@/components/Icon/ArrowMenu.vue';
+
 
 const AStep  = ASteps.Step;
-const step = ref<number>(0)
- 
+const step = ref<number>(0);
+const idActive = ref<number>(0);
+const idItemActive = ref<number>(0)
+
 defineProps<{
       data : any
 }>();
@@ -13,8 +17,10 @@ function changeStep(item : any) : void{
       step.value = item.id
 }
 
-function clickItem (item : any) : void{
-      console.log("<<<<<<<<<<<<<<<<<\n", item);
+function clickItem(subitem : any, item:any) : void{
+      console.log("<<<<<<<<<<<<<<<<<\n", subitem);
+      idActive.value = subitem.id;
+      idItemActive.value = item.id;
 }
 
 
@@ -25,14 +31,19 @@ function clickItem (item : any) : void{
             <a-steps 
                   :current="step"  
                   direction="vertical"
+                  size="small"
             >
-                  <a-step v-for="item in data" @change="changeStep(item)" >
+                  <a-step v-for="item in data" @change="changeStep(item)">
+                        
                         <template #title>
                               {{item.label}}
                         </template>
+                        <template #subTitle v-if="item.id === idItemActive">
+                              <arrow-menu/>
+                        </template>
                         <template #description >
-                              <a-steps progress-dot direction="vertical" v-if="item.subMenu">
-                                    <a-step v-for="subItem in item.subMenu" @click="clickItem(subItem)">
+                              <a-steps progress-dot class="steps-description" direction="vertical" v-if="item.subMenu">
+                                    <a-step v-for="subItem in item.subMenu" @click="clickItem(subItem, item)" :class="[idActive === subItem.id ? 'sub-item-active' : '']">
                                           <template #title>
                                                 {{subItem.label}}
                                           </template>
@@ -45,9 +56,14 @@ function clickItem (item : any) : void{
 </template>
 
 <style lang="scss" scoped>
+     
       .mc{
             &__container{
                   @apply bg-[white] w-[315px] rounded-[8px] p-[12px];
+                  .sub-item-active{
+                        background-color: var(--color-gray);
+                        @apply rounded-[8px] w-[158px] h-[42px] flex items-center;
+                  }
                   &:deep(){
                         .ant-steps-item-icon{
                               background-color: var(--color-gray-icon);
@@ -57,12 +73,14 @@ function clickItem (item : any) : void{
                               display: flex;
                               justify-content: center;
                               align-items: center;
-                              margin-top: 8px;
+                              margin-top: 5px;
+
                         }
                         .ant-steps-icon{
                               color: white;
                               font-size: 12px;
                         }
+                        
                         .ant-steps .ant-steps-item:not(.ant-steps-item-active):not(.ant-steps-item-process) > .ant-steps-item-container[role='button']:hover .ant-steps-item-icon{
                               border-color: transparent;
                         }
@@ -71,6 +89,7 @@ function clickItem (item : any) : void{
                         }
                         .ant-steps-item-title{
                               color: rgba(0, 0, 0, 0.45);
+                              font-weight: 600;
                         }
                         .ant-steps .ant-steps-item:not(.ant-steps-item-active):not(.ant-steps-item-process) > .ant-steps-item-container[role='button']:hover .ant-steps-item-icon .ant-steps-icon {
                               color: white;
@@ -84,9 +103,29 @@ function clickItem (item : any) : void{
                         .ant-steps-item-description .ant-steps-item-container .ant-steps-item-tail{
                               display: none;
                         }
-                        
+                        .ant-steps-item-container{
+                              padding-left: 12px;
+                        }
+                        .ant-steps-item-tail{
+                              padding-left: 12px;
+                        }
+                        .ant-steps-item-description .ant-steps-item-content{
+                              display: flex;
+                              align-items: center;
+                        }
+                        .ant-steps-vertical.ant-steps-small .ant-steps-item-container .ant-steps-item-tail{
+                              left: 22px;
+                        }
+
+                        .ant-steps-item-title{
+                              width: 100%;
+                              display: flex;
+                              justify-content: space-between;
+                        }
                   }
+            
             }
+            
       }
 
 </style>
