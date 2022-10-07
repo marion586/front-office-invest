@@ -1,7 +1,7 @@
 
 <template>
-    <div class="w-full flex flex-wrap">
-        <div class="md:w-2/3 sm:w-full ">
+    <div class="w-screen flex flex-wrap">
+        <div class="w-screen md:w-2/3 lg:2/3">
             <Map 
                 v-if="data.isMapReady"
                 class="w-full map-container p-5"
@@ -48,13 +48,13 @@
                 </div>
             </div>
         </div>
-        <div class="w-5/5">
+        <!-- <div class="w-5/5">
             <button
             @click="toggleMitable"
             >
                 show field
             </button>
-        </div>
+        </div> -->
         
     </div>
 </template>
@@ -62,7 +62,7 @@
 <script setup>
 
 import ASelect from "ant-design-vue/lib/select";
-import {reactive,onMounted, onUnmounted, onUpdated} from "vue";
+import {reactive,onMounted, onUnmounted,onDeactivated } from "vue";
 import {geocode, removeScript, autocomplet} from "@/composables/google-maps-api";
 import Map from "@/components/section/map/index.vue";
 import Input from '@/components/Common/Input/Input.vue';
@@ -123,7 +123,7 @@ const toggleMitable = ()=>{
         });
     
     const input = document.getElementById("propertyLocation");
-    console.log("input :   ", input);
+    console.log("input : ", input);
     autocomplet(input);
 
     console.log(window.google);
@@ -131,9 +131,10 @@ const toggleMitable = ()=>{
 })
 
 onUnmounted(()=>{
-    removeScript();
-    
+    console.log("component is unmounted");
+    removeScript();    
 })
+
 
 
 //functions

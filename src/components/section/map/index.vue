@@ -7,7 +7,7 @@ import 'leaflet-draw/dist/leaflet.draw.css';
 
 const props = defineProps({
     mapCenterCoordinate : {
-        type : Array,
+        type : [Array,Object],
         default : []
     },
     needMarkerLayer : {
