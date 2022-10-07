@@ -32,13 +32,13 @@
             <span>{{ DataCard.adress }} </span>
         </div>
 
-        <Button v-if="isInfo" width="100%" type="primary"> Information </Button>
+        <Button v-if="info" width="100%" type="primary"> Information </Button>
     </div>
 </template>
 
 <script setup lang="ts">
     import HeadProduct from '@/components/Display/HeadProduct/HeadProduct.vue';
-    import { ref, PropType, inject } from 'vue';
+    import { ref, PropType, inject, watch } from 'vue';
     import Title from '@/components/Common/Title/Title.vue';
     import Room from '@/components/Icon/Room.vue';
     import Bath from '@/components/Icon/Bath.vue';
@@ -62,7 +62,14 @@
         },
     });
 
-    const isInfo = inject('isInfo');
+    const info = inject('isInfo');
+    watch(
+        () => info,
+        (value) => {
+            console.log(value, 'jsdlfjdlskjflksj');
+        },
+        { immediate: true }
+    );
 </script>
 
 <style lang="scss" scoped>
@@ -75,6 +82,7 @@
         gap: 18px;
         background: #ffffff;
         border-radius: 8px;
+        min-width: 18rem;
         &__image {
             width: auto;
             height: 160px;
