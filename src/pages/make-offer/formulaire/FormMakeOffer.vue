@@ -9,49 +9,14 @@
 
     let title = "Faire une offre";
 
-    let dataInput = [
-        {
-            id: "name",
-            label: "Nom",
-            placeholder: "Votre nom",
-        },
-        {
-            id: "firstname",
-            label: "Prenom",
-            placeholder: "Votre Prenom",
-        },
-        {
-            id: "phoneNumber",
-            label: "Numéro de téléphone ",
-            placeholder: "Votre téléphone",
-        },
-        {
-            id: "email",
-            label: "email",
-            placeholder: "Votre email",
-        },
-        {
-            id: "priceOffer",
-            label: "Prix proposé",
-            placeholder: "prix",
-        },
-        {
-            id: "conditionCredit",
-            label: "Condition du crédit",
-            placeholder: "Condition crédit",
-        },
-        {
-            id: "amountCredit",
-            label: "Montant du crédit",
-            placeholder: "Montant crédit",
-        },
-    ];
+    const classFlex = "flex flex-row items-center";
 
     let elementOffer = [
         {
             title: "Les soussignes(es)",
             name: "Kary lady",
             hasDataInput: true,
+            hasName: true,
             hasAdd: true,
             dataInput: [
                 {
@@ -63,6 +28,7 @@
         {
             title: "Prix proposé",
             hasDataInput: true,
+            class: classFlex,
             dataInput: [
                 {
                     id: "priceOffer",
@@ -97,6 +63,7 @@
         {
             title: "Condition de crédit",
             hasDataInput: true,
+            class: classFlex,
             dataInput: [
                 {
                     id: "conditionCredit",
@@ -107,6 +74,7 @@
         {
             title: "Délai de ",
             hasDataInput: true,
+            class: classFlex,
             dataInput: [
                 {
                     id: "durationCredit",
@@ -127,6 +95,7 @@
         {
             title: "Accompte à la signature",
             hasDataInput: true,
+            class: classFlex,
             dataInput: [
                 {
                     id: "depositSignature",
@@ -136,6 +105,7 @@
         },
         {
             title: "Signature devant notaire",
+            class: classFlex,
             hasDataInput: true,
             dataInput: [
                 {
@@ -147,6 +117,7 @@
         {
             title: "Document fait à ",
             hasDataInput: true,
+            class: classFlex,
             dataInput: [
                 {
                     id: "documentDwelling",
@@ -157,6 +128,7 @@
         {
             title: "Le  ",
             hasDataInput: true,
+            class: classFlex,
             dataInput: [
                 {
                     id: "documentDate",
@@ -214,13 +186,16 @@
 
 
         <div class="offer__form" >
-            <div v-for="(element, index) in elementOffer" :key="index">
+            <div v-for="(element, index) in elementOffer" 
+            :key="index"
+            :class="`offer__form-content ${ element.class }`"
+            >
                 <span class="offer__form-label"
                 v-if="element.hasDataInput"
                 >
                     {{ element.title }}
                 </span>
-                <ul>
+                <ul v-if="element.hasName" class="name-list">
                     <li>{{ element.name }}</li>
                 </ul>
                 <div class="offer__form-inline">
@@ -273,8 +248,12 @@
             color: #606060;
         }
 
+        &__form-content{
+            @apply first:mt-6 mt-3;
+        }
+
         &__form-label{
-            width: 347px;
+            width: 55%;
             height: 15px;
             font-family: 'Montserrat';
             font-style: normal;
@@ -291,10 +270,12 @@
         }
 
         &__form-inline{
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
+            @apply flex items-center;
+            width: 90%;
+            // display: flex;
+            // flex-direction: row;
+            // justify-content: flex-start;
+            // align-items: center;
         }
 
         &__signature{
@@ -340,5 +321,9 @@
     .btn-valid-content{
         width: 100%;
         margin-bottom: 14px;
+    }
+
+    .name-list{
+        @apply list-disc ml-7;
     }
 </style>
