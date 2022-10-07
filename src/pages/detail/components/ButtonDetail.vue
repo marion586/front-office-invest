@@ -1,9 +1,13 @@
 <template>
-    <!-- <div> -->
-    <ButtonMenu  v-for="(list, index) in btnList" :key="index" :isIcon="list.icon">{{
-        list.label
-    }}</ButtonMenu>
-    <!-- </div> -->
+    <div class=" btnDetail">
+        <ButtonMenu
+            v-for="(list, index) in btnList"
+            :key="index"
+            :isIcon="list.icon"
+            class="btnDetail__btn"
+            >{{ list.label }}</ButtonMenu
+        >
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -16,7 +20,7 @@
     import LocationIcon from '@/components/Icon/Location.vue';
     import RelocationIcon from '@/components/Icon/Relocation.vue';
     import FinanceIcon from '@/components/Icon/Finance.vue';
-    
+
     interface BtnList {
         id: number;
         label: string;
@@ -27,42 +31,63 @@
         {
             id: 1,
             label: 'Information détaillées',
-            icon: DocumentIcon
+            icon: DocumentIcon,
         },
         {
             id: 2,
             label: 'Vidéo live',
-            icon: LiveIcon
+            icon: LiveIcon,
         },
         {
             id: 3,
             label: 'Document relatifs',
-            icon: FileIcon
+            icon: FileIcon,
         },
         {
             id: 4,
             label: 'Services à proximité',
-            icon: HeadPhoneIcon
+            icon: HeadPhoneIcon,
         },
         {
             id: 5,
             label: 'Visites',
-            icon: VisiteIcon
+            icon: VisiteIcon,
         },
         {
             id: 6,
             label: 'Localisation',
-            icon: LocationIcon 
+            icon: LocationIcon,
         },
         {
             id: 7,
             label: 'Déménagement',
-            icon: RelocationIcon
+            icon: RelocationIcon,
         },
         {
             id: 8,
             label: 'Finance',
-            icon: FinanceIcon
+            icon: FinanceIcon,
         },
     ];
 </script>
+
+<style scoped lang="scss">
+    .btnDetail {
+        @apply flex flex-wrap gap-[10px];
+        
+        // @apply flex;
+        // @apply md:w-[640px] grid grid-cols-3 grid-rows-3;
+
+        &__btn {
+            @apply sm:w-[280px] w-full;
+            // flex: 1;
+        }
+    }
+
+    //responsive
+    // @media (min-width: 1200px) {
+    //     .btnDetail {
+    //         @apply flex flex-col xl;
+    //     }
+    // }
+</style>
