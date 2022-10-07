@@ -17,9 +17,10 @@ function changeStep(item : any) : void{
       step.value = item.id
 }
 
-function clickItem(subitem : any, item:any) : void{
-      console.log("<<<<<<<<<<<<<<<<<\n", subitem);
-      idActive.value = subitem.id;
+function clickItem(item : any, subitem ?: any) : void{
+      if(subitem){
+            idActive.value = subitem.id;
+      }
       idItemActive.value = item.id;
 }
 
@@ -33,8 +34,7 @@ function clickItem(subitem : any, item:any) : void{
                   direction="vertical"
                   size="small"
             >
-                  <a-step v-for="item in data" @change="changeStep(item)">
-                        
+                  <a-step v-for="item in data" @change="changeStep(item)" >
                         <template #title>
                               {{item.label}}
                         </template>
@@ -42,8 +42,8 @@ function clickItem(subitem : any, item:any) : void{
                               <arrow-menu/>
                         </template>
                         <template #description >
-                              <a-steps progress-dot class="steps-description" direction="vertical" v-if="item.subMenu">
-                                    <a-step v-for="subItem in item.subMenu" @click="clickItem(subItem, item)" :class="[idActive === subItem.id ? 'sub-item-active' : '']">
+                              <a-steps progress-dot class="steps-description" direction="vertical" v-if="item.id === idItemActive">
+                                    <a-step v-for="subItem in item.subMenu" @click="clickItem(item, subItem)" :class="[idActive === subItem.id ? 'sub-item-active' : '']">
                                           <template #title>
                                                 {{subItem.label}}
                                           </template>
@@ -62,7 +62,7 @@ function clickItem(subitem : any, item:any) : void{
                   @apply bg-[white] w-[315px] rounded-[8px] p-[12px];
                   .sub-item-active{
                         background-color: var(--color-gray);
-                        @apply rounded-[8px] w-[158px] h-[42px] flex items-center;
+                        @apply rounded-[8px] w-[200px] h-[42px] flex items-center;
                   }
                   &:deep(){
                         .ant-steps-item-icon{
@@ -88,14 +88,14 @@ function clickItem(subitem : any, item:any) : void{
                               color: transparent;
                         }
                         .ant-steps-item-title{
-                              color: rgba(0, 0, 0, 0.45);
+                              color: rgba(0, 0, 0, 0.60);
                               font-weight: 600;
                         }
                         .ant-steps .ant-steps-item:not(.ant-steps-item-active):not(.ant-steps-item-process) > .ant-steps-item-container[role='button']:hover .ant-steps-item-icon .ant-steps-icon {
                               color: white;
                         }
                         .ant-steps .ant-steps-item:not(.ant-steps-item-active) > .ant-steps-item-container[role='button']:hover .ant-steps-item-title, .ant-steps .ant-steps-item:not(.ant-steps-item-active) > .ant-steps-item-container[role='button']:hover .ant-steps-item-subtitle, .ant-steps .ant-steps-item:not(.ant-steps-item-active) > .ant-steps-item-container[role='button']:hover .ant-steps-item-description{
-                              color: rgba(0, 0, 0, 0.45);
+                              color: rgba(0, 0, 0, 0.60);
                         }
                         .ant-steps-item-description .ant-steps-item-container .ant-steps-item-icon{
                               display: none;
@@ -122,8 +122,18 @@ function clickItem(subitem : any, item:any) : void{
                               display: flex;
                               justify-content: space-between;
                         }
+                        .ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title {
+                              color : rgba($color: (#000000), $alpha: 0.60);
+                              font-weight: 600;
+                        }
                   }
             
+            }
+            &__none{
+                  @apply hidden;
+            }
+            &__flex{
+                  @apply flex;
             }
             
       }

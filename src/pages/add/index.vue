@@ -14,7 +14,7 @@ const activeComp = ref<Array<any>>([PropertyType])
 interface SubMenu{
       id : number,
       label : string,
-      component : any
+      component ?: any
 }
 
 interface Menu {
@@ -54,19 +54,33 @@ const menu = ref<Array<Menu>>([
             ]
       },
       {
-            id : 5,
+            id : 2,
             label : "Information de base",
             icon : DefaultMenu,
             component : PropertyType,
+            subMenu : [
+                  {
+                        id : 4,
+                        label : "Générale"
+                  },
+                  {
+                        id : 5,
+                        label : "intérieur"
+                  },
+                  {
+                        id : 6,
+                        label : "Caractéristique énergetique"
+                  },
+            ]
       },
       {
-            id : 6,
+            id : 3,
             label : "Description de l'annonce",
             icon : DefaultMenu,
             component : PropertyType,
       },
       {
-            id : 7,
+            id : 4,
             label : "Documents relatifs aux biens",
             icon : DefaultMenu,
             component : PropertyType,
