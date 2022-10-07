@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, defineEmits } from "vue";
 import Menu from '@/components/Icon/Menu.vue'
 import AMenu from "ant-design-vue/lib/menu";
 import ASubMenu from 'ant-design-vue/lib/menu/src/SubMenu';
@@ -9,6 +9,9 @@ let show = ref<Boolean>(false);
 let oldClass = ref<String>('mc__content-menu')
 let none = ref<String>('mc__none')
 let activeKey=ref<Array<String>>(["s-00"])
+const title = ref<String>("Menu");
+
+const emit = defineEmits(['component'])
 
 defineProps<{
       data : any,
@@ -18,9 +21,10 @@ defineProps<{
 function setShow(): void {
       show.value = !show.value;
 }
-function selectedKeys(key : string) : void{
-      activeKey.value = [key];
-      console.log("<<<<<<<<<<<<<<<\n", activeKey.value);
+function selectedKeys(item : any) : void{
+      activeKey.value = [item.id];
+      title.value = item.label      
+      emit('component', item.component);
 }
 
 </script>
@@ -31,14 +35,16 @@ function selectedKeys(key : string) : void{
             <div class="mc__content">
                   <div class="mc__menu" @click="setShow">
                         <Menu />
+                        <p>{{title}}</p>
                   </div>
                   <div :class="[ oldClass, show ? none : '']">
                         <a-menu 
                               mode="inline"
                               :selectedKeys="activeKey"
+                              theme="light"
                         >
                               <template v-for="item in data" :key="item.id">
-                                    <a-menu-item :key="item.id" v-if="!item.subMenu" @click="selectedKeys(item.id)">
+                                    <a-menu-item :key="item.id" v-if="!item.subMenu" @click="selectedKeys(item)">
                                           <template #icon>
                                                 <component :is="item.icon" /> &nbsp;
                                           </template>
@@ -51,7 +57,7 @@ function selectedKeys(key : string) : void{
                                           <template #title>
                                                 {{item.label}}
                                           </template>
-                                          <a-menu-item v-for="mItem in item.subMenu" :key="mItem.id" @click="selectedKeys(mItem.id)">
+                                          <a-menu-item v-for="mItem in item.subMenu" :key="mItem.id" @click="selectedKeys(mItem)">
                                                 {{mItem.label}}
                                           </a-menu-item>
                                     </a-sub-menu>
@@ -76,13 +82,22 @@ function selectedKeys(key : string) : void{
             @apply cursor-pointer max-w-[20px] flex justify-center sm:ml-[10px] md:ml-[20px] md:hidden;
       }
       &__content-menu{
-            @apply mt-[10px]
+            @apply mt-[10px];
       }
       &__none{
             display: none;
       }
       &__m-none{
-            @apply md:hidden
+            @apply md:hidden;
+      }
+      &::deep(){
+            span.ant-menu-title-content{
+                  color: rgb(207, 14, 14);
+                  background-color: #F2F2F2;
+            };
+            .ant-menu-submenu{
+                  background-color: red;
+            }
       }
 
 }
