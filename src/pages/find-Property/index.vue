@@ -1,6 +1,6 @@
 
 <template>
-    <div class="w-full flex">
+    <div class="w-full flex flex-wrap">
         <div class="md:w-2/3 sm:w-full ">
             <Map 
                 v-if="data.isMapReady"
@@ -10,7 +10,7 @@
                 :markersCoordinates="data.PlaceCoordinates"
             />
         </div>
-        <div class="md:w-1/3 sm:w-full p-5">
+        <div v-if="data.mutable" class="md:w-1/3 sm:w-full p-5">
             <h1>{{text.title}}</h1>
             <div class="flex flex-wrap justify-center">
                 <div 
@@ -19,23 +19,27 @@
                     :key="idx"
                     :class="field.class"
                 >
-                    <div  class="w-full pb-2">
-                        <label :for="field.placeholder">{{ field.placeholder }}</label>
-                    </div>
-                    <div>
-                        <a-select
-                            class="w-full"
-                            :id="field.id"
-                            v-model="value"
-                            show-search
-                            :placeholder="field.placeholder"
-                            :options="field.options"
-                            :filter-option="filterOption"
-                            @change="field.handler"
-                        />
-                    </div>
-                    <div>
-                    </div>
+                    <Input
+                        v-if="field.id === 'propertyLocation'"
+                        :inputId="field.id"
+                        :label="field.placeholder"
+                        class="w-full"
+                        :placeholder="field.placeholder"
+                        @change="field.handler"
+                    />
+                    <Select
+                        v-else
+                        :id="field.id"
+                        class="w-full"
+                        v-model="value"
+                        show-search
+                        :label="field.placeholder"
+                        :placeholder="field.placeholder"
+                        :options="field.options"
+                        :filter-option="filterOption"
+                        @change="field.handler" 
+                    />
+                
                 </div>
                 <div>
                     <button class="m-10">
@@ -44,6 +48,13 @@
                 </div>
             </div>
         </div>
+        <div class="w-5/5">
+            <button
+            @click="toggleMitable"
+            >
+                show field
+            </button>
+        </div>
         
     </div>
 </template>
@@ -51,15 +62,19 @@
 <script setup>
 
 import ASelect from "ant-design-vue/lib/select";
-import {reactive,onMounted, onUnmounted} from "vue";
+import {reactive,onMounted, onUnmounted, onUpdated} from "vue";
 import {geocode, removeScript, autocomplet} from "@/composables/google-maps-api";
 import Map from "@/components/section/map/index.vue";
+import Input from '@/components/Common/Input/Input.vue';
+import Select from '@/components/Common/Select/Select.vue';
+
 
 //reactive states
 const text = reactive   ({
     title : "recherche de bien",
 });
 const data = reactive({
+    mutable : true,
     isMapReady: false,
     PlaceCoordinates : [],
     fields : [{
@@ -74,7 +89,7 @@ const data = reactive({
         placeholder : "Ou se trouve le bien ?",
         options : [],
         class : "w-full",
-        handler : ()=>{}
+        handler : (e)=>{console.log(e)}
     },
     {
         id: "minPrice",
@@ -94,6 +109,10 @@ const data = reactive({
     ]
 })
 
+const toggleMitable = ()=>{
+    data.mutable= ! data.mutable
+}
+
 //lifecycle
  onMounted( () =>{
     const proomise = geocode("Bruxelles Belgique");
@@ -101,14 +120,21 @@ const data = reactive({
         console.log(result)
         data.isMapReady = true,
         data.PlaceCoordinates.push(result.coordinates);
-    });    
-})
+        });
+    
+    const input = document.getElementById("propertyLocation");
+    console.log("input :   ", input);
+    autocomplet(input);
 
+    console.log(window.google);
+
+})
 
 onUnmounted(()=>{
     removeScript();
-    autocomplet("autocomplet");
+    
 })
+
 
 //functions
 

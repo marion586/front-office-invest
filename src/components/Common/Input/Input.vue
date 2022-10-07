@@ -2,6 +2,7 @@
     <div class="fields">
         <label for="">{{ label }}</label>
         <a-input
+            :id="inputId"
             :placeholder="placeholder"
             type="text"
             v-model:value="model"
@@ -36,6 +37,10 @@
             type: String,
             default: '',
         },
+        inputId : {
+            type: String,
+            default: '',
+        }
     });
 
     const emit = defineEmits<{

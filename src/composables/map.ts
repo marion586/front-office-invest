@@ -115,16 +115,16 @@ export default class Map {
                     this.featureGroup.addLayer(m);
                 }
             })
-            this.map.on("click", (e)=>{
-                selectedFeature = e.target;
-                console.log(e)
-                if(selectedFeature){
-                    selectedFeature.editing.disable();
-                    // and Here I'll add the code to store my edited polygon in the DB or whatever I want to do with it
-                }
-                selectedFeature = e.target;
-                e.target.editing.enable();
-            });
+            // this.map.on("click", (e)=>{
+            //     selectedFeature = e.target;
+            //     console.log(e)
+            //     if(selectedFeature){
+            //         selectedFeature.editing.disable();
+            //         // and Here I'll add the code to store my edited polygon in the DB or whatever I want to do with it
+            //     }
+            //     selectedFeature = e.target;
+            //     e.target.editing.enable();
+            // });
     }
 
 
