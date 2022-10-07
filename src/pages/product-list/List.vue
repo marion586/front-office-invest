@@ -6,13 +6,14 @@
                 <CardProducts :DataCard="dataCard" />
             </div>
 
-            <figure
+            <Map
                 @click="showInfo"
                 v-if="isShowCart"
-                class="list__container-cart"
-            >
-                <img src="../../assets/Rectangle.png" alt="" />
-            </figure>
+                class="my-map"
+                :mapCenterCoordinate="data.PlaceCoordinates"
+                :needMarkerLayer="true"
+                :markersCoordinates="data.PlaceCoordinates"
+            />
 
             <div v-if="isShowInfo" class="list__container-information">
                 <div>
@@ -26,10 +27,17 @@
 <script setup lang="ts">
     import CardProducts from './CardProducts/CardProducts.vue';
 
-    import { provide, ref } from 'vue';
+    import { onMounted, provide, reactive, ref } from 'vue';
     import Filter from './Filter/Filter.vue';
     import ProductInfo from './ProductInfo/ProductInfo.vue';
     import DataProps from '@/components/Display/productCard/CardType';
+    import Map from '@/components/section/map/index.vue';
+    import {
+        geocode,
+        removeScript,
+        autocomplet,
+    } from '@/composables/google-maps-api';
+
     const dataCard = ref<DataProps[]>([
         {
             image: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
@@ -85,6 +93,49 @@
 
     let filterObject = ref<object>({ isShowCart, isListCards, isShowInfo });
     provide('filterObject', filterObject);
+    const data = reactive({
+        isMapReady: false,
+        PlaceCoordinates: [],
+        fields: [
+            {
+                id: 'propertyType',
+                placeholder: 'type de bien',
+                options: [],
+                class: 'w-full',
+                handler: () => {},
+            },
+            {
+                id: 'propertyLocation',
+                placeholder: 'Ou se trouve le bien ?',
+                options: [],
+                class: 'w-full',
+                handler: () => {},
+            },
+            {
+                id: 'minPrice',
+                placeholder: 'Prix min',
+                options: [],
+                class: 'w-1/2',
+                handler: () => {},
+            },
+            {
+                id: 'maxPrice',
+                placeholder: 'Prix max',
+                options: [],
+                class: 'w-1/2',
+
+                handler: () => {},
+            },
+        ],
+    });
+    onMounted(() => {
+        const proomise = geocode('Bruxelles Belgique');
+        proomise.then((result) => {
+            console.log(result);
+            (data.isMapReady = true),
+                data.PlaceCoordinates.push(result.coordinates);
+        });
+    });
 </script>
 
 <style lang="scss" scoped>
@@ -95,6 +146,11 @@
             &-product {
                 @apply grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4;
             }
+        }
+        .my-map {
+            height: 478px;
+            width: 100%;
+            border-radius: 8px;
         }
     }
 </style>

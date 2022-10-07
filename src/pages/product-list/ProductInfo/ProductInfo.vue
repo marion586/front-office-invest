@@ -1,14 +1,68 @@
 <script setup lang="ts">
     import ProductCard from '@/components/Display/productCard/ProductCard.vue';
     import DataProps from '@/components/Display/productCard/CardType';
-    import { PropType } from 'vue';
+    import { onMounted, onUnmounted, PropType, reactive, ref } from 'vue';
     import Filter from '../Filter/Filter.vue';
-
+    import Map from '../../../components/section/map/index.vue';
+    import {
+        geocode,
+        removeScript,
+        autocomplet,
+    } from '@/composables/google-maps-api';
     defineProps({
         DataCard: {
             type: Object as PropType<DataProps[]>,
             required: true,
         },
+    });
+
+    const data = reactive({
+        isMapReady: false,
+        PlaceCoordinates: [],
+        fields: [
+            {
+                id: 'propertyType',
+                placeholder: 'type de bien',
+                options: [],
+                class: 'w-full',
+                handler: () => {},
+            },
+            {
+                id: 'propertyLocation',
+                placeholder: 'Ou se trouve le bien ?',
+                options: [],
+                class: 'w-full',
+                handler: () => {},
+            },
+            {
+                id: 'minPrice',
+                placeholder: 'Prix min',
+                options: [],
+                class: 'w-1/2',
+                handler: () => {},
+            },
+            {
+                id: 'maxPrice',
+                placeholder: 'Prix max',
+                options: [],
+                class: 'w-1/2',
+
+                handler: () => {},
+            },
+        ],
+    });
+    onMounted(() => {
+        const proomise = geocode('Bruxelles Belgique');
+        proomise.then((result) => {
+            console.log(result);
+            (data.isMapReady = true),
+                data.PlaceCoordinates.push(result.coordinates);
+        });
+    });
+
+    onUnmounted(() => {
+        removeScript();
+        autocomplet('autocomplet');
     });
 </script>
 
@@ -20,9 +74,12 @@
 
         <div class="product-info__right">
             <Filter />
-            <figure>
-                <img src="../../../assets/Rectangle.png" alt="" />
-            </figure>
+            <Map
+                class="my-map"
+                :mapCenterCoordinate="data.PlaceCoordinates"
+                :needMarkerLayer="true"
+                :markersCoordinates="data.PlaceCoordinates"
+            />
         </div>
     </div>
 </template>
@@ -30,11 +87,19 @@
 <style lang="scss" scoped>
     .product-info {
         @apply grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  gap-2;
+        height: auto;
         &__left {
-            @apply col-span-1;
+            @apply col-span-1 sm:w-full;
+            height: 478px;
         }
         &__right {
             @apply col-span-2 sm:col-span-2  md:col-span-2   flex flex-col gap-2;
+            height: 478px;
+            .my-map {
+                height: 478px;
+                width: 100%;
+                border-radius: 8px;
+            }
         }
     }
 </style>
