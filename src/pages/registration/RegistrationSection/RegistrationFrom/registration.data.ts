@@ -13,13 +13,14 @@ const formParams: Array<IUserField> = [
         required: true,
         value: '',
     },
-    {
-        name: 'agencyAddress',
-        label: "Addrèsse de l'entreprise",
-        placeholder: "Lieu ou addèsse de l'entreprise",
-        required: true,
-        value: '',
-    },
+    // {
+    //     id: 'agencyAddress',
+    //     name: 'agencyAddress',
+    //     label: "Addrèsse de l'entreprise",
+    //     placeholder: "Lieu ou addèsse de l'entreprise",
+    //     required: true,
+    //     value: '',
+    // },
     {
         name: 'agencyTva',
         label: "TVA de l'entreprise",
@@ -44,6 +45,7 @@ const formParams: Array<IUserField> = [
         errorMsg: 'Le nom est obligatoire',
     },
     {
+        id: 'gm_address',
         name: 'address',
         label: 'Addrèsse',
         placeholder: 'Lieu ou addrèsse personnel',
@@ -95,7 +97,7 @@ const errorFields: IErrorRegistrationFields = {
     firstname: 'Le prénom est obligation',
     agencyName: "Le nom de l'entreprise est obligation",
     agencyNumber: "Le numbero de l'entreprise est obligation",
-    agencyAddress: "L'addrèsse est obligation",
+    // agencyAddress: "L'addrèsse est obligation",
     agencyTva: 'Le TVA est obligation',
     address: "L'addrèsse est obligation",
     email: "L'email est obligation",
@@ -103,6 +105,7 @@ const errorFields: IErrorRegistrationFields = {
     tva: 'Le TVA est obligation',
     password: 'Le mot de passe est obligation',
     confirmPassword: 'Ce champ est obligation',
+    typeRole: 'Vous devez choisir au moin 1 type',
 };
 
 // FIELD
@@ -113,12 +116,15 @@ export const particularUserForm: Array<IUserField> = [
         .filter((field) => field.name !== 'agencyAddress')
         .filter((field) => field.name !== 'agencyTva'),
 ];
-export const professionnalUserForm: Array<IUserField> = [...formParams];
+export const professionnalUserForm: Array<IUserField> = [
+    ...formParams.filter((field) => field.name !== 'tva'),
+];
 
 // ERROR
-const { agencyName, agencyNumber, agencyAddress, agencyTva, ...rest } =
+const { agencyName, agencyNumber, agencyAddress, agencyTva, ...restPart } =
     errorFields;
-export const particularErrorFields: IErrorRegistrationFields = { ...rest };
+const { tva, ...restPro } = errorFields;
+export const particularErrorFields: IErrorRegistrationFields = { ...restPart };
 export const professsionnalErrorFields: IErrorRegistrationFields = {
-    ...errorFields,
+    ...restPro,
 };
