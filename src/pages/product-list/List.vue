@@ -158,7 +158,7 @@
                 @apply grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4;
             }
             &-filter {
-                @apply hidden sm:hidden md:hidden lg:flex ;
+                @apply hidden sm:hidden md:hidden lg:flex;
             }
         }
         .my-map {

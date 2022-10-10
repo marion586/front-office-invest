@@ -9,6 +9,7 @@
 <script setup lang="ts">
     import ProductCard from '@/components/Display/ProductCard/ProductCard.vue';
     import { PropType, ref } from 'vue';
+
     interface DataProps {
         image: string;
         type: string;
@@ -20,6 +21,7 @@
         offerSentCount: number;
         adress: string;
     }
+
     defineProps({
         DataCard: {
             type: Object as PropType<DataProps[]>,

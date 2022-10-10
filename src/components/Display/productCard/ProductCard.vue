@@ -43,6 +43,7 @@
     import Room from '@/components/Icon/Room.vue';
     import Bath from '@/components/Icon/Bath.vue';
     import Map from '@/components/Icon/Map.vue';
+    import Surface from '@/components/Icon/Surface.vue';
     import Button from '@/components/Common/Button/Button.vue';
     interface DataProps {
         image: string;
