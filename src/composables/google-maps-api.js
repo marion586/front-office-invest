@@ -23,7 +23,7 @@ export const  useGoogleMapAPI = function(){
                 script.id = googleMapID;
                 script.async = true;
                 script.defer = true;
-                script.src = `https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false&key=${API_KEY}`;
+                script.src = `https://maps.googleapis.com/maps/api/js?libraries=places&key=${API_KEY}`;
                 document.querySelector('head').appendChild(script);
                 script.onload =  ()=>{
                     resolve(window.google);
@@ -80,13 +80,16 @@ export const autocomplet = (input)=>{
  * @return_Formate {regularName : Array, coordinates : {lat,long}}
  */
 export const geocode =  (address="")=>{
+    const statusCode = {
+        success : "OK"
+    }
     const result = useGoogleMapAPI();
     const p1 = new Promise((resolve)=>{
         if(!window.google){
             result.then((google)=>{
                 const geocoder = new google.maps.Geocoder();
                     geocoder.geocode({'address' : address}, function(results,status){
-                        if (status === 'OK') {
+                        if (status === statusCode.success) {
                             const pointer = results[0];
                             const resp ={
                                 regularName : pointer.address_components,
@@ -102,7 +105,7 @@ export const geocode =  (address="")=>{
         }else{
             const geocoder = new window.google.maps.Geocoder();
                     geocoder.geocode({'address' : address}, function(results,status){
-                        if (status === 'OK') {
+                        if (status === statusCode.success) {
                             const pointer = results[0];
                             const resp ={
                                 regularName : pointer.address_components,

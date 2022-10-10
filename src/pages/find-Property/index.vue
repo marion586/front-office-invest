@@ -8,6 +8,7 @@
                 :mapCenterCoordinate="data.PlaceCoordinates"
                 :needMarkerLayer="true"
                 :markersCoordinates="data.PlaceCoordinates"
+                :getFeatures="getFeatures"
             />
         </div>
         <div v-if="data.mutable" class="md:w-1/3 sm:w-full p-5">
@@ -29,14 +30,13 @@
                     />
                     <Select
                         v-else
+                        :name="field.id"
                         :id="field.id"
                         class="w-full"
-                        v-model="value"
                         show-search
                         :label="field.placeholder"
                         :placeholder="field.placeholder"
                         :options="field.options"
-                        :filter-option="filterOption"
                         @change="field.handler" 
                     />
                 
@@ -48,14 +48,6 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="w-5/5">
-            <button
-            @click="toggleMitable"
-            >
-                show field
-            </button>
-        </div> -->
-        
     </div>
 </template>
 
@@ -136,7 +128,7 @@ onUnmounted(()=>{
 })
 
 
-
+const getFeatures = (features)=>features
 //functions
 
 </script>
