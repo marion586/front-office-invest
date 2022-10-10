@@ -5,7 +5,6 @@
             <div v-if="isListCards" class="list__container-product">
                 <CardProducts :DataCard="dataCard" />
             </div>
-
             <Map
                 @click="showInfo"
                 v-if="isShowCart"

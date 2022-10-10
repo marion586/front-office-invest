@@ -6,7 +6,13 @@
                 <ListBullet v-if="filterObject.isShowCart" @click="showInfo" />
             </div>
             <div class="filter__left-subtitle">
-                <Title type="h4" label="Acquérir un bien" weight="bold" />
+                <Title
+                    v-if="!isMap"
+                    type="h4"
+                    label="Acquérir un bien"
+                    weight="bold"
+                />
+                <Title v-if="isMap" type="h4" label="Map View" weight="bold" />
             </div>
         </div>
 

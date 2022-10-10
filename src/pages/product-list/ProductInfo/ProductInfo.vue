@@ -86,14 +86,14 @@
 
 <style lang="scss" scoped>
     .product-info {
-        @apply grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  gap-2;
+        @apply grid  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3  gap-2;
         height: auto;
         &__left {
-            @apply col-span-1 sm:w-full;
+            @apply sm:col-span-2 md:col-span-2 md:justify-self-center lg:col-span-1  sm:w-full;
             height: 478px;
         }
         &__right {
-            @apply col-span-2 sm:col-span-2  md:col-span-2   flex flex-col gap-2;
+            @apply col-span-1 sm:col-span-2  md:col-span-2 lg:col-span-2 xl:col-span-2   flex flex-col gap-2;
             height: 478px;
             .my-map {
                 height: 478px;
