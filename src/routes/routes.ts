@@ -72,6 +72,11 @@ const routes = <Array<RouteRecordRaw>>[
         component: () => import('@/pages/product-list/List.vue'),
     },
     {
+        name: 'add',
+        path: '/add',
+        component: () => import('@/pages/add/index.vue'),
+    },
+    {
         name: 'not-found',
         path: '/:path(.*)*',
         component: () => import('@/pages/error/404.vue'),

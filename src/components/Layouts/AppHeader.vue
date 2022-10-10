@@ -53,7 +53,7 @@
             submenu: [
                 {
                     label: 'Vendre un bien',
-                    path: '/mon-compte',
+                    path: '/ajouter',
                 },
                 {
                     label: 'Acquérir un bien',
