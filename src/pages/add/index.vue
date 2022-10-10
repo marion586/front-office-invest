@@ -1,11 +1,7 @@
 
 <script lang="ts" setup>
 import SideBar from '@/components/Display/SideBar/index.vue';
-import { reactive, ref, shallowRef } from 'vue';
-import DefaultMenu from '@/components/Icon/DefaultMenuIcon.vue';
-import Adress from '@/pages/add/components/Address/index.vue';
-import Photos from '@/pages/add/components/Photos/index.vue';
-import Price from '@/pages/add/components/Price/index.vue';
+import { shallowRef } from 'vue';
 import PropertyType from '@/pages/add/components/PropertyType/index.vue';
 import Steps from '@/components/Display/Steps/index.vue';
 import { data } from "@/pages/add/data";
@@ -44,7 +40,7 @@ function changeComponent(comp : object){
             &__content{
                   @apply bg-[white] rounded-[8px] p-[10px] md:p-[24px] sm:w-[100%] lg:w-[893px] mt-[10px] md:mt-[0px];
                   @media (min-width : 768px) {
-                        min-height: calc(100vh - 80px);
+                        min-height: calc(100vh - 100px);
                   }
             }
       }
