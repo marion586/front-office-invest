@@ -2,12 +2,8 @@
     import store from '@/store';
     import { ref, watch, onMounted } from 'vue';
     import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
-    // import AAffix from 'ant-design-vue/lib/affix';
-    // import AMenu from 'ant-design-vue/lib/menu';
-    // import ASubMenu from 'ant-design-vue/lib/menu/src/SubMenu';
-    // import AMenuItemGroup from 'ant-design-vue/lib/menu/src/ItemGroup';
-    // import AMenuItem from 'ant-design-vue/lib/menu/src/MenuItem';
     import ArrowBottom from '@/components/Icon/ArrowBottom.vue';
+    import { dataMenu } from './dataHeader';
     import {
         Affix as AAffix,
         Menu as AMenu,
@@ -41,99 +37,6 @@
         },
         { immediate: true, deep: true }
     );
-
-    const dataMenu = [
-        {
-            label: 'Accueil',
-            path: '/',
-        },
-        {
-            label: 'Immobilier',
-            path: '#',
-            submenu: [
-                {
-                    label: 'Vendre un bien',
-                    path: '/ajouter',
-                },
-                {
-                    label: 'Acquérir un bien',
-                    path: '/',
-                },
-                {
-                    label: 'Mettre un bien en location',
-                    path: '/',
-                },
-                {
-                    label: 'Louer un bien',
-                    path: '/',
-                },
-                {
-                    label: 'ImmoGo',
-                    path: '/',
-                },
-            ],
-        },
-        {
-            label: 'Finance',
-            path: '#',
-            submenu: [
-                {
-                    label: 'Vendre un bien',
-                    path: '/',
-                },
-                {
-                    label: 'Acquérir un bien',
-                    path: '/',
-                },
-                {
-                    label: 'Mettre un bien en location',
-                    path: '/',
-                },
-                {
-                    label: 'Louer un bien',
-                    path: '/',
-                },
-                {
-                    label: 'ImmoGo',
-                    path: '/',
-                },
-            ],
-        },
-        {
-            label: 'Travaux',
-            path: '#',
-            submenu: [
-                {
-                    label: 'Vendre un bien',
-                    path: '/',
-                },
-                {
-                    label: 'Acquérir un bien',
-                    path: '/',
-                },
-                {
-                    label: 'Mettre un bien en location',
-                    path: '/',
-                },
-                {
-                    label: 'Louer un bien',
-                    path: '/',
-                },
-                {
-                    label: 'ImmoGo',
-                    path: '/',
-                },
-            ],
-        },
-        {
-            label: 'Transport',
-            path: '/',
-        },
-        {
-            label: 'Art’home',
-            path: '/',
-        },
-    ];
 </script>
 
 <template>
@@ -189,13 +92,6 @@
                                     >Connexion</router-link
                                 >
                             </a-menu-item>
-                            <a-menu-item :key="`setting:1001`">
-                                <router-link
-                                    @click="handleShowMenu"
-                                    to="/inscription"
-                                    >Inscription</router-link
-                                >
-                            </a-menu-item>
                         </template>
                         <template v-else>
                             <a-menu-item :key="`setting:1002`">
@@ -214,14 +110,17 @@
                 <div class="header__content-menu">
                     <a-menu mode="horizontal">
                         <template v-for="(d, index) in dataMenu">
-                            <template v-if="!d.submenu">
+                            <template v-if="!d.submenu && d.view === 'all'">
                                 <a-menu-item :key="`alipay-${index}`">
                                     <router-link :to="d.path">
                                         {{ d.label }}
                                     </router-link>
                                 </a-menu-item>
                             </template>
-                            <a-sub-menu :key="`sub-${index}`" v-else>
+                            <a-sub-menu
+                                :key="`sub-${index}`"
+                                v-else-if="d.submenu && d.view !== 'mobile'"
+                            >
                                 <template #title>
                                     <span>{{ d.label }}</span>
                                     <ArrowBottom
