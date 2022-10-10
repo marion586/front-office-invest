@@ -1,14 +1,14 @@
 <template>
     <ProductCard
         :DataCard="card"
-        v-for="(card, index) in dataCard"
+        v-for="(card, index) in DataCard"
         :key="index"
     />
 </template>
 
 <script setup lang="ts">
     import ProductCard from '@/components/Display/ProductCard/ProductCard.vue';
-    import { ref } from 'vue';
+    import { PropType, ref } from 'vue';
     interface DataProps {
         image: string;
         type: string;
@@ -20,39 +20,10 @@
         offerSentCount: number;
         adress: string;
     }
-    const dataCard = ref<DataProps[]>([
-        {
-            image: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-            type: 'Maison',
-            price: 200000,
-            roomCount: 1,
-            bedroomCount: 1,
-            surface: 400,
-            interested: 1,
-            offerSentCount: 1,
-            adress: 'Hoedenmakerstraat 38, 1000 Brussel, Belgium',
+    defineProps({
+        DataCard: {
+            type: Object as PropType<DataProps[]>,
+            required: true,
         },
-        {
-            image: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-            type: 'Maison',
-            price: 200000,
-            roomCount: 1,
-            bedroomCount: 1,
-            surface: 400,
-            interested: 1,
-            offerSentCount: 1,
-            adress: 'Hoedenmakerstraat 38, 1000 Brussel, Belgium',
-        },
-        {
-            image: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-            type: 'Maison',
-            price: 200000,
-            roomCount: 1,
-            bedroomCount: 1,
-            surface: 400,
-            interested: 1,
-            offerSentCount: 1,
-            adress: 'Hoedenmakerstraat 38, 1000 Brussel, Belgium',
-        },
-    ]);
+    });
 </script>

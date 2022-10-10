@@ -45,19 +45,26 @@ const routes = <Array<RouteRecordRaw>>[
         beforeEnter: [logoutGuard],
     },
     {
-        name: "detail",
-        path: "/detail",
-        component: () => import("@/pages/detail/index.vue"),
+        name: 'find-property',
+        path: '/recherche-bien',
+        component: () => import('@/pages/find-Property/index.vue'),
+    },
+    {
+        name: 'detail',
+        path: '/detail',
+        component: () => import('@/pages/detail/index.vue'),
         children: [
             {
-                path: "/Detail/A",
-                component: () => import("@/pages/detail/component/ComponentA.vue"),
+                path: '/Detail/A',
+                component: () =>
+                    import('@/pages/detail/component/ComponentA.vue'),
             },
             {
-                path: "/Detail/B",
-                component: () => import("@/pages/detail/component/ComponentB.vue"),
+                path: '/Detail/B',
+                component: () =>
+                    import('@/pages/detail/component/ComponentB.vue'),
             },
-        ]
+        ],
     },
     {
         name: 'product-list',
@@ -65,10 +72,15 @@ const routes = <Array<RouteRecordRaw>>[
         component: () => import('@/pages/product-list/List.vue'),
     },
     {
-        name : 'add',
-        path : '/add',
-        component : () => import('@/pages/add/index.vue'),
-    }
+        name: 'add',
+        path: '/add',
+        component: () => import('@/pages/add/index.vue'),
+    },
+    {
+        name: 'not-found',
+        path: '/:path(.*)*',
+        component: () => import('@/pages/error/404.vue'),
+    },
 ];
 
 export default routes;

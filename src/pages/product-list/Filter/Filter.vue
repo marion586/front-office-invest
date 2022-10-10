@@ -2,21 +2,46 @@
     <div class="filter">
         <div class="filter__left">
             <div class="filter__left-icon">
-                <Cart />
+                <Cart v-if="filterObject.isListCards" @click="showCart" />
+                <ListBullet v-if="filterObject.isShowCart" @click="showInfo" />
             </div>
             <div class="filter__left-subtitle">
-                <Title type="h4" label="Acquérir un bien" weight="bold" />
+                <Title
+                    v-if="!isMap"
+                    type="h4"
+                    label="Acquérir un bien"
+                    weight="bold"
+                />
+                <Title v-if="isMap" type="h4" label="Map View" weight="bold" />
             </div>
         </div>
 
         <div class="filter__right">
-            <Button type="secondary">
+            <Button
+                v-if="filterObject.isListCards"
+                @on-click="showCart"
+                type="secondary"
+            >
                 <div>
-                    <Cart />
+                    <Cart color="#fff" />
                     <span> Sur carte </span>
                 </div>
             </Button>
-            <div class="filter__right-content">
+            <Button
+                @on-click="filterObject.showCart"
+                v-if="
+                    (filterObject.isShowCart || filterObject.isShowInfo) &&
+                    !isMap
+                "
+                type="secondary"
+            >
+                <div>
+                    <ListBullet color="#fff" />
+                    <span> Sur Liste</span>
+                </div>
+            </Button>
+            <FullScreen v-if="isMap" />
+            <div v-if="filterObject.isListCards" class="filter__right-content">
                 <Title type="h4" label="Filtrer par:" weight="bold" />
                 <div class="filter__right-content-select">
                     <Select
@@ -32,16 +57,17 @@
 
 <script setup lang="ts">
     import Cart from '@/components/Icon/Cart.vue';
-    import Select from '@/components/Common/Select/Select.vue';
-    import { ref } from 'vue';
     import Title from '@/components/Common/Title/Title.vue';
+    import Select from '@/components/Common/Select/Select.vue';
     import Button from '@/components/Common/Button/Button.vue';
+    import ListBullet from '@/components/Icon/ListBullet.vue';
+    import { inject, ref } from 'vue';
+    import FullScreen from '../../../components/Icon/FullScreen.vue';
 
     interface Option {
         value: string;
         label: string;
     }
-
     const options = ref<Option[]>([
         {
             value: 'Prix asc',
@@ -52,6 +78,31 @@
             label: 'Prix dsc',
         },
     ]);
+    interface filters {
+        isShowCart: boolean;
+        isListCards: boolean;
+        isShowInfo: boolean;
+    }
+    let filterObject: any = inject('filterObject');
+
+    const emit = defineEmits<{
+        (e: 'on-show-cart'): void;
+        (e: 'on-show-card'): void;
+        (e: 'on-show-info'): void;
+    }>();
+
+    const showCart = () => {
+        emit('on-show-cart');
+    };
+    const showInfo = () => {
+        emit('on-show-info');
+    };
+    defineProps({
+        isMap: {
+            tpe: Boolean,
+            default: false,
+        },
+    });
 </script>
 
 <style lang="scss" scoped>
@@ -71,13 +122,17 @@
         }
         &__right {
             @apply flex flex-col items-end gap-2;
+
             button {
-                @apply hidden sm:block;
+                @apply hidden md:block;
+                width: 126px;
+                padding: 6px 10px;
                 div {
-                    @apply flex flex-row items-center gap-2;
+                    @apply flex flex-row justify-center items-center gap-3;
                 }
                 height: 33px;
             }
+
             &-content {
                 @apply flex items-center gap-4;
                 &-select {

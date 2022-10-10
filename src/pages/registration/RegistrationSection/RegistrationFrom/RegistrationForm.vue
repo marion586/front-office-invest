@@ -1,194 +1,201 @@
 <template>
     <div>
         <form @submit.prevent="handleSubmit" class="auth__form">
-            <Input
-                label="Nom"
-                placeholder="Nom"
-                :model="registerData.name"
-                name-input="name"
-                @on-input="handleInput"
-            />
-            <Button type="secondary" html-type="submit" width="100%">
-                Connexion
-            </Button>
-        </form>
-        <form @submit.prevent="handleSubmit">
-            <input
-                placeholder="Nom"
-                @input="handleInput"
-                type="text"
-                name="name"
-                id="name"
-                :value="registerData.name"
-            />
-            <input
-                placeholder="email"
-                @input="handleInput"
-                type="text"
-                name="email"
-                id="email"
-                :value="registerData.email"
-            />
-            <input
-                placeholder="logo"
-                @input="handleInput"
-                type="text"
-                name="logo"
-                id="logo"
-                :value="registerData.logo"
-            />
-            <input
-                placeholder="addresse"
-                @input="handleInput"
-                type="text"
-                name="adress"
-                id="adress"
-                :value="registerData.adress"
-            />
-            <input
-                placeholder="nom inc."
-                @input="handleInput"
-                type="text"
-                name="nameEntreprise"
-                id="nameEntreprise"
-                :value="registerData.nameEntreprise"
-            />
-            <input
-                placeholder="nb inc."
-                @input="handleInput"
-                type="text"
-                name="numberEntreprise"
-                id="numberEntreprise"
-                :value="registerData.numberEntreprise"
-            />
-            <input
-                @input="handleInput"
-                placeholder="Mot de passe"
-                type="text"
-                name="password"
-                id="password"
-                :value="registerData.password"
-            />
-            <input
-                @input="handleInput"
-                placeholder="confirmer mot de passe"
-                type="text"
-                name="confirmPassword"
-                id="confirmPassword"
-                :value="registerData.confirmPassword"
-            />
-            <!-- SHOW ERROR -->
-            <p
-                v-if="
-                    isSubmitClicked &&
-                    (isValid?.name === false || !isErrorObjEmpty)
-                "
+            <div
+                class="auth__form__title-section"
+                v-if="usertype === 'professionnel'"
             >
-                Nom obligatoire
-            </p>
+                <Paragraphe>Information sur l'entreprise</Paragraphe>
+                <hr />
+            </div>
+            <div class="auth__form__select-field">
+                <label>
+                    <span class="auth__form__select-field--required">*</span>
+                    Type</label
+                >
+                <Select
+                    placeholder="Selectionnez"
+                    name="select"
+                    :options="professionnalUserOption"
+                    @change="handleChangeSelect"
+                    :defaultValue="particularUsertype"
+                    :disabled="usertype === 'particulier'"
+                />
+            </div>
 
-            <button type="submit">Enregister</button>
+            <div v-for="(field, index) in formParams">
+                <div
+                    class="auth__form__title-section"
+                    v-if="
+                        usertype === 'professionnel' &&
+                        field.name === 'firstname'
+                    "
+                >
+                    <Paragraphe>Information personnelle</Paragraphe>
+                    <hr />
+                </div>
+                <Input
+                    :key="index"
+                    :label="field.label"
+                    :required="field.required"
+                    :placeholder="field.placeholder"
+                    :name-input="field.name"
+                    :inputType="field?.type"
+                    @input="handleInput"
+                    :has-error="{
+                        status: !!(errors as any)[field.name] && (errors as any)[field.name] !== '' && activeError,
+                        errorMsg: (errors as any)[field.name] || '',
+                    }"
+                />
+            </div>
+            <Button type="secondary" html-type="submit" width="100%"
+                ><span>S'inscrire</span></Button
+            >
         </form>
     </div>
 </template>
 <script lang="ts" setup>
     import Button from '@/components/Common/Button/Button.vue';
     import Input from '@/components/Common/Input/Input.vue';
-    import useFormValidation from '@/composables/useFormValidation';
-
-    import { computed } from '@vue/reactivity';
-    import { reactive, ref } from 'vue';
+    import LoadingButton from '@/components/Icon/LoadingButton.vue';
+    import { SelectValue } from 'ant-design-vue/lib/select';
+    import { onMounted, watchEffect, PropType, reactive, ref } from 'vue';
     import { Router, useRouter } from 'vue-router';
     import { Store, useStore } from 'vuex';
+    import Select from '../../../../components/Common/Select/Select.vue';
+    import {
+        particularUserForm,
+        professionnalUserForm,
+        particularErrorFields,
+        professsionnalErrorFields,
+    } from './registration.data';
+    import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
 
     const store: Store<any> = useStore();
     const router: Router = useRouter();
     const props = defineProps({
         usertype: {
-            type: String,
+            type: String as PropType<'particulier' | 'professionnel'>,
             require: true,
-            default: '',
         },
     });
-    const { isValid, validateNameField } = useFormValidation();
-    interface IUser {
-        name?: string;
-        email: string;
-        logo?: string;
-        adress: string;
-        nameEntreprise?: string;
-        numberEntreprise?: string;
-        password: string;
-        confirmPassword: string;
-    }
+    const particularUsertype = ref<SelectValue>();
+    const professionnalUserOption = ref<SelectValue>();
+    let errors = reactive<Object>({});
+    let tmpErrors = reactive<Object>({});
 
-    let registerData = reactive<IUser>({
-        name: '',
-        email: '',
-        logo: '',
-        adress: '',
-        nameEntreprise: '',
-        numberEntreprise: '',
-        password: '',
-        confirmPassword: '',
+    watchEffect(() => {
+        if (props.usertype === 'particulier') {
+            particularUsertype.value = {
+                value: 'particulier',
+                label: 'Particulier',
+            };
+        } else {
+            professionnalUserOption.value = [
+                { value: 'agent', label: 'Agent' },
+                { value: 'notaire', label: 'Notaire' },
+            ];
+        }
+    });
+    onMounted(() => {
+        switch (props.usertype) {
+            case 'particulier':
+                formParams.value = [...particularUserForm];
+                errors = Object.assign(errors, particularErrorFields);
+                tmpErrors = Object.assign(tmpErrors, particularErrorFields);
+                break;
+            case 'professionnel':
+                formParams.value = [...professionnalUserForm];
+                errors = Object.assign(errors, professsionnalErrorFields);
+                tmpErrors = Object.assign(tmpErrors, professsionnalErrorFields);
+                break;
+            default:
+                break;
+        }
     });
 
-    let resetFields = reactive<IUser>({ ...registerData });
+    const activeError = ref<boolean>(false);
 
-    const isErrorObjEmpty: any = computed(() => {
-        return Object.values(isValid).length;
-    });
+    const formParams = ref<Array<IUserField>>([]);
 
-    function isPasswordConfirmed(): boolean {
-        return (
-            registerData?.password !== '' &&
-            registerData?.confirmPassword !== '' &&
-            registerData?.password === registerData?.confirmPassword
-        );
+    function handleChangeSelect(obj: object) {
+        console.log(obj);
     }
+
+    // function isPasswordConfirmed(): boolean {
+    //     return (
+    //         // registerData?.password !== '' &&
+    //         // registerData?.confirmPassword !== '' &&
+    //         // registerData?.password === registerData?.confirmPassword
+    //     );
+    // }
 
     function handleInput(e: object) {
-        // const name: string = (e.target as HTMLInputElement).name;
-        // const value: string = (e.target as HTMLInputElement).value;
-
-        /**Validate input value for checking some errors */
-        // validateNameField(name, value);
-        registerData = { ...registerData, ...e };
+        for (const key in e) {
+            formParams.value.forEach((field) => {
+                if (key === field.name) {
+                    formParams.value.splice(
+                        formParams.value.indexOf(field),
+                        1,
+                        { ...field, value: (e as any)[key] }
+                    );
+                    if (field.required) {
+                        const isEmpty = (e as any)[key] === '';
+                        (errors as any)[key] = isEmpty
+                            ? (tmpErrors as any)[key]
+                            : '';
+                    }
+                }
+            });
+        }
+        console.log(errors);
     }
 
     function sendFormData() {
         /** Keep data user into store */
-        store.dispatch('UserModule/setRegisteredUser', {
-            registerData,
-            usertype: props.usertype,
-        });
-
-        // go to subscription section
-        router.push({
-            name: 'authSubscription',
-        });
-        registerData = { ...resetFields };
+        // store.dispatch('UserModule/setRegisteredUser', {
+        //     registerData,
+        //     usertype: props.usertype,
+        // });
+        // // go to subscription section
+        // router.push({
+        //     name: 'authSubscription',
+        // });
+        // registerData = { ...resetFields };
     }
 
-    const isSubmitClicked = ref<boolean>(false);
     function handleSubmit() {
-        /**
-         * activate the error mode on isSubmitClicked to true
-         * dont show the errors on mounted status
-         */
-        isSubmitClicked.value = true;
-        const requiedFields = [
-            'email',
-            'adress',
-            'password',
-            'confirmPassword',
-        ] as Array<string>;
-        let isFormFieldsNotEmpty: boolean = false;
-        requiedFields.forEach((key) => {
-            isFormFieldsNotEmpty = isValid[key] === true ? true : false;
-        });
-
+        activeError.value = true;
+        const isFormInputValid = Object.values(errors).every((v) => v === '');
+        isFormInputValid ? console.log('ok') : console.log('not ok');
         /**Ensure call API when all valid */
-        isFormFieldsNotEmpty && isPasswordConfirmed() && sendFormData();
+        // isFormFieldsNotEmpty && isPasswordConfirmed() && sendFormData();
     }
 </script>
+
+<style lang="scss" scoped>
+    .auth__form {
+        &__title-section {
+            :deep() {
+                text-transform: uppercase;
+                color: var(--color-gray-icon);
+                margin: 40px 0 10px 0;
+                font-weight: 700;
+                // font-size: 50px;
+            }
+        }
+        &__select-field {
+            margin-bottom: 18px;
+            &--required {
+                color: red;
+                margin-right: 5px;
+            }
+            label {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--color-gray-icon);
+                margin-bottom: 10px;
+            }
+        }
+    }
+</style>

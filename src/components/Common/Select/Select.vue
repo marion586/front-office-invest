@@ -1,9 +1,10 @@
 <template>
     <a-select
-        :options="options"
-        @change="() => handleChange"
+        :options="(options as DefaultOptionType[])"
+        @change="handleChange"
         :placeholder="placeholder"
         class="select"
+        :disabled="disabled"
     >
         <template #suffixIcon>
             <ArrowBottom />
@@ -13,13 +14,20 @@
 
 <script setup lang="ts">
     import ArrowBottom from '@/components/Icon/ArrowBottom.vue';
-    import ASelect from 'ant-design-vue/lib/select';
+    import ASelect, {
+        DefaultOptionType,
+        SelectValue,
+    } from 'ant-design-vue/lib/select';
+    import { ref, onMounted } from 'vue';
 
     interface Props {
-        options: Array<object>;
+        options?: SelectValue;
         name: string;
         placeholder?: string;
+        disabled?: boolean;
     }
+
+    const currentSelectedValue = ref<SelectValue>();
 
     const selectProps = defineProps<Props>();
 
@@ -27,7 +35,8 @@
         (event: 'change', e: object): void;
     }>();
 
-    const handleChange = (value: string) => {
+    const handleChange = (value: SelectValue) => {
+        currentSelectedValue.value = value;
         const selectValue: object = {
             [selectProps.name]: value,
         };
@@ -45,6 +54,7 @@
                 font-size: 14px;
                 height: 38px;
                 border-radius: 4px;
+                @apply flex items-center;
             }
             .ant-select-selection-placeholder {
                 @apply flex items-center;
