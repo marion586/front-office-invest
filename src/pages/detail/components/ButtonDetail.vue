@@ -24,7 +24,7 @@
     interface BtnList {
         id: number;
         label: string;
-        icon?: string;
+        icon?: any;
     }
 
     const btnList: BtnList[] = [

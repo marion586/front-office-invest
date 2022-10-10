@@ -1,5 +1,5 @@
 <template>
-    <!-- <BreadCrumb class="relative mb-2" :items="breadcrumbs" /> -->
+    <BreadCrumb class="relative mb-2" :items="breadcrumbs" />
     <div class="detail">
         <div class="detail__head">
             <HeadProduct
@@ -55,6 +55,7 @@
                 </div>
             </div>
             <hr class="my-[10px]" />
+            <!-- <component :is="BtnList.icon"/> -->
             <ButtonDetail class="detail__btnList" />
             <div class="detail__btnContainer">
                 <Button class="detail__btnOffer">Faire un offre</Button>
@@ -94,95 +95,50 @@
 
 <style lang="scss" scoped>
     .detail {
-        @media (min-width: 1024px) {
-            background-color: white;
-            border-radius: 8px;
-            margin: 0 15px 18px 15px;
-            padding: 14px;
-        }
+        //responsive 1024px
+        @apply lg:bg-white lg:rounded-lg lg:mx-4 lg:mt-0 lg:mb-4 lg:p-3;
+
         &__head {
             position: relative;
             height: 280px;
-
-            @media (min-width: 1024px) {
-                display: flex;
-                flex-direction: column;
-            }
+            //responsive 1024px
+            @apply lg:flex lg:flex-col;
         }
         &__headProductBg {
             background: rgba(96, 96, 96, 0.25);
             padding: 8px 10px;
             position: absolute;
-            @media (min-width: 1024px) {
-                background-color: #ffffff;
-                position: initial;
-                margin-bottom: 18px;
-            }
+            //responsive 1024px
+            @apply lg:bg-white lg:static mb-[18px];
         }
         .container-head {
-            width: 100%;
+            @apply w-full;
         }
+
         &__img {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            object-fit: cover;
-            z-index: -1;
-            @media (min-width: 1024px) {
-                position: initial;
-                z-index: 1;
-                margin-left: 20px;
-                margin-right: 20px;
-                width: auto;
-                border-radius: 8px;
-            }
+            @apply block ml-auto mr-auto w-full h-full absolute object-cover z-[-1];
+            //responsive 1024px
+            @apply lg:static lg:z-[1] lg:mx-5 lg:w-auto lg:rounded-lg;
         }
         &__botText {
-            position: absolute;
-            bottom: 0;
-            margin: 0 0 15px 15px;
-            background-color: #14223c;
-            border-radius: 4px;
-            padding: 4px 8px;
-            @apply text-white;
-            @media (min-width: 1024px) {
-                z-index: 1;
-                left: 20px;
-            }
+            @apply absolute bottom-0 mt-0 mr-0 mb-[15px] ml-[15px] bg-[#14223c] rounded py-1 px-2 text-white;
+            //responsive 1024px
+            @apply lg:left-5 lg:z-[1];
         }
         &__txtDetail {
-            border-radius: 8px;
-            background-color: #ffffff;
-            margin: 10px 10px 0 10px;
-            padding: 10px;
-            @media (min-width: 1024px) {
-                // background-color: #000000;
-                margin-top: 18px;
-                box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.05);
-                margin-left: 20px;
-                margin-right: 20px;
-            }
+            @apply rounded bg-[#ffffff] mt-[10px] mr-[10px] mb-0 ml-[10px] p-[10px];
+            //responsive 1024px
+            @apply lg:mt-[18px] lg:mx-5 lg:shadow-[4px_4px_8px_rgba(0,0,0,0.05)];
         }
         &__propertyType {
-            font-weight: 600;
-            font-size: 16px;
+            @apply font-semibold text-base;
         }
         &__propertyPrice {
-            @apply ml-auto;
+            @apply ml-auto rounded-[15px] py-1 px-3 not-italic font-semibold text-sm text-[#ff8282];
             background: rgba(255, 130, 130, 0.15);
-            border-radius: 15px;
-            padding: 4px 12px;
-            //text
-            font-style: normal;
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 17px;
-            color: #ff8282;
         }
         &__title {
+            //eto tohizana
             font-style: normal;
             font-weight: 600;
             font-size: 14px;
@@ -230,7 +186,7 @@
             justify-content: center;
         }
         &__btnOffer {
-            @apply rounded text-sm font-semibold;
+            @apply rounded text-sm font-semibold w-full;
             @media (min-width: 1024px) {
                 width: 367px;
             }

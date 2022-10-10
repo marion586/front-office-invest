@@ -51,11 +51,11 @@ const routes = <Array<RouteRecordRaw>>[
         children: [
             {
                 path: "/Detail/A",
-                component: () => import("@/pages/detail/component/ComponentA.vue"),
+                component: () => import("@/pages/detail/components/ComponentA.vue"),
             },
             {
                 path: "/Detail/B",
-                component: () => import("@/pages/detail/component/ComponentB.vue"),
+                component: () => import("@/pages/detail/components/ComponentB.vue"),
             },
         ]
     },
