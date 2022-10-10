@@ -112,7 +112,7 @@ function changeComponent(comp : object){
                   @apply m-[12px] md:flex gap-[20px] md:gap-[10px]
             }
             &__content{
-                  @apply bg-[white] rounded-[8px] p-[24px] min-w-[893px] sm:w-[100%] lg:w-[893px];
+                  @apply bg-[white] rounded-[8px] p-[24px] lg:w-[893px] sm:w-[100%] lg:w-[893px];
                   @media (min-width : 768px) {
                         min-height: calc(100vh - 80px);
                   }
