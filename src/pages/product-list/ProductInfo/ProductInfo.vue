@@ -67,10 +67,6 @@
 
 <template>
     <div class="product-info">
-        <div class="product-info__left">
-            <ProductCard :DataCard="DataCard[0]" />
-        </div>
-
         <div class="product-info__right">
             <Filter @on-show-cart="$emit('on-show-cart')" :isMap="true" />
             <Map
@@ -79,6 +75,9 @@
                 :needMarkerLayer="true"
                 :markersCoordinates="data.PlaceCoordinates"
             />
+        </div>
+        <div class="product-info__left">
+            <ProductCard :DataCard="DataCard[0]" />
         </div>
     </div>
 </template>

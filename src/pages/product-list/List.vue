@@ -2,6 +2,7 @@
     <div class="list">
         <div class="list__container">
             <Filter
+                :class="`${isShowInfo ? 'list__container-filter' : ''}`"
                 @on-show-cart="showCart"
                 @on-show-card="showCard"
                 @on-show-info="showInfo"
@@ -155,6 +156,9 @@
             @apply flex flex-col py-5 gap-4;
             &-product {
                 @apply grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4;
+            }
+            &-filter {
+                @apply hidden sm:hidden md:hidden lg:flex ;
             }
         }
         .my-map {

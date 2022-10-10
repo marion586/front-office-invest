@@ -3,7 +3,7 @@
         <div class="filter__left">
             <div class="filter__left-icon">
                 <Cart v-if="filterObject.isListCards" @click="showCart" />
-                <ListBullet v-if="filterObject.isShowCart" @click="showInfo" />
+                <ListBullet v-if="filterObject.isShowCart" @click="showCard" />
             </div>
             <div class="filter__left-subtitle">
                 <Title
@@ -12,8 +12,8 @@
                     label="Acquérir un bien"
                     weight="bold"
                 />
-                <Title v-if="isMap" type="h4" label="Map View" weight="bold" />
             </div>
+            <Title v-if="isMap" type="h4" label="Map View" weight="bold" />
         </div>
 
         <div class="filter__right">
