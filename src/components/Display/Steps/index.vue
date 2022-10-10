@@ -1,27 +1,30 @@
 <script lang="ts" setup>
 import ASteps from "ant-design-vue/lib/steps";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 import ArrowMenu from '@/components/Icon/ArrowMenu.vue';
 
 
 const AStep  = ASteps.Step;
 const step = ref<number>(0);
-const idActive = ref<number>(0);
-const idItemActive = ref<number>(0)
+const idActive = ref<Array<number>>([0]);
+const idItemActive = ref<Array<number>>([0])
+
+const emit = defineEmits(['component'])
 
 defineProps<{
       data : any
 }>();
 
-function changeStep(item : any) : void{
-      step.value = item.id
-}
 
 function clickItem(item : any, subitem ?: any) : void{
       if(subitem){
-            idActive.value = subitem.id;
+            idActive.value = [...idActive.value, subitem.id];
+            emit('component', subitem.component);
+      }else{
+            emit('component', item.component);
       }
-      idItemActive.value = item.id;
+      idItemActive.value = [...idItemActive.value, item.id];
+      
 }
 
 
@@ -33,17 +36,18 @@ function clickItem(item : any, subitem ?: any) : void{
                   :current="step"  
                   direction="vertical"
                   size="small"
+                  class=""
             >
-                  <a-step v-for="item in data" @change="changeStep(item)" >
-                        <template #title>
+                  <a-step v-for="item in data" class="" >
+                        <template #title >
                               {{item.label}}
                         </template>
-                        <template #subTitle v-if="item.id === idItemActive">
+                        <template #subTitle v-if="item.id === idItemActive[idItemActive.length - 1]">
                               <arrow-menu/>
                         </template>
                         <template #description >
-                              <a-steps progress-dot class="steps-description" direction="vertical" v-if="item.id === idItemActive">
-                                    <a-step v-for="subItem in item.subMenu" @click="clickItem(item, subItem)" :class="[idActive === subItem.id ? 'sub-item-active' : '']">
+                              <a-steps progress-dot class="steps-description hidden md:flex" direction="vertical" v-if="item.id === idItemActive[idItemActive.length - 1]">
+                                    <a-step v-for="subItem in item.subMenu" @click="clickItem(item, subItem)" :class="[subItem.id === idActive[idActive.length - 1] ? 'sub-item-active' : '']">
                                           <template #title>
                                                 {{subItem.label}}
                                           </template>
@@ -59,7 +63,7 @@ function clickItem(item : any, subitem ?: any) : void{
      
       .mc{
             &__container{
-                  @apply bg-[white] w-[315px] rounded-[8px] p-[12px];
+                  @apply bg-[white] w-[100%] md:w-[315px] rounded-[8px] p-[12px];
                   .sub-item-active{
                         background-color: var(--color-gray);
                         @apply rounded-[8px] w-[200px] h-[42px] flex items-center;

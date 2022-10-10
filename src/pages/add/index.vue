@@ -1,7 +1,7 @@
 
 <script lang="ts" setup>
 import SideBar from '@/components/Display/SideBar/index.vue';
-import { ref } from 'vue';
+import { ref, shallowRef } from 'vue';
 import DefaultMenu from '@/components/Icon/DefaultMenuIcon.vue';
 import Adress from '@/pages/add/components/Address/index.vue';
 import Photos from '@/pages/add/components/Photos/index.vue';
@@ -9,12 +9,13 @@ import Price from '@/pages/add/components/Price/index.vue';
 import PropertyType from '@/pages/add/components/PropertyType/index.vue';
 import Steps from '@/components/Display/Steps/index.vue';
 
-const activeComp = ref<Array<any>>([PropertyType])
+
+const activeComp = shallowRef<Array<object>>([PropertyType])
 
 interface SubMenu{
       id : number,
       label : string,
-      component ?: any
+      component ?: object
 }
 
 interface Menu {
@@ -22,7 +23,7 @@ interface Menu {
       label : string,
       icon : string,
       subMenu ?: SubMenu[],
-      component ?: any
+      component ?: object
 }
 
 const menu = ref<Array<Menu>>([
@@ -57,19 +58,18 @@ const menu = ref<Array<Menu>>([
             id : 2,
             label : "Information de base",
             icon : DefaultMenu,
-            component : PropertyType,
             subMenu : [
                   {
                         id : 4,
-                        label : "Générale"
+                        label : "Générale",
                   },
                   {
                         id : 5,
-                        label : "intérieur"
+                        label : "intérieur",
                   },
                   {
                         id : 6,
-                        label : "Caractéristique énergetique"
+                        label : "Caractéristique énergetique",
                   },
             ]
       },
@@ -87,7 +87,7 @@ const menu = ref<Array<Menu>>([
       }
 ])
 
-function changeComponent(comp : string){
+function changeComponent(comp : object){
       activeComp.value = [comp];
 }
 
@@ -98,10 +98,10 @@ function changeComponent(comp : string){
       <div class="container">
             <div class="add__container">
                   <!-- <SideBar :data="menu" @component="changeComponent" /> -->
-                  <Steps :data="menu" />
-                  <!-- <div class="myc__content">
-                        <component :is="activeComp[activeComp.length - 1]" />
-                  </div> -->
+                  <Steps :data="menu" @component="changeComponent" />
+                  <div class="add__content">
+                        <component :is="activeComp[activeComp.length - 1]" v-bind="activeComp[activeComp.length - 1]"  />
+                  </div>
             </div>
       </div>
 </template>
@@ -109,7 +109,7 @@ function changeComponent(comp : string){
 <style scoped lang="scss">
       .add{
             &__container {
-                  @apply m-[12px] flex flex-wrap gap-[10px]
+                  @apply m-[12px] md:flex gap-[20px] md:gap-[10px]
             }
             &__content{
                   @apply bg-[white] rounded-[8px] p-[24px] max-w-[893px] sm:w-[100%] lg:w-[893px] lg:h-[675px]
