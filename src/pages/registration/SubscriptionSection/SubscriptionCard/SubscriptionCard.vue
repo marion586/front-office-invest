@@ -1,7 +1,7 @@
 <template>
     <div class="subscription">
         <div class="subscription__header">
-            <div class="subscription__header__back">
+            <div @click="goBack" class="subscription__header__back">
                 <span><span>&larr;</span> Retour</span>
             </div>
             <div class="subscription__header__content">
@@ -23,12 +23,13 @@
 </template>
 <script lang="ts" setup>
     import { onMounted, reactive, ref } from 'vue';
-    // import { Router, useRouter } from 'vue-router';
+    import { Router, useRouter } from 'vue-router';
     import { Store, useStore } from 'vuex';
-
     import Paragraphe from '../../../../components/Common/Paragraphe/Paragraphe.vue';
     import Title from '@/components/Common/Title/Title.vue';
     import CardItem from './CardItem/CardItem.vue';
+
+    const router: Router = useRouter();
 
     const subscriptionCards = reactive<ISubscriptionCards>({
         subscriptionAmount: 0.0,
@@ -74,6 +75,10 @@
 
         console.log(cardTypes.value);
     }
+
+    function goBack() {
+        router.go(-1);
+    }
 </script>
 <style lang="scss">
     // this styles if for test pupose
@@ -92,6 +97,11 @@
                 @apply flex justify-center flex-col items-center;
                 * {
                     text-align: center;
+                }
+            }
+            &__back {
+                &:hover {
+                    cursor: pointer;
                 }
             }
         }

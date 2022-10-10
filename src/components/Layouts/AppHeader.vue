@@ -1,13 +1,20 @@
 <script setup lang="ts">
     import store from '@/store';
-    import { ref, watch } from 'vue';
+    import { ref, watch, onMounted } from 'vue';
     import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
-    import AAffix from 'ant-design-vue/lib/affix';
-    import AMenu from 'ant-design-vue/lib/menu';
-    import ASubMenu from 'ant-design-vue/lib/menu/src/SubMenu';
-    import AMenuItemGroup from 'ant-design-vue/lib/menu/src/ItemGroup';
-    import AMenuItem from 'ant-design-vue/lib/menu/src/MenuItem';
+    // import AAffix from 'ant-design-vue/lib/affix';
+    // import AMenu from 'ant-design-vue/lib/menu';
+    // import ASubMenu from 'ant-design-vue/lib/menu/src/SubMenu';
+    // import AMenuItemGroup from 'ant-design-vue/lib/menu/src/ItemGroup';
+    // import AMenuItem from 'ant-design-vue/lib/menu/src/MenuItem';
     import ArrowBottom from '@/components/Icon/ArrowBottom.vue';
+    import {
+        Affix as AAffix,
+        Menu as AMenu,
+        SubMenu as ASubMenu,
+        MenuItemGroup as AMenuItemGroup,
+        MenuItem as AMenuItem,
+    } from 'ant-design-vue';
 
     /* icon */
     import IconMenu from '@/components/Icon/IconMenu.vue';
@@ -20,7 +27,9 @@
     const handleShowMenu = () => {
         isMenu.value = !isMenu.value;
     };
-
+    onMounted(() => {
+        console.log('update');
+    });
     watch(
         () => store.getters['UserModule/getUserDetails'],
         function (user) {
@@ -30,7 +39,7 @@
                 store.getters['UserModule/getUserDetails']
             );
         },
-        { immediate: true }
+        { immediate: true, deep: true }
     );
 
     const dataMenu = [
@@ -44,7 +53,7 @@
             submenu: [
                 {
                     label: 'Vendre un bien',
-                    path: '/',
+                    path: '/ajouter',
                 },
                 {
                     label: 'Acquérir un bien',
@@ -145,7 +154,10 @@
                         <template v-for="(d, index) in dataMenu">
                             <template v-if="!d.submenu">
                                 <a-menu-item :key="`alipay-${index}`">
-                                    <router-link :to="d.path">
+                                    <router-link
+                                        @click="handleShowMenu"
+                                        :to="d.path"
+                                    >
                                         {{ d.label }}
                                     </router-link>
                                 </a-menu-item>
@@ -159,12 +171,40 @@
                                     :key="key"
                                 >
                                     <a-menu-item :key="`setting:${key}`">
-                                        <router-link :to="s.path">
+                                        <router-link
+                                            @click="handleShowMenu"
+                                            :to="s.path"
+                                        >
                                             {{ s.label }}
                                         </router-link>
                                     </a-menu-item>
                                 </a-menu-item-group>
                             </a-sub-menu>
+                        </template>
+                        <template v-if="!isLoggedIn">
+                            <a-menu-item :key="`setting:100`">
+                                <router-link
+                                    @click="handleShowMenu"
+                                    to="/connexion"
+                                    >Connexion</router-link
+                                >
+                            </a-menu-item>
+                            <a-menu-item :key="`setting:1001`">
+                                <router-link
+                                    @click="handleShowMenu"
+                                    to="/inscription"
+                                    >Inscription</router-link
+                                >
+                            </a-menu-item>
+                        </template>
+                        <template v-else>
+                            <a-menu-item :key="`setting:1002`">
+                                <router-link
+                                    @click="handleShowMenu"
+                                    to="/logout"
+                                    >Deconnection</router-link
+                                >
+                            </a-menu-item>
                         </template>
                     </a-menu>
                 </div>
@@ -202,7 +242,7 @@
                         </template>
                     </a-menu>
                 </div>
-                <div class="header__user header__menu-rigth">
+                <div v-if="!isMenu" class="header__user header__menu-rigth">
                     <a-menu mode="horizontal">
                         <a-menu-item key="20">
                             <router-link to="/">
@@ -229,7 +269,7 @@
                                 </a-menu-item>
                             </a-menu-item-group>
                             <a-menu-item-group v-else>
-                                <a-menu-item :key="`setting:1001`">
+                                <a-menu-item :key="`setting:1002`">
                                     <router-link to="/logout"
                                         >Deconnection</router-link
                                     >

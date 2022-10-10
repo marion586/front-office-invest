@@ -7,8 +7,12 @@ if (localStorage.getItem('token')) {
     delete (axios as AxiosStatic).defaults.headers.common['Authentication'];
 }
 
+/**
+ * AXIOS CONFIG
+ */
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
-
+axios.defaults.timeout = 10000;
+/** */
 export class Http {
     static async get(
         url: string,
@@ -19,7 +23,7 @@ export class Http {
             return data;
         } catch (e) {
             const error = e as AxiosError;
-            throw `HTTP::GET, ${error.message}`;
+            throw error.response;
         }
     }
 
@@ -32,7 +36,7 @@ export class Http {
             return data;
         } catch (e) {
             const error = e as AxiosError;
-            throw `HTTP::POST, ${error.message}`;
+            throw error.response;
         }
     }
 }

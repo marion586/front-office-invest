@@ -1,5 +1,10 @@
 <template>
-    <button @click="$emit('click')" :class="`button__${type}`" :type="htmlType">
+    <button
+        :disabled="disabled"
+        @click="!disabled && $emit('on-click')"
+        :class="`button__${type} ${disabled ? 'disabled' : ''}`"
+        :type="htmlType"
+    >
         <slot />
     </button>
 </template>
@@ -9,6 +14,7 @@
         type?: string;
         htmlType?: 'button' | 'submit' | 'reset';
         width?: string;
+        disabled?: boolean;
     }
 
     defineProps<Props>();
@@ -28,7 +34,7 @@
             border-radius: 4px;
         }
         &__secondary {
-            border-radius: 20px;
+            border-radius: 50px;
         }
     }
 </style>

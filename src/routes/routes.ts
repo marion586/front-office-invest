@@ -47,28 +47,40 @@ const routes = <Array<RouteRecordRaw>>[
     {
         name: 'find-property',
         path: '/recherche-bien',
-        component : ()=> import('@/pages/find-Property/index.vue')
+        component: () => import('@/pages/find-Property/index.vue'),
     },
     {
-        name: "detail",
-        path: "/detail",
-        component: () => import("@/pages/detail/index.vue"),
+        name: 'detail',
+        path: '/detail',
+        component: () => import('@/pages/detail/index.vue'),
         children: [
             {
-                path: "/Detail/A",
-                component: () => import("@/pages/detail/component/ComponentA.vue"),
+                path: '/Detail/A',
+                component: () =>
+                    import('@/pages/detail/component/ComponentA.vue'),
             },
             {
-                path: "/Detail/B",
-                component: () => import("@/pages/detail/component/ComponentB.vue"),
+                path: '/Detail/B',
+                component: () =>
+                    import('@/pages/detail/component/ComponentB.vue'),
             },
-        ]
+        ],
     },
     {
         name: 'product-list',
-        path: '/product-list',
-        component: () => import('@/pages/productList/List.vue'),
-    }
+        path: '/liste-produit',
+        component: () => import('@/pages/product-list/List.vue'),
+    },
+    {
+        name: 'add',
+        path: '/add',
+        component: () => import('@/pages/add/index.vue'),
+    },
+    {
+        name: 'not-found',
+        path: '/:path(.*)*',
+        component: () => import('@/pages/error/404.vue'),
+    },
 ];
 
 export default routes;
