@@ -64,6 +64,11 @@ const routes = <Array<RouteRecordRaw>>[
         path: '/liste-produit',
         component: () => import('@/pages/product-list/List.vue'),
     },
+    {
+        name : 'add',
+        path : '/add',
+        component : () => import('@/pages/add/index.vue'),
+    }
 ];
 
 export default routes;
