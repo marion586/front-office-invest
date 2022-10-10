@@ -1,7 +1,7 @@
 <template>
     <ProductCard
-        :DataCard="card"
         v-for="(card, index) in DataCard"
+        :DataCard="card"
         :key="index"
     />
 </template>

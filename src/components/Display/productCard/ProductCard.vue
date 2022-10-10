@@ -63,13 +63,6 @@
     });
 
     const info = inject('isInfo');
-    watch(
-        () => info,
-        (value) => {
-            console.log(value, 'jsdlfjdlskjflksj');
-        },
-        { immediate: true }
-    );
 </script>
 
 <style lang="scss" scoped>
@@ -82,7 +75,7 @@
         gap: 18px;
         background: #ffffff;
         border-radius: 8px;
-        min-width: 18rem;
+        width: 100%;
         &__image {
             width: auto;
             height: 160px;

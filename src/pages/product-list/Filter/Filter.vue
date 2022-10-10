@@ -124,7 +124,7 @@
             @apply flex flex-col items-end gap-2;
 
             button {
-                @apply hidden md:block;
+                @apply hidden sm:block;
                 width: 126px;
                 padding: 6px 10px;
                 div {

@@ -130,7 +130,6 @@
     onMounted(() => {
         const proomise = geocode('Bruxelles Belgique');
         proomise.then((result) => {
-            console.log(result);
             (data.isMapReady = true),
                 data.PlaceCoordinates.push(result.coordinates);
         });
