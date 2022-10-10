@@ -1,8 +1,8 @@
 
 <script lang="ts" setup>
-import SideBar from '@/components/Display/SideBar/index.vue';
+import SideBar from '@/components/Display/SideBar/SideBar.vue';
 import { shallowRef } from 'vue';
-import PropertyType from '@/pages/add/components/PropertyType/index.vue';
+import PropertyType from '@/pages/add/components/PropertyType/PropertyType.vue';
 import Steps from '@/components/Display/Steps/index.vue';
 import { data } from "@/pages/add/data";
 
@@ -17,6 +17,10 @@ function changeComponent(comp : object){
       activeComp.value = [comp];
 }
 
+function onNext() : void{
+      console.log("bbbb\n");
+}
+
 </script>
 
 
@@ -26,7 +30,7 @@ function changeComponent(comp : object){
                   <!-- <SideBar :data="menu" @component="changeComponent" /> -->
                   <Steps :data="menu" @component="changeComponent" />
                   <div class="add__content">
-                        <component :is="activeComp[activeComp.length - 1]" v-bind="activeComp[activeComp.length - 1]"  />
+                        <component :is="activeComp[activeComp.length - 1]" @onNext="onNext"  />
                   </div>
             </div>
       </div>

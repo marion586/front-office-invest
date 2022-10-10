@@ -1,10 +1,17 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
 import { data, footer } from "@/pages/add/components/PropertyType/data";
 import SelectInput from "@/components/Common/Select/Select.vue";
 import Button from "@/components/Common/Button/Button.vue";
+import AForm from "ant-design-vue/lib/form/Form";
+import AFormItem from "ant-design-vue/lib/form/FormItem";
 
 const element = ref<Array<any>>(data);
+const emit = defineEmits(['onNext']);
+
+function onClickNext(){
+      emit('onNext');
+}
 
 </script>
 
@@ -17,11 +24,12 @@ const element = ref<Array<any>>(data);
                         <div class="info__input-item" v-for="item in element">
                               <label for="" class="info__select-label">{{item.label}}</label>
                               <SelectInput 
+                                    v-if="item.type = 'select'"
                                     :label="item.label"
                                     :name="item.name"
                                     :options="item.options"
                                     :placeholder="item.placeholder"
-                              /> 
+                              />
                         </div>
                   </div>
             </div>
@@ -31,6 +39,7 @@ const element = ref<Array<any>>(data);
                   </div>
                   <Button
                         class="info__my-btn"
+                        @click="onClickNext"
                   >
                         Suivant
                   </Button>
