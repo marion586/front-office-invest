@@ -44,7 +44,7 @@
             submenu: [
                 {
                     label: 'Vendre un bien',
-                    path: '/add',
+                    path: '/ajouter',
                 },
                 {
                     label: 'Acquérir un bien',
