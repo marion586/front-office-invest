@@ -10,7 +10,7 @@ import PropertyType from '@/pages/add/components/PropertyType/index.vue';
 import Steps from '@/components/Display/Steps/index.vue';
 
 
-let activeComp = reactive<Array<object>>([PropertyType])
+let activeComp = shallowRef<Array<object>>([PropertyType])
 
 interface SubMenu{
       id : number,
@@ -88,7 +88,7 @@ const menu = shallowRef<Array<Menu>>([
 ])
 
 function changeComponent(comp : object){
-      activeComp = [comp];
+      activeComp.value = [comp];
 }
 
 </script>
