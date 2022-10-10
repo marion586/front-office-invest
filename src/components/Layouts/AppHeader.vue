@@ -50,6 +50,11 @@
                     <IconMenu />
                 </div>
                 <div
+                    class="header__overlay"
+                    :class="{ 'overlay-active': isMenu }"
+                    @click="handleShowMenu"
+                ></div>
+                <div
                     class="header__content-menu-mobile"
                     :class="{ 'menu-active': isMenu }"
                 >
@@ -236,6 +241,9 @@
             transform: translateX(0);
             transition: transform 0.25s ease;
         }
+        .overlay-active {
+            opacity: 0.25;
+        }
         &__menu-rigth {
             body & {
                 .ant-menu-overflow {
@@ -270,6 +278,17 @@
             .ant-menu-vertical {
                 padding-top: 10px;
             }
+        }
+        &__overlay {
+            position: fixed;
+            top: 49px;
+            right: 0;
+            width: 100vw;
+            height: calc(100% - 49px);
+            background-color: var(--color-secondary);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            z-index: -1;
         }
     }
 </style>
