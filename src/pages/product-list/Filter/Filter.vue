@@ -35,12 +35,12 @@
                 "
                 type="secondary"
             >
-                <div>
+                <div @click="showCard">
                     <ListBullet color="#fff" />
                     <span> Sur Liste</span>
                 </div>
             </Button>
-            <FullScreen v-if="isMap" />
+            <FullScreen v-if="isMap" @click="showCart" />
             <div v-if="filterObject.isListCards" class="filter__right-content">
                 <Title type="h4" label="Filtrer par:" weight="bold" />
                 <div class="filter__right-content-select">
@@ -96,6 +96,9 @@
     };
     const showInfo = () => {
         emit('on-show-info');
+    };
+    const showCard = () => {
+        emit('on-show-card');
     };
     defineProps({
         isMap: {

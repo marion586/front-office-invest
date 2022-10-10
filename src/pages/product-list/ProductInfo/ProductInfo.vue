@@ -15,7 +15,6 @@
             required: true,
         },
     });
-
     const data = reactive({
         isMapReady: false,
         PlaceCoordinates: [],
@@ -73,7 +72,7 @@
         </div>
 
         <div class="product-info__right">
-            <Filter :isMap="true" />
+            <Filter @on-show-cart="$emit('on-show-cart')" :isMap="true" />
             <Map
                 class="my-map"
                 :mapCenterCoordinate="data.PlaceCoordinates"

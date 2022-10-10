@@ -1,7 +1,11 @@
 <template>
     <div class="list">
         <div class="list__container">
-            <Filter @on-show-cart="showCart" @on-show-info="showInfo" />
+            <Filter
+                @on-show-cart="showCart"
+                @on-show-card="showCard"
+                @on-show-info="showInfo"
+            />
             <div v-if="isListCards" class="list__container-product">
                 <CardProducts :DataCard="dataCard" />
             </div>
@@ -16,7 +20,10 @@
 
             <div v-if="isShowInfo" class="list__container-information">
                 <div>
-                    <ProductInfo :DataCard="singleCard" />
+                    <ProductInfo
+                        @on-show-cart="showCart"
+                        :DataCard="singleCard"
+                    />
                 </div>
             </div>
         </div>
@@ -74,15 +81,20 @@
     ]);
 
     const singleCard = ref<DataProps[]>([dataCard.value[0]]);
-
     let isShowCart = ref<boolean>(false);
     let isListCards = ref<boolean>(true);
     let isShowInfo = ref<boolean>(false);
+    const showCard = () => {
+        isShowCart.value = false;
+        isListCards.value = true;
+        isShowInfo.value = false;
+    };
 
     provide('isInfo', isShowInfo);
     const showCart = () => {
-        isShowCart.value = !isShowCart.value;
-        isListCards.value = !isListCards.value;
+        isShowCart.value = true;
+        isListCards.value = false;
+        isShowInfo.value = false;
     };
     const showInfo = () => {
         isShowInfo.value = true;
