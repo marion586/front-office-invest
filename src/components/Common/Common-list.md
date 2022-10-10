@@ -21,7 +21,7 @@ props {
   nameInput,
 }
 
-## 4. Paragraphe:
+ 
 props {
   is,
   type
