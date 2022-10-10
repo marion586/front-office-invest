@@ -11,10 +11,18 @@ const menuList = ref<Array<any>>(data);
 
 <template>
       <div class="steps__container">
+            <!-- <div class="flex md:hidden" v-for="(item, idItem) in menuList" :key="idItem">
+                  <div class="steps__icon"> {{idItem + 1}} </div>
+            </div> -->
+            <div class="steps__phone-steps" >
+                  <div class="steps__icon"> {{1}} </div>
+                  <p class="">{{menuList[0].label}}</p>
+            </div>
             <a-steps
                   :current="current"
                   direction="vertical"
                   size="small"
+                  class="hidden md:flex"
             >
                   <a-step v-for="item in menuList">
                         <template #title>
@@ -25,7 +33,7 @@ const menuList = ref<Array<any>>(data);
                                     class="steps-description hidden md:flex" 
                                     direction="vertical"
                               >
-                                    <a-step v-for="subItem in item.subMenu">
+                                    <a-step v-for="subItem in item.subMenu" :key="subItem.id">
                                           <template #title>
                                                 {{subItem.label}}
                                           </template>
@@ -117,6 +125,22 @@ const menuList = ref<Array<any>>(data);
             }
             &__flex{
                   @apply flex;
+            }
+            &__icon{
+                  background-color: var(--color-gray-icon);
+                  width: 18px;
+                  height: 18px;
+                  border-color: var(--color-gray-icon);
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  margin-top: 5px;
+                  color: white;
+                  border-radius: 50%;
+            }
+
+            &__phone-steps{
+                  @apply flex gap-[10px] items-center text-[14px] font-semibold md:hidden w-[100%];
             }
             
       }

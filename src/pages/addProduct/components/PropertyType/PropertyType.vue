@@ -20,8 +20,6 @@ function onClickNext(){
             <div class="info__body">
                   <p class="info__title">Type d'annonces :</p>
                   <hr class="info__divider">
-
-                  <Switch />
                   <div class="info__input-container">
                         <div class="info__input-item" v-for="item in element">
                               <label for="" class="info__select-label">{{item.label}}</label>
@@ -58,10 +56,10 @@ function onClickNext(){
                   @apply my-[18px]
             }
             &__footer{
-                  @apply flex justify-between h-[47px];
+                  @apply flex justify-between h-[67px] md:h-[47px] flex flex-col md:flex-row mt-[20px];
             }
             &__my-btn{
-                  @apply h-[33px] rounded-[100px];
+                  @apply h-[33px] rounded-[100px] w-[100%] md:w-[110px] ;
             }
             &__container{
                   @apply flex flex-col justify-between h-[100%];
