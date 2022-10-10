@@ -1,7 +1,7 @@
 
 <script lang="ts" setup>
 import SideBar from '@/components/Display/SideBar/index.vue';
-import { ref, shallowRef } from 'vue';
+import { reactive, ref, shallowRef } from 'vue';
 import DefaultMenu from '@/components/Icon/DefaultMenuIcon.vue';
 import Adress from '@/pages/add/components/Address/index.vue';
 import Photos from '@/pages/add/components/Photos/index.vue';
@@ -10,7 +10,7 @@ import PropertyType from '@/pages/add/components/PropertyType/index.vue';
 import Steps from '@/components/Display/Steps/index.vue';
 
 
-const activeComp = shallowRef<Array<object>>([PropertyType])
+let activeComp = reactive<Array<object>>([PropertyType])
 
 interface SubMenu{
       id : number,
@@ -26,7 +26,7 @@ interface Menu {
       component ?: object
 }
 
-const menu = ref<Array<Menu>>([
+const menu = shallowRef<Array<Menu>>([
       {
             id : 0,
             label : "Information de base",
@@ -88,7 +88,7 @@ const menu = ref<Array<Menu>>([
 ])
 
 function changeComponent(comp : object){
-      activeComp.value = [comp];
+      activeComp = [comp];
 }
 
 </script>
