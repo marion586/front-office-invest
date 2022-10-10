@@ -1,7 +1,10 @@
+import Home from '@/components/Icon/Home.vue';
+
 interface Menu {
     label: string;
     path: string;
     view?: string;
+    icon?: object;
     submenu?: Array<{
         label: string;
         path: string;
@@ -14,6 +17,7 @@ export const dataMenu: Menu[] = [
         label: 'Accueil',
         view: 'all',
         path: '/',
+        icon: Home,
     },
     {
         label: 'Immobilier',

@@ -65,7 +65,9 @@
                                     <router-link
                                         @click="handleShowMenu"
                                         :to="d.path"
+                                        class="header__nav"
                                     >
+                                        <component :is="d.icon"></component>
                                         {{ d.label }}
                                     </router-link>
                                 </a-menu-item>
@@ -289,6 +291,9 @@
             opacity: 0;
             transition: opacity 0.25s ease;
             z-index: -1;
+        }
+        &__nav {
+            @apply flex gap-[10px] items-center;
         }
     }
 </style>
