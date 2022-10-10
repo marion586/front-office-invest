@@ -1,139 +1,65 @@
-
+<script setup>
+import { reactive } from "vue";
+import MenuButton from "@/components/Common/ButtonMenu/ButtonMenu.vue";
+import  MapPinIcon from "@/components/Icon/mapPin.vue";
+import CityOutlinedIcon from "@/components/Icon/CityOutlined.vue";
+import MapCardIcon from "@/components/Icon/mapCard.vue";
+import SettingConfigIcon  from "@/components/Icon/SettingConfig.vue";
+import ARIcon from "@/components/Icon/AugmentedReality.vue";
+import Title from "@/components/Common/Title/Title.vue";
+    const data = reactive({
+        menus : [
+            {
+                title : "A partir d'une ville",
+                desc : "Sélectionner une ou plusieurs villes",
+                icon :  MapPinIcon
+            },
+            {
+                title : "A partir d'une agence",
+                desc : "Sélectionner une agence",
+                icon : CityOutlinedIcon
+            },
+            {
+                title : "A partir d'un dessin sur la carte",
+                desc : "rechercher un bien dans une zone délimitée par un dessin sur la carte",
+                icon : MapCardIcon
+            },
+            {
+                title : "A partir des critères",
+                desc : "Rechercher un bien selon les critères ajouotées",
+                icon : SettingConfigIcon
+            },
+            {
+                title : "A partir de la réalité augmentée",
+                desc : "recherche de bien avec ImmoGo",
+                icon : ARIcon
+            },
+            
+        ]
+    })
+</script>
 <template>
-    <div class="w-screen flex flex-wrap">
-        <div class="w-screen md:w-2/3 lg:2/3">
-            <Map 
-                v-if="data.isMapReady"
-                class="w-full map-container p-5"
-                :mapCenterCoordinate="data.PlaceCoordinates"
-                :needMarkerLayer="true"
-                :markersCoordinates="data.PlaceCoordinates"
-                :getFeatures="getFeatures"
-            />
-        </div>
-        <div v-if="data.mutable" class="md:w-1/3 sm:w-full p-5">
-            <h1>{{text.title}}</h1>
-            <div class="flex flex-wrap justify-center">
-                <div 
-                    class="container flex-col pt-5"
-                    v-for="(field, idx) in data.fields"
-                    :key="idx"
-                    :class="field.class"
-                >
-                    <Input
-                        v-if="field.id === 'propertyLocation'"
-                        :inputId="field.id"
-                        :label="field.placeholder"
-                        class="w-full"
-                        :placeholder="field.placeholder"
-                        @change="field.handler"
-                    />
-                    <Select
-                        v-else
-                        :name="field.id"
-                        :id="field.id"
-                        class="w-full"
-                        show-search
-                        :label="field.placeholder"
-                        :placeholder="field.placeholder"
-                        :options="field.options"
-                        @change="field.handler" 
-                    />
-                
+    <div class="w-full py-5">
+        <div class=" container w-full columns-1">
+            <MenuButton
+                v-for="(menu, key) in data.menus"
+                :key="key"
+                width="100%"
+                class="w-full flex justify-between"
+                :isIcon="menu.icon"
+            >
+                <div class="w-full">
+                   <p class="text-start"><b>{{ menu.title }}</b></p>
+                   <p class="text-start text-xs text-gray">{{ menu.desc }}</p>
                 </div>
-                <div>
-                    <button class="m-10">
-                        Rechercher
-                    </button>
-                </div>
-            </div>
+            </MenuButton>
         </div>
     </div>
 </template>
 
-<script setup>
-
-import ASelect from "ant-design-vue/lib/select";
-import {reactive,onMounted, onUnmounted,onDeactivated } from "vue";
-import {geocode, removeScript, autocomplet} from "@/composables/google-maps-api";
-import Map from "@/components/section/map/index.vue";
-import Input from '@/components/Common/Input/Input.vue';
-import Select from '@/components/Common/Select/Select.vue';
-
-
-//reactive states
-const text = reactive   ({
-    title : "recherche de bien",
-});
-const data = reactive({
-    mutable : true,
-    isMapReady: false,
-    PlaceCoordinates : [],
-    fields : [{
-        id : "propertyType",
-        placeholder : "type de bien",
-        options : [],
-        class : "w-full",
-        handler : ()=>{}
-    },
-    {
-        id : "propertyLocation",
-        placeholder : "Ou se trouve le bien ?",
-        options : [],
-        class : "w-full",
-        handler : (e)=>{console.log(e)}
-    },
-    {
-        id: "minPrice",
-        placeholder : "Prix min",
-        options : [],
-        class : "w-1/2",
-        handler : ()=>{}
-    },
-     {
-        id : "maxPrice",
-        placeholder : "Prix max",
-        options : [],
-        class : "w-1/2",
-
-        handler : ()=>{}
-    },
-    ]
-})
-
-const toggleMitable = ()=>{
-    data.mutable= ! data.mutable
-}
-
-//lifecycle
- onMounted( () =>{
-    const proomise = geocode("Bruxelles Belgique");
-    proomise.then(result =>{
-        console.log(result)
-        data.isMapReady = true,
-        data.PlaceCoordinates.push(result.coordinates);
-        });
-    
-    const input = document.getElementById("propertyLocation");
-    console.log("input : ", input);
-    autocomplet(input);
-
-    console.log(window.google);
-
-})
-
-onUnmounted(()=>{
-    console.log("component is unmounted");
-    removeScript();    
-})
-
-
-const getFeatures = (features)=>features
-//functions
-
-</script>
 <style lang="scss" scoped>
-.map-container{
-    height: 500px;
+.text-gray{
+    color : var(--color-stroke-gray)
 }
 </style>
+

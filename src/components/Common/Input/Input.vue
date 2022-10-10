@@ -59,12 +59,6 @@
             type: String,
             default: '',
         },
-<<<<<<< HEAD
-        inputId : {
-            type: String,
-            default: '',
-        }
-=======
         hasError: {
             type: Object as PropType<IHasErrorProps>,
             required: false,
@@ -80,7 +74,6 @@
         value: {
             type: [Number, String],
         },
->>>>>>> ec2ec4e64581a19ab3973884f12d59f96e8c6668
     });
 
     watch(
