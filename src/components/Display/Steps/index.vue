@@ -31,7 +31,7 @@ function clickItem(item : any, subitem ?: any) : void{
 </script>
 
 <template>
-      <div class="mc__container">
+      <div class="steps__container">
             <a-steps 
                   :current="step"  
                   direction="vertical"
@@ -61,7 +61,7 @@ function clickItem(item : any, subitem ?: any) : void{
 
 <style lang="scss" scoped>
      
-      .mc{
+      .steps{
             &__container{
                   @apply bg-[white] w-[100%] md:w-[315px] rounded-[8px] p-[12px];
                   .sub-item-active{
