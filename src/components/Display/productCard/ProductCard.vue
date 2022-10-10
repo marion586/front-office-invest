@@ -1,11 +1,9 @@
 <template>
-    <div class="card max-w-lg">
+    <div class="card max-w-xl">
         <HeadProduct Text="Agence" label="Label Immo" />
-        <img
-            class="card__image"
-            :src="DataCard.image"
-            alt=" card product img"
-        />
+        <figure class="card__image">
+            <img :src="DataCard.image" alt=" card product img" />
+        </figure>
         <div class="card__type">
             <Title type="h4" :label="DataCard.type" weight="bold" />
             <span> {{ DataCard.price }} £</span>
@@ -13,13 +11,16 @@
 
         <div class="card__value">
             <div class="card__value--item">
-                <span>H</span> <span>{{ DataCard.roomCount }}</span>
+                <Room />
+                <span>{{ DataCard.roomCount }}</span>
             </div>
             <div class="card__value--item">
-                <span>H</span> <span>{{ DataCard.bedroomCount }}</span>
+                <Bath />
+                <span>{{ DataCard.bedroomCount }}</span>
             </div>
             <div class="card__value--item">
-                <span>H</span> <span>{{ DataCard.surface }} m2</span>
+                <Surface />
+                <span>{{ DataCard.surface }} m2</span>
             </div>
         </div>
         <div class="card__action">
@@ -27,16 +28,22 @@
             <span> ({{ DataCard.offerSentCount }}) offre envoyé </span>
         </div>
         <div class="card__adress">
-            <span>H</span>
+            <Map />
             <span>{{ DataCard.adress }} </span>
         </div>
+
+        <Button v-if="info" width="100%" type="primary"> Information </Button>
     </div>
 </template>
 
 <script setup lang="ts">
-    import HeadProduct from '@/components/Display/headProduct/HeadProduct.vue';
-    import { ref, PropType } from 'vue';
+    import HeadProduct from '@/components/Display/HeadProduct/HeadProduct.vue';
+    import { ref, PropType, inject, watch } from 'vue';
     import Title from '@/components/Common/Title/Title.vue';
+    import Room from '@/components/Icon/Room.vue';
+    import Bath from '@/components/Icon/Bath.vue';
+    import Map from '@/components/Icon/Map.vue';
+    import Button from '@/components/Common/Button/Button.vue';
     interface DataProps {
         image: string;
         type: string;
@@ -48,13 +55,21 @@
         offerSentCount: number;
         adress: string;
     }
-    const DataCardProps = defineProps({
+    defineProps({
         DataCard: {
             type: Object as PropType<DataProps>,
             required: true,
         },
     });
-    const DataCard = ref(DataCardProps.DataCard);
+
+    const info = inject('isInfo');
+    watch(
+        () => info,
+        (value) => {
+            console.log(value, 'jsdlfjdlskjflksj');
+        },
+        { immediate: true }
+    );
 </script>
 
 <style lang="scss" scoped>
@@ -67,11 +82,17 @@
         gap: 18px;
         background: #ffffff;
         border-radius: 8px;
-        img {
-            border-radius: 8px;
+        min-width: 18rem;
+        &__image {
             width: auto;
             height: 160px;
+            img {
+                border-radius: 8px;
+                width: 100%;
+                height: 100%;
+            }
         }
+
         &__type {
             display: flex;
             justify-content: space-between;

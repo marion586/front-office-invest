@@ -45,9 +45,14 @@ const routes = <Array<RouteRecordRaw>>[
         beforeEnter: [logoutGuard],
     },
     {
-        name: "detail",
-        path: "/detail",
-        component: () => import("@/pages/detail/index.vue"),
+        name: 'find-property',
+        path: '/recherche-bien',
+        component: () => import('@/pages/find-Property/index.vue'),
+    },
+    {
+        name: 'detail',
+        path: '/detail',
+        component: () => import('@/pages/detail/index.vue'),
         children: [
             {
                 path: "/Detail/A",
@@ -57,12 +62,22 @@ const routes = <Array<RouteRecordRaw>>[
                 path: "/Detail/B",
                 component: () => import("@/pages/detail/components/ComponentB.vue"),
             },
-        ]
+        ],
     },
     {
         name: 'product-list',
-        path: '/product-list',
-        component: () => import('@/pages/productList/List.vue'),
+        path: '/liste-produit',
+        component: () => import('@/pages/product-list/List.vue'),
+    },
+    {
+        name: 'add',
+        path: '/add',
+        component: () => import('@/pages/add/index.vue'),
+    },
+    {
+        name: 'not-found',
+        path: '/:path(.*)*',
+        component: () => import('@/pages/error/404.vue'),
     },
 ];
 
