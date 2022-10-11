@@ -2,9 +2,10 @@
     <div class="confirm-subscription">
         <div class="confirm-subscription__content">
             <div class="flex items-center justify-center flex-col gap-[20px]">
+                <!-- TODO change this with Info icon -->
                 <Check size="lg" />
                 <Title
-                    label="Félicitations! Vous êtes inscrit."
+                    label="Information de validation"
                     type="h1"
                     weight="700"
                 />

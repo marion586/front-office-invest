@@ -273,7 +273,7 @@
                 const { code } = await UserService.signup(finalParams);
                 if (code === 200) {
                     loadPayement.value = false;
-                    router.push('/abonnement/confirmation');
+                    router.push('/confirmation');
                 }
             }
         } catch (error) {

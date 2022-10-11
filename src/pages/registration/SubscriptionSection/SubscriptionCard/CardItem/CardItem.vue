@@ -108,7 +108,7 @@
                 const { code } = await UserService.signup(finalParams);
                 if (code === 200) {
                     loadingRegistration.value = false;
-                    router.push('/abonnement/confirmation');
+                    router.push('/confirmation');
                 }
             } catch (error) {
                 //TODO HANLDE ERROR => NOTIFICATION PREF

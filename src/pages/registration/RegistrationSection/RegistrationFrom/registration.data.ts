@@ -7,6 +7,7 @@ const formParams: Array<IUserField> = [
     //     value: '',
     // },
     {
+        id: 'agencyName',
         name: 'agencyName',
         label: "Nom de l'entreprise",
         placeholder: "Nom de l'entreprise",
@@ -14,6 +15,7 @@ const formParams: Array<IUserField> = [
         value: '',
     },
     {
+        id: 'agencyNumber',
         name: 'agencyNumber',
         label: "Numero de l'entreprise",
         placeholder: "Nom de l'entreprise",
@@ -21,6 +23,7 @@ const formParams: Array<IUserField> = [
         value: '',
     },
     {
+        id: 'agencyTva',
         name: 'agencyTva',
         label: "TVA de l'entreprise",
         placeholder: "TVA de l'entreprise",
@@ -28,6 +31,7 @@ const formParams: Array<IUserField> = [
         value: '',
     },
     {
+        id: 'firstname',
         name: 'firstname',
         label: 'Prénom',
         placeholder: 'Prénom',
@@ -36,6 +40,7 @@ const formParams: Array<IUserField> = [
         errorMsg: 'Le prenom est obligatoire',
     },
     {
+        id: 'name',
         name: 'name',
         label: 'Nom',
         placeholder: 'Nom',
@@ -52,6 +57,7 @@ const formParams: Array<IUserField> = [
         value: '',
     },
     {
+        id: 'email',
         name: 'email',
         label: 'Email',
         placeholder: 'Addrèsse éléctronique',
@@ -59,6 +65,7 @@ const formParams: Array<IUserField> = [
         value: '',
     },
     {
+        id: 'telephone',
         name: 'telephone',
         label: 'Tel',
         placeholder: 'Numero de téléphone',
@@ -66,6 +73,7 @@ const formParams: Array<IUserField> = [
         value: '',
     },
     {
+        id: 'tva',
         name: 'tva',
         label: 'TVA',
         placeholder: 'TVA personnel',
@@ -74,6 +82,7 @@ const formParams: Array<IUserField> = [
     },
 
     {
+        id: 'password',
         name: 'password',
         label: 'Mot de passe',
         placeholder: 'Mot de passe',
@@ -82,6 +91,7 @@ const formParams: Array<IUserField> = [
         value: '',
     },
     {
+        id: 'confirmPassword',
         name: 'confirmPassword',
         label: 'Confimer',
         placeholder: 'Confirmer votre mot de passe',

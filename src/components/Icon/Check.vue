@@ -26,7 +26,7 @@
 <script lang="ts" setup>
     import { onMounted, PropType, ref } from 'vue';
 
-    const iconSize = ref('');
+    const iconSize = ref('35px');
 
     const props = defineProps({
         size: {

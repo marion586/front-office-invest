@@ -53,8 +53,9 @@
                     <hr />
                 </div>
                 <Input
+                    :disabled="loadGoogleMap && field.name === 'address'"
                     :id="field.id"
-                    :key="index"
+                    :key="field.id"
                     :label="field.label"
                     :required="field.required"
                     :placeholder="field.placeholder"
@@ -88,9 +89,9 @@
         onMounted,
         watchEffect,
         PropType,
-        reactive,
         ref,
         onUnmounted,
+        watch,
     } from 'vue';
     import emailValidation from '@/utils/validation/email_validation';
     import { Router, useRouter } from 'vue-router';
@@ -102,7 +103,7 @@
         professionnalUserFormWithAgencies,
         particularErrorFields,
         professsionnalErrorFields,
-        professsionnalErrorFieldsWithAgencies,
+        // professsionnalErrorFieldsWithAgencies,
     } from './registration.data';
     import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
     import AgencyService from '@/services/agencyService';
@@ -131,8 +132,8 @@
     const particularUserOption = ref<SelectValue>();
     const professionnalUserOption = ref<SelectValue>();
     /**errros */
-    let errors = reactive<Object>({});
-    let tmpErrors = reactive<Object>({});
+    let errors = ref<Object>({});
+    let tmpErrors = ref<Object>({});
     const activeError = ref<boolean>(false);
     /**FIELDS */
     const formParams = ref<Array<IUserField>>([]);
@@ -147,6 +148,7 @@
     ]);
     let agenciesListValues = ref<Array<any>>([]);
     const loadAgenciesList = ref<boolean>(false);
+    const loadGoogleMap = ref<boolean>(false);
 
     /**
      * INITIALIZATION STATE
@@ -179,17 +181,23 @@
     });
     onMounted(() => {
         getAgenciesList();
-        initGoogleMap();
+        if (!!(window as any).google) initGoogleMap();
         /**
-         * Init fields, errors and memorize errors on mount
+         * Init fields, errors.value and memorize errors.value on mount
          */
         switch (props.usertype) {
             case 'particular':
                 formParams.value = [...particularUserForm];
-                errors = Object.assign(errors, particularErrorFields);
-                tmpErrors = Object.assign(tmpErrors, particularErrorFields);
+                errors.value = Object.assign(
+                    errors.value,
+                    particularErrorFields
+                );
+                tmpErrors.value = Object.assign(
+                    tmpErrors.value,
+                    particularErrorFields
+                );
                 // disable error on type
-                (errors as any).type = '';
+                (errors.value as any).type = '';
                 /**assign type */
                 finalFormParams.value = {
                     ...finalFormParams.value,
@@ -198,14 +206,31 @@
                 break;
             case 'professional':
                 formParams.value = [...professionnalUserForm];
-                errors = Object.assign(errors, professsionnalErrorFields);
-                tmpErrors = Object.assign(tmpErrors, professsionnalErrorFields);
+                errors.value = Object.assign(
+                    errors.value,
+                    professsionnalErrorFields
+                );
+                tmpErrors.value = Object.assign(
+                    tmpErrors.value,
+                    professsionnalErrorFields
+                );
                 break;
             default:
                 break;
         }
     });
-    // watch()
+    watch(
+        () => formParams.value,
+        (val, oldVal) => {
+            if (oldVal && val.length !== oldVal.length) {
+                console.log('changed');
+                removeScript();
+                delete (window as any).google;
+                initGoogleMap();
+            }
+        },
+        { deep: true, immediate: true }
+    );
     onUnmounted(() => {
         removeScript();
         delete (window as any).google;
@@ -250,14 +275,19 @@
             );
             // setAutoComplte(autocomplete);
         } else {
+            loadGoogleMap.value = true;
+            console.log('start gm');
             const initGmp = useGoogleMapAPI();
-
             initGmp.then((googleInit: any) => {
-                autocomplete = new googleInit.maps.places.Autocomplete(
-                    document.getElementById('gm_address')
-                );
-                autocomplete.addListener('place_changed', () => {
-                    const place = autocomplete.getPlace();
+                loadGoogleMap.value = false;
+                console.log('stop gm');
+
+                gm_inputAutocomplete.value =
+                    new googleInit.maps.places.Autocomplete(
+                        document.getElementById('gm_address')
+                    );
+                gm_inputAutocomplete.value.addListener('place_changed', () => {
+                    const place = gm_inputAutocomplete.value.getPlace();
                     try {
                         const location = JSON.parse(
                             JSON.stringify(place.geometry.location)
@@ -269,10 +299,11 @@
                             longitude: JSON.stringify(location.lng),
                             latitude: JSON.stringify(location.lat),
                         };
-                        (errors as any).address = '';
+                        (errors.value as any).address = '';
                     } catch (error) {
                         /**handle error if not valid value */
-                        (errors as any).address = 'Votre addrèsse est invalide';
+                        (errors.value as any).address =
+                            'Votre addrèsse est invalide';
                     }
                 });
             });
@@ -284,15 +315,16 @@
             switch (key) {
                 case 'typeRole':
                     if ((objValue as any).typeRole.length) {
-                        (errors as any).typeRole = '';
-                        // finalFormParams.value = {
-                        //     ...finalFormParams.value,
-                        //     ...objValue,
-                        // };
+                        (errors.value as any).typeRole = '';
                     } else {
-                        (errors as any).typeRole = (tmpErrors as any).typeRole;
+                        (errors.value as any).typeRole = (
+                            tmpErrors.value as any
+                        ).typeRole;
                     }
-                    console.log(errors);
+                    finalFormParams.value = {
+                        ...finalFormParams.value,
+                        ...objValue,
+                    };
                     break;
                 case 'agency':
                     console.log((objValue as any)[key]);
@@ -307,12 +339,6 @@
                             ...finalFormParams.value,
                             agency: getIdAgency((objValue as any)[key]),
                         };
-                        console.log(errors);
-                        /**
-                         * assign errors
-                         */
-                        errors = Object.assign(professsionnalErrorFields);
-                        tmpErrors = Object.assign(professsionnalErrorFields);
                     } else {
                         // no agency choose
                         hasAgenciesList.value = false;
@@ -321,12 +347,8 @@
                             ...finalFormParams.value,
                             agency: {},
                         };
-                        /**
-                         * assign errors
-                         */
-                        errors = Object.assign(professsionnalErrorFields);
-                        tmpErrors = Object.assign(professsionnalErrorFields);
                     }
+                    console.log(errors.value, 'errors');
                     break;
             }
         }
@@ -352,18 +374,18 @@
                     if (field.required) {
                         /**HANLDE ERROR IF EMPTY */
                         const isEmpty = (e as any)[key] === '';
-                        (errors as any)[key] = isEmpty
-                            ? (tmpErrors as any)[key]
+                        (errors.value as any)[key] = isEmpty
+                            ? (tmpErrors.value as any)[key]
                             : '';
 
-                        /**specific errors */
+                        /**specific errors.value */
                         switch (key) {
                             case 'email':
                                 if (
                                     (e as any)[key] !== '' &&
                                     !emailValidation((e as any)[key])
                                 )
-                                    (errors as any)[key] =
+                                    (errors.value as any)[key] =
                                         'Votre email est invalide';
                                 break;
                             case 'confirmPassword':
@@ -388,7 +410,8 @@
         switch (key) {
             case 'confirmPassword':
                 if ((e as any)[key] !== '' && (e as any)[key] !== pwdValue) {
-                    (errors as any).confirmPassword = 'Mot de passe incorrect';
+                    (errors.value as any).confirmPassword =
+                        'Mot de passe incorrect';
                 }
                 break;
             case 'password':
@@ -396,7 +419,8 @@
                     (e as any)[key] !== '' &&
                     (e as any)[key] !== cfrmPwdValue
                 ) {
-                    (errors as any).confirmPassword = 'Mot de passe incorrect';
+                    (errors.value as any).confirmPassword =
+                        'Mot de passe incorrect';
                 }
             default:
                 break;
@@ -406,12 +430,30 @@
     /**
      * hanlde error before submit
      */
-    function hanldeError(): boolean {
+    function handleError(): boolean {
         const isAddressValid = !!(finalFormParams.value as any).longitude;
-        (errors as any).address = !isAddressValid
+        (errors.value as any).address = !isAddressValid
             ? 'Votre addrèsse est invalide'
             : '';
-        const isFormValid = Object.values(errors).every((v) => v === '');
+        let isFormValid: any;
+        if (!hasAgenciesList.value) {
+            isFormValid = Object.values(errors.value).every((v) => v === '');
+        } else {
+            let obj: any;
+            Object.keys(errors.value).forEach((key) => {
+                if (
+                    key !== 'agencyName' &&
+                    key !== 'agencyNumber' &&
+                    key !== 'agencyTva'
+                ) {
+                    obj = {
+                        ...obj,
+                        [key]: (errors.value as any)[key],
+                    };
+                }
+            });
+            isFormValid = Object.values(obj).every((v) => v === '');
+        }
 
         return isFormValid;
     }
@@ -422,7 +464,6 @@
         /**control field
          * address field will be handle by google api
          */
-        console.log(formParams.value);
         const mappedArray = Object.fromEntries(
             formParams.value
                 /** remove address from initial state */
@@ -470,17 +511,30 @@
                 agency,
             };
         }
-
-        console.log(finalFormParams.value);
+        if (props.usertype === 'particular') {
+            /**
+             * if particular remove agency
+             */
+            let obj: any;
+            Object.keys(finalFormParams.value).forEach((key) => {
+                if (key !== 'agency') {
+                    obj = {
+                        ...obj,
+                        [key]: (finalFormParams.value as any)[key],
+                    };
+                }
+            });
+            finalFormParams.value = {
+                ...obj,
+            };
+        }
     }
     function handleSubmit() {
-        console.log(errors);
         activeError.value = true;
         /**
          * HANDLE ERROR AND EMPTY FIELD
          */
-        const isFormValid: boolean = hanldeError();
-
+        const isFormValid: boolean = handleError();
         formateData();
 
         isFormValid && prossToStripSection();
@@ -491,6 +545,11 @@
             finalFormParams.value = {
                 ...finalFormParams.value,
                 typeRole: [],
+                isAdmin: props.usertype === 'professional',
+            };
+        } else {
+            finalFormParams.value = {
+                ...finalFormParams.value,
                 isAdmin: props.usertype === 'professional',
             };
         }
