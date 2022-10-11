@@ -3,7 +3,7 @@
         <label for="">{{ label }}</label>
         <a-input
             :placeholder="placeholder"
-            type="text"
+            :type="type"
             v-model:value="model"
             :name="nameInput"
             @input="handleInput"
@@ -36,6 +36,10 @@
             type: String,
             default: '',
         },
+        type: {
+            type: String,
+            default: "text"
+        }
     });
 
     const emit = defineEmits<{
