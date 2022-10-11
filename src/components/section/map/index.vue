@@ -5,36 +5,49 @@
     import Map from '@/composables/map';
     import 'leaflet-draw/dist/leaflet.draw.css';
 
-    const props = defineProps({
-        mapCenterCoordinate: {
-            type: Array,
-            default: [],
-        },
-        needMarkerLayer: {
-            type: Boolean,
-            default: false,
-        },
-        markersCoordinates: {
-            type: Array,
-            default: [],
-        },
-    });
-    onMounted(() => {
-        console.log('DBG eto');
-        const map = new Map('map');
-        console.log(props.markersCoordinates[0]);
-        //map.fitBound([props.markersCoordinates[0].lat,props.markersCoordinates[0].lng]);
-        if (props.needMarkerLayer) {
-            props.markersCoordinates.forEach((marker) => {
+
+const props = defineProps({
+    mapCenterCoordinate : {
+        type : [Array,Object],
+        default : ()=>[]
+    },
+    needMarkerLayer : {
+        type : Boolean,
+        default : false,
+    },
+    markersCoordinates : {
+        type : Array,
+        default : ()=>[]
+    },
+    getFeatures : {
+        type  : Function,
+        default : ()=> {}
+    }
+})
+onMounted(() => {
+    const map = new Map("map");
+    map.fitBound([props.markersCoordinates[0].lat,props.markersCoordinates[0].lng]);
+    if (props.needMarkerLayer) {
+            props.markersCoordinates.forEach((marker)=>{
                 map.addMarker(marker);
-            });
-        }
-        map.addMarker([51.505, -0.09]);
-        map.addDrawControl();
-        map.addPrintControl();
-        map.DrawingLayerListener();
-    });
+            })
+    }
+    map.addMarker([51.505, -0.09]);
+    map.addDrawControl();
+    map.addPrintControl();
+    map.DrawingLayerListener();
+    })
+    const getFeatures = ()=> props.getFeatures(map.layers);
+    
 </script>
 <template>
-    <div id="map" />
+        <div
+            class="fix-z-index"
+            id="map"
+        />
 </template>
+<style lang="scss" scoped>
+.fix-z-index{
+    z-index: -10;
+}
+</style>
