@@ -9,6 +9,7 @@
     import AddUser from '@/components/Icon/AddUser.vue';
     import ArrowBottom from '@/components/Icon/ArrowBottom.vue';
     import Search from '@/components/Icon/Search.vue';
+    import User from '@/components/Icon/User.vue';
 
     import { dataMenu } from './dataHeader';
 
@@ -24,16 +25,6 @@
     const isMenu = ref<boolean>(false);
     const fakeLoadAvatar = ref<boolean>(true);
 
-    document.addEventListener('click', () => {
-        if (isMenu.value) {
-            isMenu.value = false;
-        }
-    });
-    document.addEventListener('keydown', (e) => {
-        if (e.code === 'Escape' && isMenu.value) {
-            isMenu.value = false;
-        }
-    });
     const handleShowMenu = () => {
         isMenu.value = !isMenu.value;
     };
