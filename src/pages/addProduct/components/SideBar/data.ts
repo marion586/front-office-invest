@@ -48,8 +48,8 @@ export const data : Array<Object> = [
             ]
       },
       {
-            id : 2,
-            label : "Information de base",
+            id : 4,
+            label : "Information détaillé",
             icon : DefaultMenu,
             subMenu : [
                   {
@@ -67,13 +67,13 @@ export const data : Array<Object> = [
             ]
       },
       {
-            id : 3,
+            id : 7,
             label : "Description de l'annonce",
             icon : DefaultMenu,
             component : PropertyType,
       },
       {
-            id : 4,
+            id : 8,
             label : "Documents relatifs aux biens",
             icon : DefaultMenu,
             component : PropertyType,

@@ -1,28 +1,80 @@
 <script lang="ts" setup>
 import ASteps from "ant-design-vue/lib/steps/index";
-import { ref } from "vue";
+import { reactive, ref, watch } from "vue";
 import { data } from "@/pages/addProduct/components/SideBar/data";
+import ArrowMenu from '@/components/Icon/ArrowMenu.vue';
+
+let props = defineProps({
+      currentItem : {
+            type : Number
+      }
+})
+
+console.log(props.currentItem);
 
 const AStep = ASteps.Step;
-const current = ref<number>(0);
-const currentSubItem = ref<number>(0)
+let current = ref<any>(props.currentItem);
+let currentSubItem = ref<any>(0)
 const menuList = ref<Array<any>>(data);
 
+const emit = defineEmits(['component']);
+
+watch(() => props.currentItem ,(first, second) => {
+      currentSubItem.value = first;
+      switch (first) {
+            case 0:
+                  break;
+            case 1:
+                  data.forEach(item => {
+                        if(!item.subMenu){
+                            if(item.id === first){
+                              emit('component', item.component);
+                              console.log("item\n", item.component);
+                              
+                            }  
+                        }else{
+                              item.subMenu.forEach(subItem => {
+                                    if(subItem.id === first){
+                                          emit('component', subItem.component);
+                                    }
+                                    
+                              });
+                        }
+                  })
+                  break;
+            case 2:
+                  break;
+            case 3:
+                  break;
+            case 4:
+                  current.value = first;
+                  break;
+            case 5:
+                  break;
+            case 6:
+                  break;
+            case 7:
+                  break;
+            case 8:
+                  break;
+            default:
+                  break;
+      }
+})
 
 
 </script>
 
 <template>
       <div class="steps__container">
-            <!-- <div class="flex md:hidden" v-for="(item, idItem) in menuList" :key="idItem">
-                  <div class="steps__icon"> {{idItem + 1}} </div>
-            </div> -->
-            <div class="steps__phone-steps" >
-                  <div class="steps__icon"> {{1}} </div>
-                  <p class="">{{menuList[0].label}}</p>
+            <div class="" v-for="(item, idItem) in menuList" :key="idItem">
+                  <div class="steps__phone-steps" v-if="item.id === current">
+                        <div class="steps__icon"> {{idItem + 1}} </div>
+                        <p>{{item.label}}</p>
+                  </div>
             </div>
+
             <a-steps
-                  :current="current"
                   direction="vertical"
                   size="small"
                   class="hidden md:flex"
@@ -31,11 +83,15 @@ const menuList = ref<Array<any>>(data);
                         <template #title>
                               {{item.label}}
                         </template>
+                        <template #subTitle v-if="item.id === current">
+                              <arrow-menu/>
+                        </template>
                         <template #description>
                               <a-steps
                                     class="steps-description hidden md:flex" 
                                     direction="vertical"
                                     :current="currentSubItem"
+                                    v-if="current === item.id"
                               >
                                     <a-step v-for="subItem in item.subMenu" :key="subItem.id" :class="[subItem.id === currentSubItem ? 'sub-item-active' : '']">
                                           <template #title>

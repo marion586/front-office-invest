@@ -10,7 +10,6 @@ interface SubMenu{
       label : string,
       component ?: object
 }
-
 interface Menu {
       id : number,
       label : string,
@@ -19,7 +18,7 @@ interface Menu {
       component ?: object
 }
 
-export const data : Array<Object> = [
+export const data : Array<any> = [
       {
             id : 0,
             label : "Information de base",
@@ -48,7 +47,7 @@ export const data : Array<Object> = [
             ]
       },
       {
-            id : 2,
+            id : 4,
             label : "Information de base",
             icon : DefaultMenu,
             subMenu : [
@@ -67,13 +66,13 @@ export const data : Array<Object> = [
             ]
       },
       {
-            id : 3,
+            id : 7,
             label : "Description de l'annonce",
             icon : DefaultMenu,
             component : PropertyType,
       },
       {
-            id : 4,
+            id : 8,
             label : "Documents relatifs aux biens",
             icon : DefaultMenu,
             component : PropertyType,

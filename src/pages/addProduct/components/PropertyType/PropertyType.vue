@@ -7,7 +7,8 @@ import Switch from "@/components/Common/Switch/Switch.vue";
 
 
 const element = ref<Array<any>>(data);
-const emit = defineEmits(['onNext']);
+const emit = defineEmits(['onNext', 'onNext']);
+
 
 function onClickNext(){
       emit('onNext');
