@@ -7,6 +7,7 @@
     import SelectInput from '@/components/Common/Select/Select.vue';
     import Button from '@/components/Common/Button/Button.vue';
     import Switch from '@/components/Common/Switch/Switch.vue';
+    import InputDate from '@/components/Common/InputDate/InputDate.vue';
 
     const element = ref<Array<any>>(data);
     const emit = defineEmits(['onNext', 'onNext']);
@@ -15,10 +16,6 @@
         emit('onNext');
     }
 
-    function getValue(value : boolean){
-      console.log("########\n", value);
-      
-    }
 </script>
 
 <template>
@@ -26,6 +23,7 @@
         <div class="info__body">
             <p class="info__title">Type d'annonces :</p>
             <hr class="info__divider" />
+            <InputDate />
             <div class="info__input-container">
                 <div class="info__input-item" v-for="item in element">
                     <SelectInput
