@@ -7,7 +7,8 @@ import Switch from "@/components/Common/Switch/Switch.vue";
 
 
 const element = ref<Array<any>>(data);
-const emit = defineEmits(['onNext']);
+const emit = defineEmits(['onNext', 'onNext']);
+
 
 function onClickNext(){
       emit('onNext');
@@ -18,6 +19,7 @@ function onClickNext(){
 <template>
       <div class="info__container">
             <div class="info__body">
+                  <Switch />
                   <p class="info__title">Type d'annonces :</p>
                   <hr class="info__divider">
                   <div class="info__input-container">
