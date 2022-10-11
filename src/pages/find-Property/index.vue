@@ -6,8 +6,9 @@ import CityOutlinedIcon from "@/components/Icon/CityOutlined.vue";
 import MapCardIcon from "@/components/Icon/mapCard.vue";
 import SettingConfigIcon  from "@/components/Icon/SettingConfig.vue";
 import ARIcon from "@/components/Icon/AugmentedReality.vue";
-import Title from "@/components/Common/Title/Title.vue";
+import Title from "@/pages/find-Property/components/Title.vue";
     const data = reactive({
+        title : "Recherche",
         menus : [
             {
                 title : "A partir d'une ville",
@@ -39,13 +40,16 @@ import Title from "@/components/Common/Title/Title.vue";
     })
 </script>
 <template>
-    <div class="w-full py-5">
+    <div class="w-full py-3">
         <div class=" container w-full columns-1">
+            <div class="w-full rounded-lg ">
+                <Title :title="data.title"/>
+            </div>
             <MenuButton
                 v-for="(menu, key) in data.menus"
                 :key="key"
                 width="100%"
-                class="w-full flex justify-between"
+                class="w-full flex justify-between rounded-lg"
                 :isIcon="menu.icon"
             >
                 <div class="w-full">
@@ -61,5 +65,6 @@ import Title from "@/components/Common/Title/Title.vue";
 .text-gray{
     color : var(--color-stroke-gray)
 }
+
 </style>
 
