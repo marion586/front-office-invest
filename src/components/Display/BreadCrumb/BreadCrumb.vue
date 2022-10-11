@@ -47,7 +47,7 @@
     });
 
     function isLast(index) {
-        console.log(props.items.length - 1);
+        // console.log(props.items.length - 1);
         // index === props.items.length - 1
     }
 </script>
