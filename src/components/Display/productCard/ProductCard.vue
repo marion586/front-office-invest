@@ -1,22 +1,36 @@
 <template>
     <div class="card max-w-xl">
-        <HeadProduct Text="Agence" label="Label Immo" />
+        <HeadProduct
+            :Text="DataCard.title"
+            :label="`${DataCard.user.name} ${DataCard.user.firstname}`"
+        />
         <figure class="card__image">
-            <img :src="DataCard.image" alt=" card product img" />
+            <img
+                :src="
+                    DataCard.propertyImages[0].path
+                        ? DataCard.propertyImages[0].path
+                        : ' '
+                "
+                alt=" card product"
+            />
         </figure>
         <div class="card__type">
-            <Title type="h4" :label="DataCard.type" weight="bold" />
-            <span> {{ DataCard.price }} £</span>
+            <Title
+                type="h4"
+                :label="DataCard.propertyType.name"
+                weight="bold"
+            />
+            <span> {{ DataCard.prices }} £</span>
         </div>
 
         <div class="card__value">
             <div class="card__value--item">
                 <Room />
-                <span>{{ DataCard.roomCount }}</span>
+                <span>{{ DataCard.roomcount }}</span>
             </div>
             <div class="card__value--item">
                 <Bath />
-                <span>{{ DataCard.bedroomCount }}</span>
+                <span>{{ DataCard.bedroomcount }}</span>
             </div>
             <div class="card__value--item">
                 <Surface />
@@ -24,12 +38,12 @@
             </div>
         </div>
         <div class="card__action">
-            <span> ({{ DataCard.interested }}) interessé</span>
-            <span> ({{ DataCard.offerSentCount }}) offre envoyé </span>
+            <span> (0) Vue(s)</span>
+            <span> (0) Sauvegardé(s)</span>
         </div>
         <div class="card__adress">
             <Map />
-            <span>{{ DataCard.adress }} </span>
+            <span>{{ DataCard.address }} </span>
         </div>
 
         <Button v-if="info" width="100%" type="primary"> Information </Button>
@@ -45,20 +59,10 @@
     import Map from '@/components/Icon/Map.vue';
     import Surface from '@/components/Icon/Surface.vue';
     import Button from '@/components/Common/Button/Button.vue';
-    interface DataProps {
-        image: string;
-        type: string;
-        price: number;
-        roomCount: number;
-        bedroomCount: number;
-        surface: number;
-        interested: number;
-        offerSentCount: number;
-        adress: string;
-    }
+    import CardType from '@/components/Display/productCard/CardType';
     defineProps({
         DataCard: {
-            type: Object as PropType<DataProps>,
+            type: Object as PropType<CardType>,
             required: true,
         },
     });

@@ -32,7 +32,7 @@
     const selectProps = defineProps<Props>();
 
     const emit = defineEmits<{
-        (event: 'change', e: object): void;
+        (event: 'change-select', e: object): void;
     }>();
 
     const handleChange = (value: SelectValue) => {
@@ -41,7 +41,7 @@
             [selectProps.name]: value,
         };
 
-        emit('change', selectValue);
+        emit('change-select', selectValue);
     };
 </script>
 

@@ -48,6 +48,7 @@
                         name="select"
                         placeholder="select"
                         :options="options"
+                        @change-select="(n) => handleSelect(n)"
                     />
                 </div>
             </div>
@@ -89,6 +90,7 @@
         (e: 'on-show-cart'): void;
         (e: 'on-show-card'): void;
         (e: 'on-show-info'): void;
+        (e: 'change-select', value: object): void;
     }>();
 
     const showCart = () => {
@@ -99,6 +101,9 @@
     };
     const showCard = () => {
         emit('on-show-card');
+    };
+    const handleSelect = (n: object) => {
+        emit('change-select', n);
     };
     defineProps({
         isMap: {
