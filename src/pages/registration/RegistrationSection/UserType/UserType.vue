@@ -3,35 +3,17 @@
         <ButtonMenu
             :is-icon="Professional"
             width="100%"
-            @click="handleChoices('professionnel')"
+            @click="handleChoices('professional')"
         >
             Professionnel
         </ButtonMenu>
         <ButtonMenu
             :is-icon="User"
             width="100%"
-            @click="handleChoices('particulier')"
+            @click="handleChoices('particular')"
         >
             Particulier
         </ButtonMenu>
-        <!-- <button
-            @click="
-                () => {
-                    handleChoices('particulier');
-                }
-            "
-        >
-            PARTICULIER
-        </button>
-        <button
-            @click="
-                () => {
-                    handleChoices('professionnel');
-                }
-            "
-        >
-            PROFESSIONNEL
-        </button> -->
     </div>
 </template>
 <script lang="ts" setup>
@@ -40,10 +22,13 @@
     import User from '@/components/Icon/User.vue';
 
     const emit = defineEmits<{
-        (event: 'on-click-choices', userType: string): void;
+        (
+            event: 'on-click-choices',
+            userType: 'particular' | 'professional' | ''
+        ): void;
     }>();
 
-    function handleChoices(userType: string) {
+    function handleChoices(userType: 'particular' | 'professional' | '') {
         emit('on-click-choices', userType);
     }
 </script>

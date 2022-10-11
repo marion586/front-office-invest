@@ -303,7 +303,7 @@ import { reactive, ref } from "vue";
                                 <AppInput
                                 :name-input="data.id"
                                 :label="data.label"
-                                :type="data.type"
+                                :inputType="data.type"
                                 :class="` ${ element.hasAdd || element.hasInputFull ? 'basis-full' : '' }`"
                                 :placeholder="data.placeholder"
                                 :id="data.id"
@@ -327,7 +327,7 @@ import { reactive, ref } from "vue";
             <hr>
     
             <div class="offer__btn-valid">
-                <Button type="primary" class="btn-valid-content">
+                <Button type="primary" class="btn-valid-content" width="100%">
                     Valider
                 </Button>
             </div>

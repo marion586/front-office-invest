@@ -1,7 +1,7 @@
 <template>
     <svg
-        width="12"
-        height="16"
+        :width="iconSize"
+        :height="iconSize"
         viewBox="0 0 12 16"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -12,3 +12,34 @@
         />
     </svg>
 </template>
+<script lang="ts" setup>
+    import { onMounted, PropType, ref } from 'vue';
+    const iconSize = ref('16');
+    const props = defineProps({
+        size: {
+            type: String as PropType<'xs' | 'sm' | 'md' | 'lg'>,
+            default: 'xs',
+        },
+    });
+    onMounted(() => {
+        switch (props.size) {
+            case 'xs':
+                iconSize.value = '16';
+                break;
+            case 'md':
+                iconSize.value = '30';
+
+                break;
+            case 'sm':
+                iconSize.value = '20';
+
+                break;
+            case 'lg':
+                iconSize.value = '50';
+
+                break;
+            default:
+                break;
+        }
+    });
+</script>
