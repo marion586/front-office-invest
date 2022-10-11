@@ -40,3 +40,15 @@ props {
  label,
  weight
 }
+
+## 6. Switch:
+props{
+  checkedName : string,
+  uncheckedName : string
+}
+
+event {
+  switchValue : {
+    params : value
+  }
+}

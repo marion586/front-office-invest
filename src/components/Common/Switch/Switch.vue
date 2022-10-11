@@ -1,15 +1,25 @@
 <script lang="ts" setup>
 import { Switch } from "ant-design-vue";
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const checked = ref<Boolean>(false);
+const emit = defineEmits(['switchValue'])
 
-defineProps({
-      check :{
-            type : Boolean,
-            default : false
+
+const props = defineProps({
+      checkedName :{
+            type : String,
+            default : "OUI"
+      },
+      uncheckedName : {
+            type : String,
+            default : "NON"
       }
 })
+
+watch(() => checked.value, (first, second) => {
+      emit('switchValue', first);
+});
 
 </script>
 
@@ -18,8 +28,8 @@ defineProps({
             <h3> Switch </h3> 
             <Switch 
                   v-model:checked="checked" 
-                  checked-children="OUI"
-                  un-checked-children="NON"
+                  :checked-children="props.checkedName"
+                  :un-checked-children="props.uncheckedName"
             />
       </div>
 </template>

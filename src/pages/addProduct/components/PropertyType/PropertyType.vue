@@ -14,12 +14,19 @@
     function onClickNext() {
         emit('onNext');
     }
+
+    function getValue(value : boolean){
+      console.log("########\n", value);
+      
+    }
 </script>
 
 <template>
     <div class="info__container">
         <div class="info__body">
-            <Switch />
+            <Switch 
+                  @switch-value="getValue"
+            />
             <p class="info__title">Type d'annonces :</p>
             <hr class="info__divider" />
             <div class="info__input-container">
