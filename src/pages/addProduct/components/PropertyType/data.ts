@@ -5,6 +5,7 @@ interface SubOptions {
       name ?: string
 }
 interface OptionItem{
+      id : number,
       name : string,
 }
 
@@ -24,14 +25,16 @@ export const data : List[] = [
             id : 0,
             label : "Type de vente",
             type : "select",
-            name : "",
+            name : "saleType",
             placeholder : "Sélectionez",
             options : [
                   {
-                      name : "Location",  
+                        id : 0,
+                        name : "Location",  
                   },
                   {
-                      name : "Vente",  
+                        id : 1,
+                        name : "Vente",  
                   },
             ]
       },
@@ -39,10 +42,11 @@ export const data : List[] = [
             id : 1,
             label : "Type de bien",
             type :"select",
-            name : "",
+            name : "propertyType",
             placeholder : "Sélectionez",
             options : [
                   {
+                        id : 0,
                         name : "Maison"
                   }
             ]
@@ -51,9 +55,14 @@ export const data : List[] = [
             id : 2,
             label : "Disponibilité",
             type : "select",
-            name : "",
+            name : "disponibility",
             placeholder : "Sélectionez",
-            options : [],
+            options : [
+                  {
+                        id : 0,
+                        name : "Immediatement"
+                  }
+            ],
             subOptions : [
                   {
                         id : 0,
@@ -66,16 +75,20 @@ export const data : List[] = [
       {
             id : 3,
             label : "Annonce avec délai de publication",
-            type : "radio",
-            name : "",
-            options : []
+            type : "switch",
+            name : "annonce",
+            options : [
+                  {
+                        id : 0,
+                        name : "immediat"
+                  }
+            ]
       },
       {
             id : 4,
             label : "Copie de bail",
-            type : "",
-            name : "",
-            options : []
+            type : "file",
+            name : "bailCopy",
       }
 ];
 

@@ -24,7 +24,7 @@
 <template>
     <div class="info__container">
         <div class="info__body">
-            <Switch 
+            <Switch
                   @switch-value="getValue"
             />
             <p class="info__title">Type d'annonces :</p>
@@ -32,12 +32,15 @@
             <div class="info__input-container">
                 <div class="info__input-item" v-for="item in element">
                     <SelectInput
-                        v-if="(item.type = 'select')"
+                        v-if="item.type === 'select'"
                         :label="item.label"
                         :name="item.name"
                         :options="item.options"
                         :placeholder="item.placeholder"
                     />
+                  <Switch
+                        v-else-if="item.type === 'switch'"
+                  />
                 </div>
             </div>
         </div>
@@ -71,7 +74,7 @@
             font-weight: 600;
         }
         &__input-container {
-            @apply flex flex-col gap-[18px];
+            @apply flex flex-col gap-[10px];
         }
         &__input-item {
             @apply flex flex-col gap-[10px];

@@ -25,7 +25,6 @@ watch(() => checked.value, (first, second) => {
 
 <template>
       <div class="switch">
-            <h3> Switch </h3> 
             <Switch 
                   v-model:checked="checked" 
                   :checked-children="props.checkedName"
@@ -54,7 +53,7 @@ watch(() => checked.value, (first, second) => {
                         left : calc(100% - 53px)
                   } 
                   .ant-switch-checked .ant-switch-inner{
-                        margin: 0 45px 0 7px;
+                        margin: 0 50px 0 7px;
                   } 
                   .ant-switch-inner{
                         color: var(--color-primary);
@@ -63,7 +62,7 @@ watch(() => checked.value, (first, second) => {
                         @apply rounded-[4px];
                   }
                   .ant-switch-inner{
-                        margin: 0 7px 0 45px;
+                        margin: 0 7px 0 50px;
                   }
                   .ant-switch-checked .ant-switch-inner{
                         color: white;
