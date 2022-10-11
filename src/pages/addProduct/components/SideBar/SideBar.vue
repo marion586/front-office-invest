@@ -21,46 +21,34 @@ const emit = defineEmits(['component']);
 
 watch(() => props.currentItem ,(first, second) => {
       currentSubItem.value = first;
+      changeComponent(data, first);
       switch (first) {
-            case 0:
-                  break;
-            case 1:
-                  data.forEach(item => {
-                        if(!item.subMenu){
-                            if(item.id === first){
-                              emit('component', item.component);
-                              console.log("item\n", item.component);
-                              
-                            }  
-                        }else{
-                              item.subMenu.forEach(subItem => {
-                                    if(subItem.id === first){
-                                          emit('component', subItem.component);
-                                    }
-                                    
-                              });
-                        }
-                  })
-                  break;
-            case 2:
-                  break;
-            case 3:
-                  break;
             case 4:
                   current.value = first;
-                  break;
-            case 5:
-                  break;
-            case 6:
-                  break;
-            case 7:
-                  break;
-            case 8:
                   break;
             default:
                   break;
       }
 })
+
+function changeComponent(data : Array<any>, first : any){
+      data.forEach(item => {
+            if(!item.subMenu){
+                  if(item.id === first){
+                  emit('component', item.component);
+                  console.log("item\n", item.component);
+                  
+                  }  
+            }else{
+                  item.subMenu.forEach(subItem => {
+                        if(subItem.id === first){
+                              emit('component', subItem.component);
+                        }
+                        
+                  });
+            }
+      })
+}
 
 
 </script>
