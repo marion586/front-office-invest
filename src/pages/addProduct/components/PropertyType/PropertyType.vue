@@ -24,9 +24,6 @@
 <template>
     <div class="info__container">
         <div class="info__body">
-            <Switch
-                  @switch-value="getValue"
-            />
             <p class="info__title">Type d'annonces :</p>
             <hr class="info__divider" />
             <div class="info__input-container">
@@ -39,6 +36,7 @@
                         :placeholder="item.placeholder"
                     />
                   <Switch
+                        :item-label="item.label"
                         v-else-if="item.type === 'switch'"
                   />
                 </div>
