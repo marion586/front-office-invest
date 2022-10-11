@@ -5,7 +5,6 @@
         footer,
     } from '@/pages/addProduct/components/PropertyType/data';
     import SelectInput from '@/components/Common/Select/Select.vue';
-    import Button from '@/components/Common/Button/Button.vue';
     import Switch from '@/components/Common/Switch/Switch.vue';
     import InputDate from '@/components/Common/InputDate/InputDate.vue';
 
@@ -40,12 +39,6 @@
                 </div>
             </div>
         </div>
-        <div class="info__footer">
-            <div class="" v-for="itemFooter in footer">
-                <p>{{ itemFooter.title }}</p>
-            </div>
-            <Button class="info__my-btn" @click="onClickNext"> Suivant </Button>
-        </div>
     </div>
 </template>
 
@@ -64,7 +57,9 @@
             @apply h-[33px] rounded-[100px] w-[100%] md:w-[110px];
         }
         &__container {
-            @apply flex flex-col justify-between h-[100%];
+            height: 100%;
+            overflow-y: auto;
+            @apply flex flex-col justify-between;
         }
         &__select-label {
             font-weight: 600;

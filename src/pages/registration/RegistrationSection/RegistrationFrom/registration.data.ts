@@ -1,5 +1,13 @@
 const formParams: Array<IUserField> = [
+    // {
+    //     name: 'agencyId',
+    //     label: "Nom de l'entreprise",
+    //     placeholder: "Nom de l'entreprise",
+    //     required: true,
+    //     value: '',
+    // },
     {
+        id: 'agencyName',
         name: 'agencyName',
         label: "Nom de l'entreprise",
         placeholder: "Nom de l'entreprise",
@@ -7,21 +15,15 @@ const formParams: Array<IUserField> = [
         value: '',
     },
     {
+        id: 'agencyNumber',
         name: 'agencyNumber',
         label: "Numero de l'entreprise",
         placeholder: "Nom de l'entreprise",
         required: true,
         value: '',
     },
-    // {
-    //     id: 'agencyAddress',
-    //     name: 'agencyAddress',
-    //     label: "Addrèsse de l'entreprise",
-    //     placeholder: "Lieu ou addèsse de l'entreprise",
-    //     required: true,
-    //     value: '',
-    // },
     {
+        id: 'agencyTva',
         name: 'agencyTva',
         label: "TVA de l'entreprise",
         placeholder: "TVA de l'entreprise",
@@ -29,6 +31,7 @@ const formParams: Array<IUserField> = [
         value: '',
     },
     {
+        id: 'firstname',
         name: 'firstname',
         label: 'Prénom',
         placeholder: 'Prénom',
@@ -37,6 +40,7 @@ const formParams: Array<IUserField> = [
         errorMsg: 'Le prenom est obligatoire',
     },
     {
+        id: 'name',
         name: 'name',
         label: 'Nom',
         placeholder: 'Nom',
@@ -53,6 +57,7 @@ const formParams: Array<IUserField> = [
         value: '',
     },
     {
+        id: 'email',
         name: 'email',
         label: 'Email',
         placeholder: 'Addrèsse éléctronique',
@@ -60,6 +65,7 @@ const formParams: Array<IUserField> = [
         value: '',
     },
     {
+        id: 'telephone',
         name: 'telephone',
         label: 'Tel',
         placeholder: 'Numero de téléphone',
@@ -67,6 +73,7 @@ const formParams: Array<IUserField> = [
         value: '',
     },
     {
+        id: 'tva',
         name: 'tva',
         label: 'TVA',
         placeholder: 'TVA personnel',
@@ -75,6 +82,7 @@ const formParams: Array<IUserField> = [
     },
 
     {
+        id: 'password',
         name: 'password',
         label: 'Mot de passe',
         placeholder: 'Mot de passe',
@@ -83,6 +91,7 @@ const formParams: Array<IUserField> = [
         value: '',
     },
     {
+        id: 'confirmPassword',
         name: 'confirmPassword',
         label: 'Confimer',
         placeholder: 'Confirmer votre mot de passe',
@@ -113,18 +122,47 @@ export const particularUserForm: Array<IUserField> = [
     ...formParams
         .filter((field) => field.name !== 'agencyName')
         .filter((field) => field.name !== 'agencyNumber')
-        .filter((field) => field.name !== 'agencyAddress')
+        // .filter((field) => field.name !== 'agencyAddress')
         .filter((field) => field.name !== 'agencyTva'),
 ];
 export const professionnalUserForm: Array<IUserField> = [
     ...formParams.filter((field) => field.name !== 'tva'),
 ];
 
+export const professionnalUserFormWithAgencies: Array<IUserField> = [
+    ...formParams
+        .filter((field) => field.name !== 'tva')
+        .filter((field) => field.name !== 'agencyName')
+        .filter((field) => field.name !== 'agencyNumber')
+        .filter((field) => field.name !== 'agencyTva'),
+];
+
 // ERROR
-const { agencyName, agencyNumber, agencyAddress, agencyTva, ...restPart } =
-    errorFields;
+const {
+    agencyName,
+    agencyNumber,
+    agencyAddress,
+    agencyTva,
+    typeRole,
+    ...restPart
+} = errorFields;
 const { tva, ...restPro } = errorFields;
+export const professsionnalErrorFieldsWithAgencies = {
+    ...filterProWithAgency(restPro),
+};
 export const particularErrorFields: IErrorRegistrationFields = { ...restPart };
 export const professsionnalErrorFields: IErrorRegistrationFields = {
     ...restPro,
 };
+
+function filterProWithAgency(fields: Object) {
+    let obj: any;
+    Object.keys(fields)
+        .filter((item) => item !== 'agencyName')
+        .filter((item) => item !== 'agencyNumber')
+        .filter((item) => item !== 'agencyTva')
+        .forEach((key) => {
+            obj = { ...obj, [key]: (fields as any)[key] };
+        });
+    return obj;
+}

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-    /* component */
+    import store from '@/store';
+    import { ref, watch, onMounted, watchEffect } from 'vue';
     import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
 
     /* icon */
@@ -8,11 +9,10 @@
     import AddUser from '@/components/Icon/AddUser.vue';
     import ArrowBottom from '@/components/Icon/ArrowBottom.vue';
     import Search from '@/components/Icon/Search.vue';
+    import User from '@/components/Icon/User.vue';
 
     import { dataMenu } from './dataHeader';
 
-    import store from '@/store';
-    import { ref, watch, onMounted } from 'vue';
     import {
         Affix as AAffix,
         Menu as AMenu,
@@ -23,12 +23,26 @@
 
     const isLoggedIn = ref<boolean>(false);
     const isMenu = ref<boolean>(false);
+    const fakeLoadAvatar = ref<boolean>(true);
 
     const handleShowMenu = () => {
         isMenu.value = !isMenu.value;
     };
     onMounted(() => {
-        console.log('update');
+        setTimeout(() => {
+            fakeLoadAvatar.value = false;
+        }, 1000);
+    });
+    watchEffect(() => {
+        console.log(window.screen);
+        window.addEventListener('resize', () => {
+            fakeLoadAvatar.value = true;
+            setTimeout(() => {
+                fakeLoadAvatar.value = false;
+            }, 1000);
+            console.log('object');
+        });
+        window.removeEventListener('resize', () => {});
     });
     watch(
         () => store.getters['UserModule/getUserDetails'],
@@ -44,7 +58,7 @@
 </script>
 
 <template>
-    <a-affix :offset-top="0">
+    <a-affix>
         <header class="header">
             <div class="header__mobile">
                 <div>
@@ -143,7 +157,7 @@
                 </div>
             </div>
             <div class="header__desc">
-                <Paragraphe type="bold"> Immo </Paragraphe>
+                <Paragraphe type="bold"> IMMO </Paragraphe>
                 <div class="header__content-menu">
                     <a-menu mode="horizontal">
                         <template v-for="(d, index) in dataMenu">
@@ -178,7 +192,7 @@
                         </template>
                     </a-menu>
                 </div>
-                <div v-if="!isMenu" class="header__user header__menu-rigth">
+                <div class="header__user header__menu-rigth">
                     <a-menu mode="horizontal">
                         <a-menu-item key="20">
                             <router-link to="/">
@@ -187,9 +201,14 @@
                         </a-menu-item>
                         <a-sub-menu key="sub-100">
                             <template #title>
-                                <figure class="header__avatar">
-                                    <img src="" alt="" />
+                                <figure
+                                    v-if="!fakeLoadAvatar"
+                                    class="header__avatar"
+                                >
+                                    <User />
+                                    <!-- <img src="" alt="" /> -->
                                 </figure>
+                                <span v-else>...</span>
                                 <ArrowBottom />
                             </template>
                             <a-menu-item-group v-if="!isLoggedIn">
@@ -319,7 +338,8 @@
             width: 35px;
             height: 35px;
             border-radius: 50%;
-            background-color: var(--color-primary);
+            background-color: var(--color-stroke-gray);
+            @apply flex justify-center items-center;
         }
         &__content-menu-mobile {
             position: fixed;
@@ -338,6 +358,7 @@
         .menu-active {
             transform: translateX(0);
             transition: transform 0.25s ease;
+            box-shadow: 1px 1px 10px var(--color-stroke-gray);
         }
         .overlay-active {
             opacity: 0.25;

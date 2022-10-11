@@ -6,6 +6,7 @@
             >{{ label }}</label
         >
         <a-input
+            :disabled="disabled"
             :id="id"
             style=""
             :placeholder="placeholder"
@@ -78,6 +79,7 @@
         value: {
             type: [Number, String],
         },
+        disabled: Boolean,
     });
 
     watch(

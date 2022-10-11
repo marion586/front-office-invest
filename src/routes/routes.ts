@@ -29,6 +29,16 @@ const routes = <Array<RouteRecordRaw>>[
             import('@/pages/registration/SubscriptionSection/Subscription.vue'),
     },
     {
+        name: 'authValidation',
+        path: '/success/:token',
+        component: () => import('@/pages/login/Validation.vue'),
+    },
+    {
+        name: 'authSubscriptionConfirmation',
+        path: '/confirmation',
+        component: () => import('@/pages/registration/Confirmation.vue'),
+    },
+    {
         path: '/styleguide',
         component: () => import('@/pages/styleguide.vue'),
     },
