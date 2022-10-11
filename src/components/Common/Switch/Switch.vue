@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Switch } from "ant-design-vue";
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 
 const checked = ref<Boolean>(false);
 
@@ -26,16 +26,16 @@ defineProps({
 
 <style scoped lang="scss">
       .switch{
-            &:deep{
+            &:deep(){
                   .ant-switch{
                         @apply h-[34px] w-[115px] rounded-[4px];
                         background-color: var(--color-gray);
-                        color: var(--color-secondary)
+                        color: var(--color-secondary);
                   }
                   .ant-switch-checked{
-                        @apply bg-[gray] ;
                         left: 10px;
                         color: var(--color-gray);
+                        background-color: var(--color-primary);
                   }
                   .ant-switch-handle{
                         @apply h-[80%] w-[50px] rounded-[4px];
@@ -47,10 +47,16 @@ defineProps({
                         margin: 0 45px 0 7px;
                   } 
                   .ant-switch-inner{
-                        color: black;
+                        color: var(--color-primary);
                   }
                   .ant-switch-handle::before{
                         @apply rounded-[4px];
+                  }
+                  .ant-switch-inner{
+                        margin: 0 7px 0 45px;
+                  }
+                  .ant-switch-checked .ant-switch-inner{
+                        color: white;
                   }
 
             }
