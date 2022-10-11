@@ -7,7 +7,7 @@
     import Button from '@/components/Common/Button/Button.vue';
     import DocsResult from '@/pages/make-offer/doc-offer/ResultMakeOffer.vue';
     import Radio from '@/components/Common/Radio/Radio.vue';
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 
 
 
@@ -17,7 +17,8 @@ import { ref } from "vue";
 
     const classFlex = "flex flex-row items-center gap-6";
 
-    let names = ['Pareto', 'Angelo'];
+    let names = reactive([]);
+    let conditions = reactive([]);
 
     let elementOffer = [
         {
@@ -49,6 +50,7 @@ import { ref } from "vue";
         },
         {
             title: "Conditions",
+            hasListCondition: true,
             hasAdd: true,
             dataInput: [
                 {
@@ -190,25 +192,32 @@ import { ref } from "vue";
 
     const handleInput = (e: Object) => {
         console.log('handleInput', e);
-        formParams = {
-            ...formParams,
+        dataParams = {
+            ...dataParams,
             ...e,
         };
 
-        console.log('formParams', formParams);
+        console.log('dataParams', dataParams);
     };
+
+
+    let dataParams = ref<{name: String, conditions: String}>({
+        name: '',
+        conditions: ''
+    });
 
 
     const handleAddNameCondition = (name: String) => {
         switch (name) {
             case 'name':
-            // names.push(formParams.name);
+            names.push(dataParams.name);
                 console.log('Name add clicked', names);
                 
                 break;
 
             case 'conditions':
-            console.log('Condition add clicked');
+            conditions.push(dataParams.conditions);
+            console.log('Condition add clicked', conditions);
             
             break;
         
@@ -218,8 +227,6 @@ import { ref } from "vue";
         
     }
 
-    let formParams = ref({
-    });
 </script>
 
 
@@ -257,6 +264,18 @@ import { ref } from "vue";
                             <span class="offer__form-label">
                                 {{ element.title }}
                             </span>
+
+                            <ul class="condtion-list"
+                            v-if="element.hasListCondition"
+                            >
+                                <li 
+                                class="list-decimal ml-6"
+                                v-for="(condition, index) in conditions" :key="index"
+                                >
+                                    {{ condition }}
+                                </li>
+                            </ul>
+                            
                             <div v-if="element.hasRadio">
                                 <Radio :element="element.dataRadio"
                                 :align="element.align"
@@ -318,6 +337,7 @@ import { ref } from "vue";
         <div class="offer__content-result">
                 <DocsResult
                 :names="names"
+                :conditions="conditions"
                  />
             </div>
         </div>
@@ -456,5 +476,9 @@ import { ref } from "vue";
         @apply sm:flex sm:flex-row gap-9 ;
         }
     }
+}
+
+.condtion-list{
+    @apply my-1.5 ;
 }
 </style>

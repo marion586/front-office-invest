@@ -8,8 +8,14 @@
             default() {
                 return [];
             },
+        },
+        conditions: {
+            type: Array <String>,
+            default() {
+                return [];
+            }
         }
-    })
+    });
 
 
 let titleResult = "Apperçu du document";
@@ -39,7 +45,7 @@ const dataResutlHead = {
             >
                 Les soussignées(es):
             </span>
-            <ul class="name-list">
+            <ul class="condition-list">
                 <li 
                 class="list-disc ml-6"
                 v-for="(name, index) in names" :key="index"
@@ -58,6 +64,14 @@ const dataResutlHead = {
             </div>
 
             <h4 class="offer__result-title-dark">Pour autant que :</h4>
+            <ul class="name-list">
+                <li 
+                class="list-decimal ml-6"
+                v-for="(condition, index) in conditions" :key="index"
+                >
+                    {{ condition }}
+                </li>
+            </ul>
             
             <div class="offer__result-content">
                 <section>
@@ -124,13 +138,17 @@ const dataResutlHead = {
         @apply my-2.5 font-normal text-[#949FB5] ;
     }
 
+    &__result-content{
+        @apply mt-3.5 ;
+    }
+
     &__result-footer{
         @apply mt-[138px] flex flex-row justify-between font-normal ;
     }
 
   }  
 
-  .name-list{
+  .name-list .condition-list{
     @apply my-1.5 ;
 }
 
