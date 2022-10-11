@@ -32,7 +32,7 @@ watch(() => props.currentItem ,(first, second) => {
 })
 
 function changeComponent(data : Array<any>, first : any){
-      data.forEach(item => {
+      data.forEach((item : any) => {
             if(!item.subMenu){
                   if(item.id === first){
                   emit('component', item.component);
@@ -40,7 +40,7 @@ function changeComponent(data : Array<any>, first : any){
                   
                   }  
             }else{
-                  item.subMenu.forEach(subItem => {
+                  item.subMenu.forEach((subItem: any) => {
                         if(subItem.id === first){
                               emit('component', subItem.component);
                         }

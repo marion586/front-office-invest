@@ -14,19 +14,6 @@ function changeComponent(comp : object){
 
 function next(){
       current.value++;
-      // data.forEach(item => {
-      //       if(!item.subMennu){
-      //             if(item.id === current.value){
-      //                   activeComp.value = [item.component]
-      //             }
-      //       }else{
-      //             item.subMenu.forEach(sub => {
-      //                   if(sub.id === current.value){
-      //                         activeComp.value = [sub.component]
-      //                   }
-      //             })
-      //       }
-      // })
 }
 
 function prev(){
@@ -38,8 +25,6 @@ function prev(){
 <template>
       <div class="md:container">
             <div class="add__container">
-                  <!-- <SideBar :data="menu" @component="changeComponent" /> -->
-                  <!-- <Steps :data="menu" @component="changeComponent" /> -->
                   <SideBar :currentItem="current" @component="changeComponent"/>
                   <div class="add__content">
                         <component :is="activeComp[activeComp.length - 1]" @onNext="next" @onPrev="prev" />
