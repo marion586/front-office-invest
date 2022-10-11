@@ -11,7 +11,7 @@ if (localStorage.getItem('token')) {
  * AXIOS CONFIG
  */
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
-axios.defaults.timeout = 100000;
+axios.defaults.timeout = 35000;
 /** */
 export class Http {
     static async get(

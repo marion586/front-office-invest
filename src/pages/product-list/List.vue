@@ -8,13 +8,10 @@
                 @on-show-info="showInfo"
                 @change-select="handleSelect"
             />
-            <p v-if="dataCard.length == 0" class="list__container-spinner">
+            <!-- <p v-if="dataCard.length == 0" class="list__container-spinner">
                 Loading ...
-            </p>
-            <div
-                v-if="isListCards && dataCard.length > 0"
-                class="list__container-product"
-            >
+            </p> -->
+            <div v-if="isListCards" class="list__container-product">
                 <CardProducts :DataCard="dataCard" />
             </div>
             <Map
@@ -40,14 +37,16 @@
 
 <script setup lang="ts">
     import CardProducts from './CardProducts/CardProducts.vue';
-    import { onMounted, provide, reactive, ref } from 'vue';
+    import { onMounted, provide, reactive, ref, computed } from 'vue';
     import Filter from './Filter/Filter.vue';
     import ProductInfo from './ProductInfo/ProductInfo.vue';
     import DataProps from '@/components/Display/productCard/CardType';
     import Map from '@/components/section/map/index.vue';
-    import { Http } from '@/services/http';
     import { geocode } from '@/composables/google-maps-api';
-    let dataCard = reactive<DataProps[]>([]);
+    import { Store, useStore } from 'vuex';
+    const store: Store<any> = useStore();
+
+    let dataCard = reactive<any>([]);
 
     let isShowCart = ref<boolean>(false);
     let isListCards = ref<boolean>(true);
@@ -71,7 +70,9 @@
     };
 
     let filterObject = ref<object>({ isShowCart, isListCards, isShowInfo });
+
     provide('filterObject', filterObject);
+
     const data = reactive({
         isMapReady: false,
         PlaceCoordinates: [],
@@ -108,31 +109,7 @@
         ],
     });
 
-    const parseData = (data: DataProps[]): void => {
-        data.forEach((element: DataProps) => {
-            dataCard.push({
-                id: element.id,
-                propertyImages: element.propertyImages,
-                propertyType: element.propertyType,
-                prices: +element.prices,
-                roomcount: +element.roomcount,
-                bedroomcount: +element.bedroomcount,
-                surface: +element.surface,
-                address: element.address,
-                user: element.user,
-                title: element.title,
-            });
-        });
-    };
-    const getProductList = async (): Promise<void> => {
-        try {
-            const { data } = await Http.get('/the_property/list');
-            parseData(data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-    onMounted(() => {
+    onMounted(async () => {
         const proomise = geocode('Bruxelles Belgique');
         proomise.then((result) => {
             return (
@@ -140,8 +117,11 @@
                 data.PlaceCoordinates.push(result.coordinates)
             );
         });
-
-        getProductList();
+        await store.dispatch('ProductsListModule/setData');
+        dataCard = computed(
+            () => store.getters['ProductsListModule/getProductsListData']
+        );
+        console.log(dataCard, 'data card');
     });
     const handleSelect = (value: any): void => {
         console.log(value);
