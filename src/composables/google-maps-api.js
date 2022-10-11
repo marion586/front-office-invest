@@ -46,7 +46,7 @@ export const removeScript = ()=>{
     })
 }
 /**
- * 
+ *
  * @param {HTMLImputElement} input - input element of the field
  * @param {Array} fields - list on fields de return
  * @param {Object} options - autocomple optionss
@@ -70,7 +70,7 @@ export const autocomplet = (input)=>{
                 console.log(res)
             });     
         }
-    }
+    };
 
 
 /**
@@ -121,4 +121,4 @@ export const geocode =  (address="")=>{
         
     })
     return p1;
-}
+};

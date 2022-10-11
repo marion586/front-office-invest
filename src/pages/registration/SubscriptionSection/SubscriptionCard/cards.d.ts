@@ -1,6 +1,12 @@
 interface ISubscriptionCards {
-    subscriptionType: string;
-    subscriptionAmount: number;
-    subscriptionDesc: string;
-    subscriptionInfo: Array<string>;
+    id: number;
+    name: string;
+    price: number;
+    description: string;
+    services: Array<{
+        description: string;
+        id: number;
+        status: boolean;
+        name: string;
+    }>;
 }

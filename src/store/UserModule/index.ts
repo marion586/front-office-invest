@@ -48,9 +48,7 @@ export const state: IUserState = {
 
 export const getters: Object = {
     getUserDetails(state: IUserState) {
-        console.log('inside store');
         return state.user;
-        // return !!state.user ? state.user : null;
     },
 
     getRegisteredUser(state: IUserState) {
