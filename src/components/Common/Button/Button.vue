@@ -3,7 +3,9 @@
         <button
             :disabled="disabled"
             @click="!disabled && $emit('on-click')"
-            :class="`button__${type} ${disabled ? '--disabled' : ''}`"
+            :class="`button__${type ?? 'primary'} ${
+                disabled ? '--disabled' : ''
+            }`"
             :type="htmlType"
         >
             <slot />
@@ -15,7 +17,10 @@
     import { ref, onMounted } from 'vue';
 
     interface Props {
-        type?: string;
+        type?: {
+            type: string;
+            default: 'primary';
+        };
         htmlType?: 'button' | 'submit' | 'reset';
         width?: string;
         disabled?: boolean;

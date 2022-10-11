@@ -125,6 +125,7 @@
                 font-weight: 500;
                 color: var(--color-gray-icon);
                 margin-bottom: 10px;
+                display: block;
             }
         }
         &__content {
