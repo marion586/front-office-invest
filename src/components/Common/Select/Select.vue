@@ -1,15 +1,31 @@
 <template>
-    <a-select
-        :options="(options as DefaultOptionType[])"
-        @change="handleChange"
-        :placeholder="placeholder"
-        class="select"
-        :disabled="disabled"
-    >
-        <template #suffixIcon>
-            <ArrowBottom />
-        </template>
-    </a-select>
+    <div class="custom-select__wrapper">
+        <label v-if="label"
+            ><span v-if="required" class="custom-select__wrapper--required"
+                >*</span
+            >{{ label }}</label
+        >
+        <a-select
+            :options="(options as DefaultOptionType[])"
+            @change="handleChange"
+            :placeholder="placeholder"
+            class="custom-select__content"
+            :disabled="disabled"
+            :mode="mode"
+            :defaultValue="defaultValue"
+        >
+            <template #suffixIcon>
+                <ArrowBottom />
+            </template>
+        </a-select>
+        <transition mode="in-out" name="fade-error">
+            <p v-if="hasError?.status">
+                <small class="custom-select__wrapper--error">{{
+                    hasError?.errorMsg
+                }}</small>
+            </p>
+        </transition>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -18,14 +34,33 @@
         DefaultOptionType,
         SelectValue,
     } from 'ant-design-vue/lib/select';
-    import { ref, onMounted } from 'vue';
+    import { ref, watch } from 'vue';
 
+    interface IHasError {
+        borderColor: string | number;
+        placeholderColor: string | number;
+    }
+    interface IHasErrorProps {
+        status: boolean;
+        errorMsg: string;
+    }
     interface Props {
         options?: SelectValue;
         name: string;
         placeholder?: string;
         disabled?: boolean;
+        mode?: 'multiple' | 'tags';
+        defaultValue?: SelectValue;
+        hasError?: IHasErrorProps;
+        required?: boolean;
+        label?: string;
     }
+
+    const initialErrorState: IHasError = {
+        borderColor: 'var(--color-stroke-gray)',
+        placeholderColor: '#c7c7c7',
+    };
+    const errorTheme = ref<IHasError>({ ...initialErrorState });
 
     const currentSelectedValue = ref<SelectValue>();
 
@@ -34,6 +69,21 @@
     const emit = defineEmits<{
         (event: 'change', e: object): void;
     }>();
+
+    watch(
+        () => selectProps.hasError,
+        () => {
+            if (selectProps.hasError?.status) {
+                errorTheme.value = {
+                    borderColor: 'salmon',
+                    placeholderColor: 'salmon',
+                };
+            } else {
+                errorTheme.value = { ...initialErrorState };
+            }
+        }
+        // { immediate: true }
+    );
 
     const handleChange = (value: SelectValue) => {
         currentSelectedValue.value = value;
@@ -46,18 +96,60 @@
 </script>
 
 <style lang="scss" scoped>
-    .select {
-        width: 100%;
-        &:deep() {
-            .ant-select-selector {
-                border: 1px solid var(--color-stroke-gray);
-                font-size: 14px;
-                height: 38px;
-                border-radius: 4px;
-                @apply flex items-center;
+    .custom-select {
+        &__wrapper {
+            @apply mb-[18px];
+            .fade-error-enter-active {
+                transition: all 0.3s ease-in;
             }
-            .ant-select-selection-placeholder {
-                @apply flex items-center;
+            .fade-error-leave-active {
+                transition: all 0.2s ease-out;
+            }
+
+            .fade-error-enter-from,
+            .fade-error-leave-to {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+            &--required {
+                color: red;
+                margin-right: 5px;
+            }
+            &--error {
+                color: salmon;
+                width: 100%;
+                @apply flex justify-end;
+            }
+            label {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--color-gray-icon);
+                margin-bottom: 10px;
+            }
+        }
+        &__content {
+            width: 100%;
+            &:deep() {
+                .ant-select-selector {
+                    .ant-select-selection-placeholder {
+                        color: v-bind('errorTheme.placeholderColor');
+                    }
+                    border: 1px solid v-bind('errorTheme.placeholderColor');
+                    font-size: 14px;
+                    height: 38px;
+                    border-radius: 4px;
+                    @apply flex items-center;
+                    &:hover {
+                        border: 1px solid var(--color-stroke-gray);
+                    }
+                    &:focus-within {
+                        box-shadow: unset !important;
+                        border: 1px solid var(--color-primary) !important;
+                    }
+                }
+                .ant-select-selection-placeholder {
+                    @apply flex items-center;
+                }
             }
         }
     }

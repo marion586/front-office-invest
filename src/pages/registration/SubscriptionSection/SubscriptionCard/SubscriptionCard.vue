@@ -2,7 +2,7 @@
     <div class="subscription">
         <div class="subscription__header">
             <div @click="goBack" class="subscription__header__back">
-                <span><span>&larr;</span> Retour</span>
+                <ArrowBack color="light" /><span> Retour</span>
             </div>
             <div class="subscription__header__content">
                 <Title type="h2" label="Choisir l'abonnement" weight="600" />
@@ -15,65 +15,63 @@
         </div>
         <div class="subscription__core">
             <CardItem
+                v-for="(card, index) in cardList"
+                :key="index"
                 @on-choose-card="$emit('on-choose-card')"
-                :subscription-cards="subscriptionCards"
+                :subscription-cards="card"
             />
         </div>
     </div>
 </template>
 <script lang="ts" setup>
-    import { onMounted, reactive, ref } from 'vue';
+    import { onMounted, reactive } from 'vue';
     import { Router, useRouter } from 'vue-router';
     import { Store, useStore } from 'vuex';
     import Paragraphe from '../../../../components/Common/Paragraphe/Paragraphe.vue';
     import Title from '@/components/Common/Title/Title.vue';
     import CardItem from './CardItem/CardItem.vue';
+    import ArrowBack from '@/components/Icon/ArrowBack.vue';
+
+    /**SERVICES */
+    import SubscriptionServices from '@/services/subscriptionService';
 
     const router: Router = useRouter();
 
-    const subscriptionCards = reactive<ISubscriptionCards>({
-        subscriptionAmount: 0.0,
-        subscriptionDesc: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non quibusdam ad aut veritatis. Hic repellat`,
-        subscriptionInfo: [
-            'Lorem ipsum dolor sit',
-            'Lorem ipsum dolor sit',
-            'Lorem ipsum dolor sit',
-        ],
-        subscriptionType: 'GRATUIT',
-    });
+    let cardList = reactive<Array<ISubscriptionCards>>([]);
     const store: Store<any> = useStore();
-    const cardTypes = ref<Array<string>>([]);
-    const particularCardTypes: string[] = [
-        'Economique',
-        'Premium',
-        'Gold',
-        'Gratuit',
-    ];
-    const professionalCardTypes: string[] = [
-        'Basic',
-        'Premium',
-        'Gold',
-        'Gratuit',
-    ];
     onMounted(() => {
         initCard();
     });
-
+    async function getSubscriptionCard(type: string) {
+        try {
+            const { data } = await SubscriptionServices.getSubscriptionCard({
+                for: type,
+            });
+            /**
+             * Fetch and sort data
+             */
+            cardList = Object.assign(cardList, data).sort(
+                (a: ISubscriptionCards, b: ISubscriptionCards) =>
+                    a.price > b.price ? 1 : -1
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    }
     function initCard() {
+        console.log(store.getters['SubscriptionModule/getSubscriptionCard']);
         const usertype: string =
-            store.getters['UserModule/getRegisteredUser'].usertype;
+            store.getters['UserModule/getRegisteredUser'].type;
         switch (usertype) {
             case 'particulier':
-                cardTypes.value = [...particularCardTypes];
+                getSubscriptionCard('part');
                 break;
             case 'professionnel':
-                cardTypes.value = [...professionalCardTypes];
+                getSubscriptionCard('pro');
                 break;
             default:
                 break;
         }
-
-        console.log(cardTypes.value);
     }
 
     function goBack() {
@@ -83,7 +81,7 @@
 <style lang="scss">
     // this styles if for test pupose
     .subscription {
-        position: relative;
+        // position: relative;
         padding: 18px;
         &__header {
             * {
@@ -100,13 +98,14 @@
                 }
             }
             &__back {
+                @apply flex items-center gap-[10px];
                 &:hover {
                     cursor: pointer;
                 }
             }
         }
         &__core {
-            position: absolute;
+            // position: absolute;
             top: 66%;
             height: 100%;
             width: 100%;
@@ -117,6 +116,7 @@
             }
             right: 0;
             @apply flex justify-center flex-row flex-wrap gap-[50px];
+            margin-top: -77px;
         }
     }
 </style>
