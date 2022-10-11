@@ -26,24 +26,27 @@
         <div class="info__body">
             <p class="info__title">Type d'annonces :</p>
             <hr class="info__divider" />
-
-            <InputDate 
-                @handleChange="handleChangeDate"
-            />
-
             <div class="info__input-container">
-                <div class="info__input-item" v-for="item in element">
-                    <SelectInput
-                        v-if="item.type === 'select'"
-                        :label="item.label"
-                        :name="item.name"
-                        :options="item.options"
-                        :placeholder="item.placeholder"
-                    />
-                  <Switch
-                        :item-label="item.label"
-                        v-else-if="item.type === 'switch'"
-                  />
+                <div class="info__input-item" v-for="item in element" :key="item.id">
+                    <div class="" :class="[item.subOptions ? 'flex flex-row' :'']">
+                        <SelectInput
+                            v-if="item.type === 'select'"
+                            :label="item.label"
+                            :name="item.name"
+                            :options="item.options"
+                            :placeholder="item.placeholder"
+                        />
+                        <Switch
+                                :item-label="item.label"
+                                v-else-if="item.type === 'switch'"
+                        />
+                    </div>                    
+                    <div class="" v-for="sub in item.subOptions">
+                        <InputDate
+                            :label="sub.label"
+                            @handleChange="handleChangeDate"
+                        />
+                    </div>
                 </div>
             </div>
         </div>

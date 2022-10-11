@@ -5,10 +5,11 @@ import { ref, watch } from "vue";
 const date = ref();
 const emit = defineEmits(["handleChange"])
 
-
-watch(() => date.value, (first, second) => {
-      console.log("First\n", first);
-      console.log("Second\n", second);
+const props = defineProps({
+      label : {
+            type : String,
+            default : ""
+      }
 })
 
 function changeDate(date){
@@ -19,7 +20,7 @@ function changeDate(date){
 
 <template>
       <Space class="date__space">
-            <label for="" class="date__label">Date picker</label>
+            <label for="" class="date__label">{{props.label}}</label>
             <DatePicker 
                   format="DD-MM-YYYY"
                   class="date__item"
@@ -30,12 +31,26 @@ function changeDate(date){
 </template>
 
 <style lang="scss" scoped>
+      .ant-picker-focused{
+            // border-color: var(--color-primary);
+            border: solid var(--color-primary) 1px;
+            box-shadow: none;
+      }
+
+      .ant-picker{
+            height: 38px;
+            cursor: pointer;
+            border-radius: 4px;
+      }
+      .ant-picker:hover{
+            border-color: var(--color-primary);
+      }
       .ant-space-align-center{
             align-items: initial;
       }
-      .ant-picker:hover, .ant-picker-focused{
-            border-color : "red"
-      }
+      // .ant-picker:hover, .ant-picker-focused{
+      //       border-color : "red"
+      // }
       .date{
             &__space {
                   @apply w-[100%] flex flex-col flex-1;

@@ -82,6 +82,14 @@ export const data : List[] = [
                         id : 0,
                         name : "immediat"
                   }
+            ],
+            subOptions : [
+                  {
+                        id : 0,
+                        label : 'Délai',
+                        type: "date",
+                        name : ""
+                  }
             ]
       },
       {
