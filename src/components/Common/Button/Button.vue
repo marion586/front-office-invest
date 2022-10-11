@@ -3,7 +3,9 @@
         <button
             :disabled="disabled"
             @click="!disabled && $emit('on-click')"
-            :class="`button__${type} ${disabled ? '--disabled' : ''}`"
+            :class="`button__${type ?? 'primary'} ${
+                disabled ? '--disabled' : ''
+            }`"
             :type="htmlType"
         >
             <slot />
@@ -15,7 +17,10 @@
     import { ref, onMounted } from 'vue';
 
     interface Props {
-        type?: string;
+        type?: {
+            type: string;
+            default: 'primary';
+        };
         htmlType?: 'button' | 'submit' | 'reset';
         width?: string;
         disabled?: boolean;
@@ -47,18 +52,18 @@
 
 <style lang="scss" scoped>
     button {
-        &:disabled {
-            background-color: v-bind('theme.backgroundColorDisabled');
-            &:hover {
-                cursor: not-allowed;
-            }
-        }
         width: v-bind(width);
         font-size: 14px;
         padding: 6px 20px;
         background-color: v-bind('theme.backgroundColor');
         color: v-bind('theme.color');
         font-weight: 500;
+        &:disabled {
+            background-color: v-bind('theme.backgroundColorDisabled');
+            &:hover {
+                cursor: not-allowed;
+            }
+        }
     }
     .button {
         &__primary {
@@ -66,6 +71,12 @@
         }
         &__secondary {
             border-radius: 50px;
+        }
+        &__border {
+            border-radius: 50px;
+            background-color: #fff;
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
         }
     }
 </style>

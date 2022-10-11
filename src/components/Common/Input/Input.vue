@@ -6,6 +6,11 @@
             >{{ label }}</label
         >
         <a-input
+<<<<<<< HEAD
+=======
+            :disabled="disabled"
+            :id="id"
+>>>>>>> 4cd430e49a812a9bbcd42c52e454e6c19a5f2f9e
             style=""
             :placeholder="placeholder"
             :type="inputType"
@@ -74,6 +79,7 @@
         value: {
             type: [Number, String],
         },
+        disabled: Boolean,
     });
 
     watch(
@@ -139,6 +145,7 @@
             font-weight: 500;
             color: var(--color-gray-icon);
             margin-bottom: 10px;
+            display: block;
         }
         &:deep() {
             .ant-input {

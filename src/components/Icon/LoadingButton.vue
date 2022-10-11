@@ -12,7 +12,7 @@
             xml:space="preserve"
         >
             <path
-                fill="#FFF"
+                :fill="svgTheme"
                 d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z"
             >
                 <animateTransform
@@ -35,8 +35,13 @@
             type: String as PropType<'sm' | 'md'>,
             default: 'md',
         },
+        theme: {
+            type: String as PropType<'light' | 'dark'>,
+            default: 'light',
+        },
     });
-    const svgSize = ref<string>('');
+    const svgSize = ref<string>('30px');
+    const svgTheme = ref<string>('#FFF');
     onMounted(() => {
         switch (props.size) {
             case 'md':
@@ -44,6 +49,17 @@
                 break;
             case 'sm':
                 svgSize.value = '30px';
+                break;
+            default:
+                break;
+        }
+
+        switch (props.theme) {
+            case 'dark':
+                svgTheme.value = 'var(--color-secondary)';
+                break;
+            case 'light':
+                svgTheme.value = '#FFF';
                 break;
             default:
                 break;
