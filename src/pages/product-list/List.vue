@@ -8,10 +8,13 @@
                 @on-show-info="showInfo"
                 @change-select="handleSelect"
             />
-            <!-- <div v-if="dataCard.length == 0">
-                    <p>Loading ...</p>
-                </div> -->
-            <div v-if="isListCards" class="list__container-product">
+            <p v-if="dataCard.length == 0" class="list__container-spinner">
+                Loading ...
+            </p>
+            <div
+                v-if="isListCards && dataCard.length > 0"
+                class="list__container-product"
+            >
                 <CardProducts :DataCard="dataCard" />
             </div>
             <Map
@@ -27,7 +30,7 @@
                 <div>
                     <ProductInfo
                         @on-show-cart="showCart"
-                        :DataCard="singleCard"
+                        :DataCard="dataCard[0]"
                     />
                 </div>
             </div>
@@ -46,7 +49,6 @@
     import { geocode } from '@/composables/google-maps-api';
     let dataCard = reactive<DataProps[]>([]);
 
-    const singleCard = ref<DataProps[]>([dataCard[0]]);
     let isShowCart = ref<boolean>(false);
     let isListCards = ref<boolean>(true);
     let isShowInfo = ref<boolean>(false);
@@ -162,6 +164,11 @@
             }
             &-filter {
                 @apply hidden sm:hidden md:hidden lg:flex;
+            }
+            &-spinner {
+                height: 70vh;
+                font-size: 20px;
+                @apply flex flex-col justify-center items-center;
             }
         }
         .my-map {
