@@ -19,6 +19,7 @@ function onClickNext(){
 <template>
       <div class="info__container">
             <div class="info__body">
+                  <Switch />
                   <p class="info__title">Type d'annonces :</p>
                   <hr class="info__divider">
                   <div class="info__input-container">

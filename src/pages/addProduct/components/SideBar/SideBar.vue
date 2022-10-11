@@ -10,8 +10,6 @@ let props = defineProps({
       }
 })
 
-console.log(props.currentItem);
-
 const AStep = ASteps.Step;
 let current = ref<any>(props.currentItem);
 let currentSubItem = ref<any>(0)
