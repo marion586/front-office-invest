@@ -74,6 +74,7 @@
                             </template>
                             <a-sub-menu :key="`sub-${index}`" v-else>
                                 <template #title>
+                                    <component :is="d.icon"></component>
                                     <span>{{ d.label }}</span>
                                 </template>
                                 <a-menu-item-group

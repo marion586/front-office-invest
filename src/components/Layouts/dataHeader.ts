@@ -1,5 +1,10 @@
 import Home from '@/components/Icon/Home.vue';
-
+import Immobilier from '@/components/Icon/Immobilier.vue';
+import Finance from '@/components/Icon/Finance.vue';
+import Transport from '@/components/Icon/Transport.vue';
+import Setting from '@/components/Icon/Setting.vue';
+import ArtHome from '@/components/Icon/ArtHome.vue';
+import Search from '@/components/Icon/Search.vue';
 interface Menu {
     label: string;
     path: string;
@@ -23,6 +28,7 @@ export const dataMenu: Menu[] = [
         label: 'Immobilier',
         view: 'all',
         path: '#',
+        icon: Immobilier,
         submenu: [
             {
                 label: 'Vendre un bien',
@@ -50,6 +56,7 @@ export const dataMenu: Menu[] = [
         label: 'Finance',
         view: 'all',
         path: '#',
+        icon: Finance,
         submenu: [
             {
                 label: 'Vendre un bien',
@@ -77,6 +84,7 @@ export const dataMenu: Menu[] = [
         label: 'Travaux',
         path: '#',
         view: 'all',
+        icon: Setting,
         submenu: [
             {
                 label: 'Vendre un bien',
@@ -104,15 +112,18 @@ export const dataMenu: Menu[] = [
         label: 'Transport',
         path: '/',
         view: 'all',
+        icon: Transport,
     },
     {
         label: 'Art’home',
         path: '/',
         view: 'all',
+        icon: ArtHome,
     },
     {
         label: 'Recherche',
         view: 'mobile',
         path: '/',
+        icon: Search,
     },
 ];
