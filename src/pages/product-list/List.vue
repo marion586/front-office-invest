@@ -1,7 +1,16 @@
 <template>
     <div class="list">
         <div class="list__container">
-            <Filter @on-show-cart="showCart" @on-show-info="showInfo" />
+            <Filter
+                :class="`${isShowInfo ? 'list__container-filter' : ''}`"
+                @on-show-cart="showCart"
+                @on-show-card="showCard"
+                @on-show-info="showInfo"
+                @change-select="handleSelect"
+            />
+            <!-- <div v-if="dataCard.length == 0">
+                    <p>Loading ...</p>
+                </div> -->
             <div v-if="isListCards" class="list__container-product">
                 <CardProducts :DataCard="dataCard" />
             </div>
@@ -16,7 +25,10 @@
 
             <div v-if="isShowInfo" class="list__container-information">
                 <div>
-                    <ProductInfo :DataCard="singleCard" />
+                    <ProductInfo
+                        @on-show-cart="showCart"
+                        :DataCard="singleCard"
+                    />
                 </div>
             </div>
         </div>
@@ -25,64 +37,30 @@
 
 <script setup lang="ts">
     import CardProducts from './CardProducts/CardProducts.vue';
-
     import { onMounted, provide, reactive, ref } from 'vue';
     import Filter from './Filter/Filter.vue';
     import ProductInfo from './ProductInfo/ProductInfo.vue';
     import DataProps from '@/components/Display/productCard/CardType';
     import Map from '@/components/section/map/index.vue';
-    import {
-        geocode,
-        removeScript,
-        autocomplet,
-    } from '@/composables/google-maps-api';
+    import { Http } from '@/services/http';
+    import { geocode } from '@/composables/google-maps-api';
+    let dataCard = reactive<DataProps[]>([]);
 
-    const dataCard = ref<DataProps[]>([
-        {
-            image: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-            type: 'Maison',
-            price: 200000,
-            roomCount: 1,
-            bedroomCount: 1,
-            surface: 400,
-            interested: 1,
-            offerSentCount: 1,
-            adress: 'Hoedenmakerstraat 38, 1000 Brussel, Belgium',
-        },
-        {
-            image: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-            type: 'Maison',
-            price: 200000,
-            roomCount: 1,
-            bedroomCount: 1,
-            surface: 400,
-            interested: 1,
-            offerSentCount: 1,
-            adress: 'Hoedenmakerstraat 38, 1000 Brussel, Belgium',
-        },
-        {
-            image: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-            type: 'Maison',
-            price: 200000,
-            roomCount: 1,
-            bedroomCount: 1,
-            surface: 400,
-            interested: 1,
-            offerSentCount: 1,
-            adress: 'Hoedenmakerstraat 38, 1000 Brussel, Belgium',
-        },
-    ]);
-
-    const singleCard = ref<DataProps[]>([dataCard.value[0]]);
-
+    const singleCard = ref<DataProps[]>([dataCard[0]]);
     let isShowCart = ref<boolean>(false);
     let isListCards = ref<boolean>(true);
     let isShowInfo = ref<boolean>(false);
+    const showCard = () => {
+        isShowCart.value = false;
+        isListCards.value = true;
+        isShowInfo.value = false;
+    };
 
     provide('isInfo', isShowInfo);
     const showCart = () => {
-        isShowCart.value = !isShowCart.value;
-        isListCards.value = !isListCards.value;
+        isShowCart.value = true;
+        isListCards.value = false;
+        isShowInfo.value = false;
     };
     const showInfo = () => {
         isShowInfo.value = true;
@@ -127,14 +105,51 @@
             },
         ],
     });
+
+    const parseData = (data: DataProps[]): void => {
+        data.forEach((element: DataProps) => {
+            dataCard.push({
+                id: element.id,
+                propertyImages: element.propertyImages,
+                propertyType: element.propertyType,
+                prices: +element.prices,
+                roomcount: +element.roomcount,
+                bedroomcount: +element.bedroomcount,
+                surface: +element.surface,
+                address: element.address,
+                user: element.user,
+                title: element.title,
+            });
+        });
+    };
+    const getProductList = async (): Promise<void> => {
+        try {
+            const { data } = await Http.get('/the_property/list');
+            parseData(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     onMounted(() => {
         const proomise = geocode('Bruxelles Belgique');
         proomise.then((result) => {
-            console.log(result);
-            (data.isMapReady = true),
-                data.PlaceCoordinates.push(result.coordinates);
+            return (
+                (data.isMapReady = true),
+                data.PlaceCoordinates.push(result.coordinates)
+            );
         });
+
+        getProductList();
     });
+    const handleSelect = (value: any): void => {
+        console.log(value);
+        if (value.select === 'Prix asc') {
+            dataCard = dataCard.sort((a, b) => a.prices - b.prices);
+            console.log(dataCard);
+        } else {
+            dataCard = dataCard.sort((a, b) => b.prices - a.prices);
+        }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -145,9 +160,12 @@
             &-product {
                 @apply grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4;
             }
+            &-filter {
+                @apply hidden sm:hidden md:hidden lg:flex;
+            }
         }
         .my-map {
-            height: 478px;
+            height: 80vh;
             width: 100%;
             border-radius: 8px;
         }

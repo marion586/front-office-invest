@@ -67,7 +67,7 @@
     const selectProps = defineProps<Props>();
 
     const emit = defineEmits<{
-        (event: 'change', e: object): void;
+        (event: 'change-select', e: object): void;
     }>();
 
     watch(
@@ -91,7 +91,7 @@
             [selectProps.name]: value,
         };
 
-        emit('change', selectValue);
+        emit('change-select', selectValue);
     };
 </script>
 
