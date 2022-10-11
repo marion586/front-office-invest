@@ -49,8 +49,6 @@ function changeComponent(data : Array<any>, first : any){
             }
       })
 }
-
-
 </script>
 
 <template>
@@ -90,6 +88,7 @@ function changeComponent(data : Array<any>, first : any){
                         </template>
                   </a-step>
             </a-steps>
+
       </div>
 </template>
 
@@ -117,7 +116,6 @@ function changeComponent(data : Array<any>, first : any){
                               color: white;
                               font-size: 12px;
                         }
-                        
                         .ant-steps .ant-steps-item:not(.ant-steps-item-active):not(.ant-steps-item-process) > .ant-steps-item-container[role='button']:hover .ant-steps-item-icon{
                               border-color: transparent;
                         }
@@ -153,7 +151,6 @@ function changeComponent(data : Array<any>, first : any){
                         .ant-steps-vertical.ant-steps-small .ant-steps-item-container .ant-steps-item-tail{
                               left: 22px;
                         }
-
                         .ant-steps-item-title{
                               width: 100%;
                               display: flex;
@@ -164,7 +161,6 @@ function changeComponent(data : Array<any>, first : any){
                               font-weight: 600;
                         }
                   }
-            
             }
             &__none{
                   @apply hidden;
@@ -188,7 +184,6 @@ function changeComponent(data : Array<any>, first : any){
             &__phone-steps{
                   @apply flex gap-[10px] items-center text-[14px] font-semibold md:hidden w-[100%];
             }
-            
       }
 
 </style>
