@@ -1,9 +1,18 @@
 <script setup lang="ts">
+    /* component */
+    import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
+
+    /* icon */
+    import Login from '@/components/Icon/Login.vue';
+    import Logout from '@/components/Icon/Logout.vue';
+    import AddUser from '@/components/Icon/AddUser.vue';
+    import ArrowBottom from '@/components/Icon/ArrowBottom.vue';
+    import Search from '@/components/Icon/Search.vue';
+
+    import { dataMenu } from './dataHeader';
+
     import store from '@/store';
     import { ref, watch, onMounted } from 'vue';
-    import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
-    import ArrowBottom from '@/components/Icon/ArrowBottom.vue';
-    import { dataMenu } from './dataHeader';
     import {
         Affix as AAffix,
         Menu as AMenu,
@@ -11,11 +20,6 @@
         MenuItemGroup as AMenuItemGroup,
         MenuItem as AMenuItem,
     } from 'ant-design-vue';
-
-    /* icon */
-    import IconMenu from '@/components/Icon/IconMenu.vue';
-    import Search from '@/components/Icon/Search.vue';
-    /* end icon */
 
     const isLoggedIn = ref<boolean>(false);
     const isMenu = ref<boolean>(false);
@@ -46,8 +50,15 @@
                 <div>
                     <Paragraphe type="bold"> Accueil </Paragraphe>
                 </div>
-                <div class="header__menu" @click="handleShowMenu">
-                    <IconMenu />
+                <div
+                    class="header__menu"
+                    :class="{ 'header__menu--active': isMenu }"
+                    @click="handleShowMenu"
+                >
+                    <!-- <IconMenu /> -->
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
                 <div
                     class="header__overlay"
@@ -75,7 +86,9 @@
                             <a-sub-menu :key="`sub-${index}`" v-else>
                                 <template #title>
                                     <component :is="d.icon"></component>
-                                    <span>{{ d.label }}</span>
+                                    <span class="header__nav">{{
+                                        d.label
+                                    }}</span>
                                 </template>
                                 <a-menu-item-group
                                     v-for="(s, key) in d.submenu"
@@ -97,8 +110,21 @@
                                 <router-link
                                     @click="handleShowMenu"
                                     to="/connexion"
-                                    >Connexion</router-link
+                                    class="header__nav"
                                 >
+                                    <Login />
+                                    Connexion
+                                </router-link>
+                            </a-menu-item>
+                            <a-menu-item :key="`setting:101`">
+                                <router-link
+                                    @click="handleShowMenu"
+                                    to="/inscription"
+                                    class="header__nav"
+                                >
+                                    <AddUser />
+                                    Inscription
+                                </router-link>
                             </a-menu-item>
                         </template>
                         <template v-else>
@@ -106,8 +132,11 @@
                                 <router-link
                                     @click="handleShowMenu"
                                     to="/logout"
-                                    >Deconnection</router-link
+                                    class="header__nav"
                                 >
+                                    <Logout />
+                                    Deconnection
+                                </router-link>
                             </a-menu-item>
                         </template>
                     </a-menu>
@@ -199,11 +228,76 @@
         box-shadow: 0 0 3px var(--color-primary);
         &__menu {
             cursor: pointer;
+            @apply flex flex-col justify-center gap-[4px];
+            span {
+                background-color: var(--color-secondary);
+                @apply block w-[16px] h-[2px];
+                &:nth-child(2) {
+                    transform: translateX(100%);
+                    @apply w-[8px];
+                    transition: transform 0.18s ease;
+                }
+            }
+            &--active {
+                span {
+                    &:nth-child(2) {
+                        transform: translateX(0);
+                    }
+                }
+            }
         }
         &__mobile {
             @apply flex justify-between;
             @screen lg {
                 display: none;
+            }
+            &:deep() {
+                .ant-menu-item,
+                .ant-menu-submenu-title {
+                    padding-left: 10px !important;
+                }
+                .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+                    background-color: var(--color-gray);
+                    border-radius: 8px;
+                    a {
+                        color: var(--color-secondary);
+                    }
+                }
+                .ant-menu-submenu-open {
+                    .ant-menu-submenu-title {
+                        background-color: var(--color-gray);
+                        border-radius: 8px;
+                    }
+                    .ant-menu-submenu-arrow {
+                        color: var(--color-secondary);
+                    }
+                }
+                .ant-menu-submenu:hover
+                    > .ant-menu-submenu-title
+                    > .ant-menu-submenu-arrow {
+                    color: var(--color-secondary);
+                }
+                .ant-menu-sub.ant-menu-inline .ant-menu-item-group-title {
+                    display: none;
+                }
+                .ant-menu-sub {
+                    body & {
+                        background-color: transparent;
+                        @apply pl-[25px] relative;
+                    }
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        left: 15px;
+                        border-left: 1px solid var(--color-gray);
+                        height: 100%;
+                        top: 0;
+                        display: inline-block;
+                    }
+                    .ant-menu-item {
+                        @apply py-[5px];
+                    }
+                }
             }
         }
         &__desc {
@@ -238,6 +332,7 @@
             border-top-left-radius: 15px;
             border-bottom-left-radius: 15px;
             overflow: auto;
+            padding: 0 10px;
             transition: transform 0.25s ease;
         }
         .menu-active {
@@ -246,6 +341,7 @@
         }
         .overlay-active {
             opacity: 0.25;
+            visibility: visible;
         }
         &__menu-rigth {
             body & {
@@ -281,6 +377,17 @@
             .ant-menu-vertical {
                 padding-top: 10px;
             }
+            .ant-menu-vertical .ant-menu-item::after,
+            .ant-menu-vertical-left .ant-menu-item::after,
+            .ant-menu-vertical-right .ant-menu-item::after,
+            .ant-menu-inline .ant-menu-item::after {
+                content: none;
+            }
+            .ant-menu-inline,
+            .ant-menu-vertical,
+            .ant-menu-vertical-left {
+                border: none;
+            }
         }
         &__overlay {
             position: fixed;
@@ -292,9 +399,12 @@
             opacity: 0;
             transition: opacity 0.25s ease;
             z-index: -1;
+            visibility: hidden;
         }
         &__nav {
             @apply flex gap-[10px] items-center;
+            color: var(--color-secondary);
+            font-weight: 600;
         }
     }
 </style>
