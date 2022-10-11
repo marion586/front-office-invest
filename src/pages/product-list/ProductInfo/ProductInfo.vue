@@ -84,7 +84,7 @@
         }
         &__right {
             @apply col-span-1 sm:col-span-2  md:col-span-2 lg:col-span-2 xl:col-span-2   flex flex-col gap-2;
-            height: 478px;
+            height: 80vh;
             .my-map {
                 height: 80vh;
                 width: 100%;
