@@ -7,7 +7,10 @@
     import SettingConfigIcon from '@/components/Icon/SettingConfig.vue';
     import ARIcon from '@/components/Icon/AugmentedReality.vue';
     import Title from '@/components/Common/Title/Title.vue';
-
+    import {useRoute,useRouter} from "vue-router";
+    
+    const router  =  useRouter();
+    const route  =  useRoute();
     const width = ref('');
     const title = shallowRef('Recherche');
     const screenSize = { sm: 640 };
@@ -16,6 +19,9 @@
             title: "A partir d'une ville",
             desc: 'Sélectionner une ou plusieurs villes',
             icon: MapPinIcon,
+            handler : ()=>{
+                router.push("/recherche-bien/ville")
+            }
         },
         {
             title: "A partir d'une agence",
@@ -68,11 +74,14 @@
                 :width="width"
                 class="menu"
                 :isIcon="menu.icon"
+                @click="menu.handler"
             >
+                <template #default>
                 <div class="w-full">
                     <p class="text-menu-title">{{ menu.title }}</p>
                     <p class="text-menu-sub">{{ menu.desc }}</p>
                 </div>
+                </template>
             </MenuButton>
         </div>
     </div>

@@ -123,7 +123,7 @@ export const dataMenu: Menu[] = [
     {
         label: 'Recherche',
         view: 'mobile',
-        path: '/',
+        path: '/recherche-bien',
         icon: Search,
     },
 ];

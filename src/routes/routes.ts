@@ -50,6 +50,33 @@ const routes = <Array<RouteRecordRaw>>[
         component: () => import('@/pages/find-Property/index.vue'),
     },
     {
+        name : "find-property-by-city",
+        path : "/recherche-bien/ville",
+        component: () => import('@/pages/find-Property/bycity.vue'),
+
+        },
+        {
+            name : "find-property-by-agency",
+            path : "/recherche-bien/agence",
+            component: () => import('@/pages/find-Property/byagency.vue'),
+
+        },
+        {
+            name : "find-property-by-map",
+            path : "/recherche-bien/carte",
+            component: () => import('@/pages/find-Property/bymap.vue'),
+        },
+        {
+            name : "find-property-by-criteria",
+            path : "/recherche-bien/critere",
+            component: () => import('@/pages/find-Property/bycriteria.vue'),
+        },
+        {
+            name : "find-property-by-ar",
+            path : "/recherche-bien/realite-augmentee",
+            component: () => import('@/pages/find-Property/byar.vue'),
+        },
+    {
         name: 'detail',
         path: '/detail',
         component: () => import('@/pages/detail/index.vue'),

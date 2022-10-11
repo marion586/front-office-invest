@@ -6,7 +6,6 @@
             >{{ label }}</label
         >
         <a-input
-            :id="id"
             style=""
             :placeholder="placeholder"
             :type="inputType"
@@ -44,9 +43,6 @@
         errorMsg: string;
     }
     const props = defineProps({
-        id: {
-            type: String,
-        },
         label: {
             type: String,
             default: '',
@@ -137,13 +133,13 @@
             width: 100%;
             @apply flex justify-end;
         }
+        @apply mb-[18px];
         label {
             font-size: 14px;
             font-weight: 500;
             color: var(--color-gray-icon);
             margin-bottom: 10px;
         }
-        @apply mb-[18px];
         &:deep() {
             .ant-input {
                 border: 1px solid v-bind('errorTheme.placeholderColor');

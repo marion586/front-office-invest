@@ -181,7 +181,7 @@
                 <div v-if="!isMenu" class="header__user header__menu-rigth">
                     <a-menu mode="horizontal">
                         <a-menu-item key="20">
-                            <router-link to="/">
+                            <router-link to="/recherche-bien">
                                 <Search />
                             </router-link>
                         </a-menu-item>
