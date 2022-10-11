@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import { describe, expect, it } from "vitest";
-import Add from '@/pages/add/index.vue';
+import Add from '@/pages/addProduct/addProduct.vue';
 import SideBar from '@/components/Display/SideBar/index.vue';
 
 

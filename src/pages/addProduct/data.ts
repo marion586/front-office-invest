@@ -1,9 +1,9 @@
 
 import DefaultMenu from '@/components/Icon/DefaultMenuIcon.vue';
-import Adress from '@/pages/add/components/Address/index.vue';
-import Photos from '@/pages/add/components/Photos/index.vue';
-import Price from '@/pages/add/components/Price/index.vue';
-import PropertyType from '@/pages/add/components/PropertyType/index.vue';
+import Adress from '@/pages/addProduct/components/Address/Address.vue';
+import Photos from '@/pages/addProduct/components/Photos/Photos.vue';
+import Price from '@/pages/addProduct/components/Price/Price.vue';
+import PropertyType from '@/pages/addProduct/components/PropertyType/PropertyType.vue';
 
 interface SubMenu{
       id : number,

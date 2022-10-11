@@ -74,7 +74,7 @@ const routes = <Array<RouteRecordRaw>>[
     {
         name: 'add',
         path: '/ajouter',
-        component: () => import('@/pages/add/index.vue'),
+        component: () => import('@/pages/addProduct/addProduct.vue'),
     },
     {
         name: 'not-found',

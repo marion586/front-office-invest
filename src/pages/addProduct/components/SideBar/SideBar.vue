@@ -1,58 +1,39 @@
 <script lang="ts" setup>
-import ASteps from "ant-design-vue/lib/steps";
+import ASteps from "ant-design-vue/lib/steps/index";
 import { ref } from "vue";
-import ArrowMenu from '@/components/Icon/ArrowMenu.vue';
+import { data } from "@/pages/addProduct/components/SideBar/data";
 
-
-const AStep  = ASteps.Step;
-const step = ref<number>(0);
-const idActive = ref<Array<number>>([1]);
-const idItemActive = ref<Array<number>>([0])
-
-const emit = defineEmits(['component'])
-
-defineProps<{
-      data : any
-}>();
-
-
-function clickItem(item : any, subitem ?: any) : void{
-      if(subitem){
-            idActive.value = [...idActive.value, subitem.id];
-            emit('component', subitem.component);
-      }else{
-            emit('component', item.component);
-      }
-      idItemActive.value = [...idItemActive.value, item.id];
-      
-}
-
+const AStep = ASteps.Step;
+const current = ref<number>(0);
+const menuList = ref<Array<any>>(data);
 
 </script>
 
 <template>
       <div class="steps__container">
-            <a-steps 
-                  :current="step"  
+            <!-- <div class="flex md:hidden" v-for="(item, idItem) in menuList" :key="idItem">
+                  <div class="steps__icon"> {{idItem + 1}} </div>
+            </div> -->
+            <div class="steps__phone-steps" >
+                  <div class="steps__icon"> {{1}} </div>
+                  <p class="">{{menuList[0].label}}</p>
+            </div>
+            <a-steps
+                  :current="current"
                   direction="vertical"
                   size="small"
-                  class=""
+                  class="hidden md:flex"
             >
-                  <a-step v-for="item in data" class="" >
-                        <template #title >
+                  <a-step v-for="item in menuList">
+                        <template #title>
                               {{item.label}}
                         </template>
-                        <template #subTitle v-if="item.id === idItemActive[idItemActive.length - 1]">
-                              <arrow-menu/>
-                        </template>
-                        <template #description >
-                              <a-steps 
+                        <template #description>
+                              <a-steps
                                     class="steps-description hidden md:flex" 
-                                    direction="vertical" 
-                                    v-if="item.id === idItemActive[idItemActive.length - 1]"
-                                    :current="idActive[idActive.length - 1]"
+                                    direction="vertical"
                               >
-                                    <a-step v-for="subItem in item.subMenu" :class="[subItem.id === idActive[idActive.length - 1] ? 'sub-item-active' : '']">
+                                    <a-step v-for="subItem in item.subMenu" :key="subItem.id">
                                           <template #title>
                                                 {{subItem.label}}
                                           </template>
@@ -60,12 +41,13 @@ function clickItem(item : any, subitem ?: any) : void{
                               </a-steps>
                         </template>
                   </a-step>
+
             </a-steps>
       </div>
+
 </template>
 
 <style lang="scss" scoped>
-     
       .steps{
             &__container{
                   @apply bg-[white] w-[100%] md:w-[315px] rounded-[8px] p-[12px];
@@ -143,6 +125,22 @@ function clickItem(item : any, subitem ?: any) : void{
             }
             &__flex{
                   @apply flex;
+            }
+            &__icon{
+                  background-color: var(--color-gray-icon);
+                  width: 18px;
+                  height: 18px;
+                  border-color: var(--color-gray-icon);
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  margin-top: 5px;
+                  color: white;
+                  border-radius: 50%;
+            }
+
+            &__phone-steps{
+                  @apply flex gap-[10px] items-center text-[14px] font-semibold md:hidden w-[100%];
             }
             
       }
