@@ -1,4 +1,5 @@
 interface IUserField {
+    id?: string;
     name: string;
     label: string;
     required: boolean;
@@ -18,7 +19,8 @@ interface IErrorRegistrationFields {
     address: string;
     email: string;
     telephone: string;
-    tva: string;
+    tva?: string;
     password: string;
     confirmPassword: string;
+    typeRole?: any;
 }

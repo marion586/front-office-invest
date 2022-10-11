@@ -3,7 +3,7 @@
         <div class="filter__left">
             <div class="filter__left-icon">
                 <Cart v-if="filterObject.isListCards" @click="showCart" />
-                <ListBullet v-if="filterObject.isShowCart" @click="showInfo" />
+                <ListBullet v-if="filterObject.isShowCart" @click="showCard" />
             </div>
             <div class="filter__left-subtitle">
                 <Title
@@ -12,8 +12,8 @@
                     label="Acquérir un bien"
                     weight="bold"
                 />
-                <Title v-if="isMap" type="h4" label="Map View" weight="bold" />
             </div>
+            <Title v-if="isMap" type="h4" label="Map View" weight="bold" />
         </div>
 
         <div class="filter__right">
@@ -35,12 +35,12 @@
                 "
                 type="secondary"
             >
-                <div>
+                <div @click="showCard">
                     <ListBullet color="#fff" />
                     <span> Sur Liste</span>
                 </div>
             </Button>
-            <FullScreen v-if="isMap" />
+            <FullScreen v-if="isMap" @click="showCart" />
             <div v-if="filterObject.isListCards" class="filter__right-content">
                 <Title type="h4" label="Filtrer par:" weight="bold" />
                 <div class="filter__right-content-select">
@@ -48,6 +48,7 @@
                         name="select"
                         placeholder="select"
                         :options="options"
+                        @change-select="(n) => handleSelect(n)"
                     />
                 </div>
             </div>
@@ -89,6 +90,7 @@
         (e: 'on-show-cart'): void;
         (e: 'on-show-card'): void;
         (e: 'on-show-info'): void;
+        (e: 'change-select', value: object): void;
     }>();
 
     const showCart = () => {
@@ -96,6 +98,12 @@
     };
     const showInfo = () => {
         emit('on-show-info');
+    };
+    const showCard = () => {
+        emit('on-show-card');
+    };
+    const handleSelect = (n: object) => {
+        emit('change-select', n);
     };
     defineProps({
         isMap: {
@@ -124,7 +132,7 @@
             @apply flex flex-col items-end gap-2;
 
             button {
-                @apply hidden md:block;
+                @apply hidden sm:block;
                 width: 126px;
                 padding: 6px 10px;
                 div {
