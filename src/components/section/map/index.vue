@@ -1,13 +1,15 @@
 <script setup>
-import {reactive,onMounted} from "vue";
-import 'leaflet/dist/leaflet.css';
-import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
-import Map from "@/composables/map";
+    import { reactive, onMounted } from 'vue';
+    import 'leaflet/dist/leaflet.css';
+    import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
+    import Map from '@/composables/map';
+    import 'leaflet-draw/dist/leaflet.draw.css';
+
 
 const props = defineProps({
     mapCenterCoordinate : {
-        type : Array,
-        default : []
+        type : [Array,Object],
+        default : ()=>[]
     },
     needMarkerLayer : {
         type : Boolean,
@@ -15,13 +17,15 @@ const props = defineProps({
     },
     markersCoordinates : {
         type : Array,
-        default : []
+        default : ()=>[]
+    },
+    getFeatures : {
+        type  : Function,
+        default : ()=> {}
     }
 })
 onMounted(() => {
-    console.log("DBG eto")
     const map = new Map("map");
-    console.log(props.markersCoordinates[0])
     map.fitBound([props.markersCoordinates[0].lat,props.markersCoordinates[0].lng]);
     if (props.needMarkerLayer) {
             props.markersCoordinates.forEach((marker)=>{
@@ -29,11 +33,21 @@ onMounted(() => {
             })
     }
     map.addMarker([51.505, -0.09]);
+    map.addDrawControl();
     map.addPrintControl();
     map.DrawingLayerListener();
     })
-
+    const getFeatures = ()=> props.getFeatures(map.layers);
+    
 </script>
 <template>
-        <div id="map"/>
+        <div
+            class="fix-z-index"
+            id="map"
+        />
 </template>
+<style lang="scss" scoped>
+.fix-z-index{
+    z-index: -10;
+}
+</style>

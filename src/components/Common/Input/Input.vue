@@ -144,6 +144,7 @@
             font-weight: 500;
             color: var(--color-gray-icon);
             margin-bottom: 10px;
+            display: block;
         }
         @apply mb-[18px];
         &:deep() {

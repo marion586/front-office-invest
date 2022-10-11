@@ -1,60 +1,73 @@
 <template>
-    <div class="card max-w-lg">
-        <HeadProduct Text="Agence" label="Label Immo" />
-        <img
-            class="card__image"
-            :src="DataCard.image"
-            alt=" card product img"
+    <div class="card max-w-xl">
+        <HeadProduct
+            :Text="DataCard.title"
+            :label="`${DataCard.user.name} ${DataCard.user.firstname}`"
         />
+        <figure class="card__image">
+            <img
+                :src="
+                    DataCard.propertyImages[0].path
+                        ? DataCard.propertyImages[0].path
+                        : ' '
+                "
+                alt=" card product"
+            />
+        </figure>
         <div class="card__type">
-            <Title type="h4" :label="DataCard.type" weight="bold" />
-            <span> {{ DataCard.price }} £</span>
+            <Title
+                type="h4"
+                :label="DataCard.propertyType.name"
+                weight="bold"
+            />
+            <span> {{ DataCard.prices }} £</span>
         </div>
 
         <div class="card__value">
             <div class="card__value--item">
-                <span>H</span> <span>{{ DataCard.roomCount }}</span>
+                <Room />
+                <span>{{ DataCard.roomcount }}</span>
             </div>
             <div class="card__value--item">
-                <span>H</span> <span>{{ DataCard.bedroomCount }}</span>
+                <Bath />
+                <span>{{ DataCard.bedroomcount }}</span>
             </div>
             <div class="card__value--item">
-                <span>H</span> <span>{{ DataCard.surface }} m2</span>
+                <Surface />
+                <span>{{ DataCard.surface }} m2</span>
             </div>
         </div>
         <div class="card__action">
-            <span> ({{ DataCard.interested }}) interessé</span>
-            <span> ({{ DataCard.offerSentCount }}) offre envoyé </span>
+            <span> (0) Vue(s)</span>
+            <span> (0) Sauvegardé(s)</span>
         </div>
         <div class="card__adress">
-            <span>H</span>
-            <span>{{ DataCard.adress }} </span>
+            <Map />
+            <span>{{ DataCard.address }} </span>
         </div>
+
+        <Button v-if="info" width="100%" type="primary"> Information </Button>
     </div>
 </template>
 
 <script setup lang="ts">
-    import HeadProduct from '@/components/Display/headProduct/HeadProduct.vue';
-    import { ref, PropType } from 'vue';
+    import HeadProduct from '@/components/Display/HeadProduct/HeadProduct.vue';
+    import { ref, PropType, inject, watch } from 'vue';
     import Title from '@/components/Common/Title/Title.vue';
-    interface DataProps {
-        image: string;
-        type: string;
-        price: number;
-        roomCount: number;
-        bedroomCount: number;
-        surface: number;
-        interested: number;
-        offerSentCount: number;
-        adress: string;
-    }
-    const DataCardProps = defineProps({
+    import Room from '@/components/Icon/Room.vue';
+    import Bath from '@/components/Icon/Bath.vue';
+    import Map from '@/components/Icon/Map.vue';
+    import Surface from '@/components/Icon/Surface.vue';
+    import Button from '@/components/Common/Button/Button.vue';
+    import CardType from '@/components/Display/productCard/CardType';
+    defineProps({
         DataCard: {
-            type: Object as PropType<DataProps>,
+            type: Object as PropType<CardType>,
             required: true,
         },
     });
-    const DataCard = ref(DataCardProps.DataCard);
+
+    const info = inject('isInfo');
 </script>
 
 <style lang="scss" scoped>
@@ -67,11 +80,17 @@
         gap: 18px;
         background: #ffffff;
         border-radius: 8px;
-        img {
-            border-radius: 8px;
+        width: 100%;
+        &__image {
             width: auto;
             height: 160px;
+            img {
+                border-radius: 8px;
+                width: 100%;
+                height: 100%;
+            }
         }
+
         &__type {
             display: flex;
             justify-content: space-between;
