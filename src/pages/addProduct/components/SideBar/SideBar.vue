@@ -5,7 +5,10 @@ import { data } from "@/pages/addProduct/components/SideBar/data";
 
 const AStep = ASteps.Step;
 const current = ref<number>(0);
+const currentSubItem = ref<number>(0)
 const menuList = ref<Array<any>>(data);
+
+
 
 </script>
 
@@ -32,8 +35,9 @@ const menuList = ref<Array<any>>(data);
                               <a-steps
                                     class="steps-description hidden md:flex" 
                                     direction="vertical"
+                                    :current="currentSubItem"
                               >
-                                    <a-step v-for="subItem in item.subMenu" :key="subItem.id">
+                                    <a-step v-for="subItem in item.subMenu" :key="subItem.id" :class="[subItem.id === currentSubItem ? 'sub-item-active' : '']">
                                           <template #title>
                                                 {{subItem.label}}
                                           </template>
@@ -41,10 +45,8 @@ const menuList = ref<Array<any>>(data);
                               </a-steps>
                         </template>
                   </a-step>
-
             </a-steps>
       </div>
-
 </template>
 
 <style lang="scss" scoped>
