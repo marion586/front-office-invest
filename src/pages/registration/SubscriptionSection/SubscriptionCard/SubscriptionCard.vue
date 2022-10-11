@@ -1,5 +1,6 @@
 <template>
-    <div class="subscription">
+    <Loader v-if="loadCards" />
+    <div v-else class="subscription">
         <div class="subscription__header">
             <div @click="goBack" class="subscription__header__back">
                 <ArrowBack color="light" /><span> Retour</span>
@@ -17,65 +18,68 @@
             <CardItem
                 v-for="(card, index) in cardList"
                 :key="index"
-                @on-choose-card="$emit('on-choose-card')"
+                @on-choose-card="hanldeChooseCard"
                 :subscription-cards="card"
             />
         </div>
     </div>
 </template>
 <script lang="ts" setup>
-    import { onMounted, reactive } from 'vue';
+    import { onMounted, reactive, ref } from 'vue';
     import { Router, useRouter } from 'vue-router';
     import { Store, useStore } from 'vuex';
     import Paragraphe from '../../../../components/Common/Paragraphe/Paragraphe.vue';
     import Title from '@/components/Common/Title/Title.vue';
     import CardItem from './CardItem/CardItem.vue';
     import ArrowBack from '@/components/Icon/ArrowBack.vue';
-
-    /**SERVICES */
-    import SubscriptionServices from '@/services/subscriptionService';
+    import Loader from '../../../../components/Common/Loader/Loader.vue';
 
     const router: Router = useRouter();
-
-    let cardList = reactive<Array<ISubscriptionCards>>([]);
     const store: Store<any> = useStore();
+    let cardList = reactive<Array<ISubscriptionCards>>([]);
+    const loadCards = ref<boolean>(false);
+
     onMounted(() => {
         initCard();
     });
-    async function getSubscriptionCard(type: string) {
+
+    const emit = defineEmits<{
+        (e: 'on-choose-card', v: ISubscriptionCards | undefined): void;
+    }>();
+
+    async function getSubscriptionCard(usertype: string) {
+        loadCards.value = true;
         try {
-            const { data } = await SubscriptionServices.getSubscriptionCard({
-                for: type,
-            });
-            /**
-             * Fetch and sort data
-             */
-            cardList = Object.assign(cardList, data).sort(
-                (a: ISubscriptionCards, b: ISubscriptionCards) =>
-                    a.price > b.price ? 1 : -1
+            loadCards.value = true;
+            await store.dispatch(
+                'SubscriptionModule/setSubscriptionCards',
+                usertype
             );
+            cardList = Object.assign(
+                cardList,
+                store.getters['SubscriptionModule/getSubscriptionCard'].data
+            ).sort((a: ISubscriptionCards, b: ISubscriptionCards) =>
+                a.price > b.price ? 1 : -1
+            );
+            loadCards.value = false;
         } catch (error) {
             console.log(error);
+            loadCards.value = false;
         }
     }
-    function initCard() {
-        console.log(store.getters['SubscriptionModule/getSubscriptionCard']);
+    async function initCard() {
+        const registerUserStore = store.getters['UserModule/getRegisteredUser'];
         const usertype: string =
-            store.getters['UserModule/getRegisteredUser'].type;
-        switch (usertype) {
-            case 'particulier':
-                getSubscriptionCard('part');
-                break;
-            case 'professionnel':
-                getSubscriptionCard('pro');
-                break;
-            default:
-                break;
-        }
+            registerUserStore.type === 'professionnal' ? 'pro' : 'part';
+        getSubscriptionCard(usertype);
     }
 
     function goBack() {
         router.go(-1);
+    }
+
+    function hanldeChooseCard(params: ISubscriptionCards | undefined) {
+        emit('on-choose-card', params);
     }
 </script>
 <style lang="scss">

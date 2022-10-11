@@ -1,13 +1,4 @@
-import {
-    getSessionPersistedStore,
-    setSessionPersistStore,
-} from '@/utils/persist_store';
-
-const subscriptionCards = getSessionPersistedStore({
-    key: 'subscription_cards',
-    initValue: null,
-});
-
+import SubscriptionServices from '@/services/subscriptionService';
 interface ISubscriptionState {
     card: Object | null;
 }
@@ -24,18 +15,40 @@ export const mutations: Object = {
     },
 };
 export const actions: Object = {
-    setSubscriptionCards({ commit, state }: any, payload: Array<any>): void {
-        console.log(state, '>>>>>state');
-        commit('subscription_cards', payload);
-        setSessionPersistStore({ key: 'subscription_cards', value: payload });
+    async setSubscriptionCards({ commit }: any, payload: string): Promise<any> {
+        console.log(payload, 'params');
+        const res: Promise<any> =
+            await SubscriptionServices.getSubscriptionCard({
+                for: payload,
+            });
+        commit(mutationstype.GET_SUBSCRIPTION_CARDS, res);
     },
 };
 export const getters: Object = {
     getSubscriptionCard(state: ISubscriptionState) {
-        console.log('object');
         return state.card;
     },
 };
 export const state: ISubscriptionState = {
-    card: subscriptionCards,
+    card: null,
 };
+
+/**
+ * FUNCTIONS
+ */
+async function getSubscriptionCard(type: string) {
+    try {
+        const { data } = await SubscriptionServices.getSubscriptionCard({
+            for: type,
+        });
+        /**
+         * Fetch and sort data
+         */
+        const cardList: Array<Object> = data.sort(
+            (a: ISubscriptionCards, b: ISubscriptionCards) =>
+                a.price > b.price ? 1 : -1
+        );
+    } catch (error) {
+        console.log(error);
+    }
+}

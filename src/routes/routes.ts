@@ -29,6 +29,11 @@ const routes = <Array<RouteRecordRaw>>[
             import('@/pages/registration/SubscriptionSection/Subscription.vue'),
     },
     {
+        name: 'authSubscriptionConfirmation',
+        path: '/confirmation',
+        component: () => import('@/pages/registration/Confirmation.vue'),
+    },
+    {
         path: '/styleguide',
         component: () => import('@/pages/styleguide.vue'),
     },

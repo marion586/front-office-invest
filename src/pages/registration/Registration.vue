@@ -9,9 +9,43 @@
                 <ArrowBack />
             </div>
             <div class="auth__head">
-                <figure class="auth__image">
-                    <img src="" alt="" />
-                </figure>
+                <div class="relative w-fit flex justify-center">
+                    <figure class="auth__image">
+                        <template v-if="urlImgData">
+                            <img
+                                class="image-guest"
+                                :src="urlImgData"
+                                alt="image-utilisateur"
+                            />
+                            <div
+                                @click="handleDeletePhoto"
+                                class="image-guest--overlay"
+                            >
+                                <Trash />
+                            </div>
+                        </template>
+                        <img
+                            v-else
+                            src="@/static/images/empty-img.png"
+                            alt="image-vide"
+                        />
+                        <label
+                            @input="handleAddPhoto"
+                            for="take-photo"
+                            class="img-photo"
+                        >
+                            <Photo />
+                            <input
+                                id="take-photo"
+                                type="file"
+                                style="display: none"
+                                name=""
+                                :value="inputFile"
+                                accept="image/*"
+                            />
+                        </label>
+                    </figure>
+                </div>
                 <Title type="h3" label="Inscription" :weight="700" />
             </div>
             <template v-if="usertype === ''">
@@ -21,7 +55,7 @@
             </template>
             <template v-else>
                 <transition appear name="fade-step" mode="in-out">
-                    <RegistrationForm :usertype="usertype" />
+                    <RegistrationForm :logo="urlImgData" :usertype="usertype" />
                 </transition>
             </template>
             <div class="auth__link-bottom">
@@ -36,24 +70,25 @@
             </div>
         </div>
         <figure class="auth__bg">
-            <img src="" alt="" />
+            <img src="@/static/images/bg-auth.png" alt="illustration-maison" />
         </figure>
     </div>
 </template>
 <script lang="ts" setup>
+    import '@/assets/style/auth.scss';
     import { ref, watch } from 'vue';
     import Title from '@/components/Common/Title/Title.vue';
     import UserType from './RegistrationSection/UserType/UserType.vue';
     import RegistrationForm from './RegistrationSection/RegistrationFrom/RegistrationForm.vue';
-    import '@/assets/style/auth.scss';
     import ArrowBack from '../../components/Icon/ArrowBack.vue';
-    import { useRouter } from 'vue-router';
     import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
+    import Photo from '@/components/Icon/Photo.vue';
+    import Trash from '@/components/Icon/Trash.vue';
 
-    const router = useRouter();
-
+    const urlImgData = ref<string>('');
+    const inputFile = ref<any>('');
     const addPaddingTop = ref<string>('0px');
-    const usertype = ref<'particulier' | 'professionnel' | ''>('');
+    const usertype = ref<'particular' | 'professional' | ''>('');
 
     watch(usertype, (v) => {
         if (v !== '') {
@@ -62,18 +97,56 @@
             addPaddingTop.value = '0px';
         }
     });
-    function handleChoices(
-        userType: 'particulier' | 'professionnel' | ''
-    ): void {
+    function handleChoices(userType: 'particular' | 'professional' | ''): void {
         usertype.value = userType;
     }
 
     function onBack() {
         usertype.value = '';
     }
+
+    function handleAddPhoto(e: any) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            if ((e.target as any).result) {
+                urlImgData.value = (e.target as any).result;
+            }
+        };
+        console.log(e.target.files);
+        reader.readAsDataURL(file);
+    }
+    function handleDeletePhoto() {
+        urlImgData.value = '';
+        inputFile.value = '';
+        // inputFile.value.target.value = '';
+    }
 </script>
 <style lang="scss" scoped>
     .auth {
+        &__image {
+            img {
+                width: 60px;
+            }
+            .image-guest {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                &--overlay {
+                    transition: all 0.3s ease;
+                    opacity: 0;
+                    background-color: #0000008f;
+                    border-radius: 50%;
+                    @apply flex justify-center items-center w-full h-full absolute;
+                }
+            }
+            &:not(#take-photo):hover {
+                .image-guest--overlay {
+                    opacity: 1;
+                    cursor: pointer;
+                }
+            }
+        }
         &__form-container {
             padding-top: v-bind('addPaddingTop');
             padding-bottom: 20px;

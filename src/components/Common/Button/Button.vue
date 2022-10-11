@@ -15,7 +15,7 @@
     import { ref, onMounted } from 'vue';
 
     interface Props {
-        type?: string;
+        type?: 'primary' | 'secondary';
         htmlType?: 'button' | 'submit' | 'reset';
         width?: string;
         disabled?: boolean;

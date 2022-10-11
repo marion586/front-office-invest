@@ -1,4 +1,11 @@
 const formParams: Array<IUserField> = [
+    // {
+    //     name: 'agencyId',
+    //     label: "Nom de l'entreprise",
+    //     placeholder: "Nom de l'entreprise",
+    //     required: true,
+    //     value: '',
+    // },
     {
         name: 'agencyName',
         label: "Nom de l'entreprise",
@@ -13,14 +20,6 @@ const formParams: Array<IUserField> = [
         required: true,
         value: '',
     },
-    // {
-    //     id: 'agencyAddress',
-    //     name: 'agencyAddress',
-    //     label: "Addrèsse de l'entreprise",
-    //     placeholder: "Lieu ou addèsse de l'entreprise",
-    //     required: true,
-    //     value: '',
-    // },
     {
         name: 'agencyTva',
         label: "TVA de l'entreprise",
@@ -113,18 +112,47 @@ export const particularUserForm: Array<IUserField> = [
     ...formParams
         .filter((field) => field.name !== 'agencyName')
         .filter((field) => field.name !== 'agencyNumber')
-        .filter((field) => field.name !== 'agencyAddress')
+        // .filter((field) => field.name !== 'agencyAddress')
         .filter((field) => field.name !== 'agencyTva'),
 ];
 export const professionnalUserForm: Array<IUserField> = [
     ...formParams.filter((field) => field.name !== 'tva'),
 ];
 
+export const professionnalUserFormWithAgencies: Array<IUserField> = [
+    ...formParams
+        .filter((field) => field.name !== 'tva')
+        .filter((field) => field.name !== 'agencyName')
+        .filter((field) => field.name !== 'agencyNumber')
+        .filter((field) => field.name !== 'agencyTva'),
+];
+
 // ERROR
-const { agencyName, agencyNumber, agencyAddress, agencyTva, ...restPart } =
-    errorFields;
+const {
+    agencyName,
+    agencyNumber,
+    agencyAddress,
+    agencyTva,
+    typeRole,
+    ...restPart
+} = errorFields;
 const { tva, ...restPro } = errorFields;
+export const professsionnalErrorFieldsWithAgencies = {
+    ...filterProWithAgency(restPro),
+};
 export const particularErrorFields: IErrorRegistrationFields = { ...restPart };
 export const professsionnalErrorFields: IErrorRegistrationFields = {
     ...restPro,
 };
+
+function filterProWithAgency(fields: Object) {
+    let obj: any;
+    Object.keys(fields)
+        .filter((item) => item !== 'agencyName')
+        .filter((item) => item !== 'agencyNumber')
+        .filter((item) => item !== 'agencyTva')
+        .forEach((key) => {
+            obj = { ...obj, [key]: (fields as any)[key] };
+        });
+    return obj;
+}

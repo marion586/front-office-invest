@@ -1,5 +1,3 @@
-// subscriptionproduct/list
-
 import { Http } from './http';
 
 export default class SubscriptionServices {

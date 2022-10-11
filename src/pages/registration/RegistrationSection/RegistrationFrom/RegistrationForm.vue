@@ -3,7 +3,7 @@
         <form @submit.prevent="handleSubmit" class="auth__form">
             <div
                 class="auth__form__title-section"
-                v-if="usertype === 'professionnel'"
+                v-if="usertype === 'professional'"
             >
                 <Paragraphe>Information sur l'entreprise</Paragraphe>
                 <hr />
@@ -13,26 +13,39 @@
                 name="typeRole"
                 :options="professionnalUserOption"
                 @change="handleChangeSelect"
-                label="Type"
+                label="Vous etes"
                 :required="true"
-                :mode="usertype !== 'particulier' ? 'multiple' : undefined"
+                :mode="usertype !== 'particular' ? 'multiple' : undefined"
                 :defaultValue="
-                    usertype === 'particulier'
-                        ? particularUserOption
-                        : undefined
+                    usertype === 'particular' ? particularUserOption : undefined
                 "
-                :disabled="usertype === 'particulier'"
+                :disabled="usertype === 'particular'"
                 :has-error="{
-                        status: !!(errors as any).typeRole && (errors as any).typeRole !== '' && activeError,
+                        status: usertype === 'professional' && (!!(errors as any).typeRole && (errors as any).typeRole !== '' && activeError),
                         errorMsg: (errors as any).typeRole || '',
                     }"
             />
+            <template v-if="usertype === 'professional'">
+                <div v-if="loadAgenciesList" class="flex justify-center">
+                    <LoadingButton theme="dark" />
+                </div>
+                <Select
+                    v-else
+                    placeholder="Selectionnez"
+                    name="agency"
+                    :options="agenciesListLabel"
+                    @change="handleChangeSelect"
+                    label="Agence(s) disponible(s)"
+                    :required="true"
+                    defaultValue="Ajoutez une agence"
+                />
+            </template>
 
             <div v-for="(field, index) in formParams">
                 <div
                     class="auth__form__title-section"
                     v-if="
-                        usertype === 'professionnel' &&
+                        usertype === 'professional' &&
                         field.name === 'firstname'
                     "
                 >
@@ -70,7 +83,6 @@
         // @ts-ignore
     } from '@/composables/google-maps-api';
     import Input from '@/components/Common/Input/Input.vue';
-    import LoadingButton from '@/components/Icon/LoadingButton.vue';
     import { SelectValue } from 'ant-design-vue/lib/select';
     import {
         onMounted,
@@ -79,7 +91,6 @@
         reactive,
         ref,
         onUnmounted,
-        onUpdated,
     } from 'vue';
     import emailValidation from '@/utils/validation/email_validation';
     import { Router, useRouter } from 'vue-router';
@@ -88,10 +99,14 @@
     import {
         particularUserForm,
         professionnalUserForm,
+        professionnalUserFormWithAgencies,
         particularErrorFields,
         professsionnalErrorFields,
+        professsionnalErrorFieldsWithAgencies,
     } from './registration.data';
     import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
+    import AgencyService from '@/services/agencyService';
+    import LoadingButton from '@/components/Icon/LoadingButton.vue';
     /** */
 
     /**
@@ -103,57 +118,73 @@
     /**Props */
     const props = defineProps({
         usertype: {
-            type: String as PropType<'particulier' | 'professionnel'>,
+            type: String as PropType<'particular' | 'professional'>,
             require: true,
+        },
+        logo: {
+            type: String,
         },
     });
 
-    /**ref & reactive */
+    /**REF & REACTIVE */
     /**OPTION */
     const particularUserOption = ref<SelectValue>();
     const professionnalUserOption = ref<SelectValue>();
-
     /**errros */
     let errors = reactive<Object>({});
     let tmpErrors = reactive<Object>({});
     const activeError = ref<boolean>(false);
-
     /**FIELDS */
     const formParams = ref<Array<IUserField>>([]);
     let finalFormParams = ref<Object>({});
     const gm_inputAutocomplete = ref<any>();
+    const hasAgenciesList = ref<boolean>();
+    let agenciesListLabel = ref<Array<any>>([
+        {
+            label: 'Ajoutez une agence',
+            value: -1,
+        },
+    ]);
+    let agenciesListValues = ref<Array<any>>([]);
+    const loadAgenciesList = ref<boolean>(false);
 
     /**
      * INITIALIZATION STATE
      */
     watchEffect(() => {
         /**init usertype option on watchEffect (its immediatly reactive) */
-        if (props.usertype === 'particulier') {
+        if (props.usertype === 'particular') {
             particularUserOption.value = {
-                value: 'particulier',
+                value: 'particular',
                 label: 'Particulier',
             };
         } else {
             professionnalUserOption.value = [
                 { value: 'agent', label: 'Agent' },
-                { value: 'professional', label: 'Professionnel' },
+                // { value: 'professional', label: 'Professional' },
                 { value: 'prestataire', label: 'Fournisseurs de services' },
                 { value: 'syndic', label: 'Syndic' },
                 { value: 'huissier', label: 'Huissier' },
                 { value: 'notaire', label: 'Notaire' },
             ];
         }
+
+        /**
+         * assign LOGO
+         */
+        finalFormParams.value = {
+            ...finalFormParams.value,
+            logo: props.logo,
+        };
     });
-    // onUpdated(() => {
-    //     initGoogleMap();
-    // });
     onMounted(() => {
+        getAgenciesList();
         initGoogleMap();
         /**
          * Init fields, errors and memorize errors on mount
          */
         switch (props.usertype) {
-            case 'particulier':
+            case 'particular':
                 formParams.value = [...particularUserForm];
                 errors = Object.assign(errors, particularErrorFields);
                 tmpErrors = Object.assign(tmpErrors, particularErrorFields);
@@ -165,7 +196,7 @@
                     type: props.usertype,
                 };
                 break;
-            case 'professionnel':
+            case 'professional':
                 formParams.value = [...professionnalUserForm];
                 errors = Object.assign(errors, professsionnalErrorFields);
                 tmpErrors = Object.assign(tmpErrors, professsionnalErrorFields);
@@ -174,6 +205,7 @@
                 break;
         }
     });
+    // watch()
     onUnmounted(() => {
         removeScript();
         delete (window as any).google;
@@ -182,6 +214,30 @@
     /**
      * ACTONS
      */
+
+    async function getAgenciesList() {
+        loadAgenciesList.value = true;
+        try {
+            const res: Array<any> = await AgencyService.getAgenciesList();
+            if (Array.isArray(res) && !res.length) {
+                formParams.value = [...professionnalUserForm];
+            } else {
+                // hasAgenciesList.value = true;
+                agenciesListValues.value = [...res];
+                agenciesListLabel.value = [
+                    ...agenciesListLabel.value,
+                    ...res.map((item) => ({
+                        label: item.name,
+                        value: item.name,
+                    })),
+                ];
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            loadAgenciesList.value = false;
+        }
+    }
 
     async function initGoogleMap() {
         let autocomplete: any;
@@ -210,7 +266,7 @@
                         finalFormParams.value = {
                             ...finalFormParams.value,
                             address: place.formatted_address,
-                            longitute: JSON.stringify(location.lng),
+                            longitude: JSON.stringify(location.lng),
                             latitude: JSON.stringify(location.lat),
                         };
                         (errors as any).address = '';
@@ -224,15 +280,63 @@
     }
 
     function handleChangeSelect(objValue: object) {
-        finalFormParams.value = {
-            ...finalFormParams.value,
-            ...objValue,
-        };
-        if ((objValue as any).typeRole.length) {
-            (errors as any).typeRole = '';
-        } else {
-            (errors as any).typeRole = (tmpErrors as any).typeRole;
+        for (const key in objValue) {
+            switch (key) {
+                case 'typeRole':
+                    if ((objValue as any).typeRole.length) {
+                        (errors as any).typeRole = '';
+                        // finalFormParams.value = {
+                        //     ...finalFormParams.value,
+                        //     ...objValue,
+                        // };
+                    } else {
+                        (errors as any).typeRole = (tmpErrors as any).typeRole;
+                    }
+                    console.log(errors);
+                    break;
+                case 'agency':
+                    console.log((objValue as any)[key]);
+                    // switch on with agencies and without agencies
+                    if ((objValue as any)[key] !== -1) {
+                        // 1 agency choose
+                        hasAgenciesList.value = true;
+                        formParams.value = [
+                            ...professionnalUserFormWithAgencies,
+                        ];
+                        finalFormParams.value = {
+                            ...finalFormParams.value,
+                            agency: getIdAgency((objValue as any)[key]),
+                        };
+                        console.log(errors);
+                        /**
+                         * assign errors
+                         */
+                        errors = Object.assign(professsionnalErrorFields);
+                        tmpErrors = Object.assign(professsionnalErrorFields);
+                    } else {
+                        // no agency choose
+                        hasAgenciesList.value = false;
+                        formParams.value = [...professionnalUserForm];
+                        finalFormParams.value = {
+                            ...finalFormParams.value,
+                            agency: {},
+                        };
+                        /**
+                         * assign errors
+                         */
+                        errors = Object.assign(professsionnalErrorFields);
+                        tmpErrors = Object.assign(professsionnalErrorFields);
+                    }
+                    break;
+            }
         }
+        // console.log(finalFormParams.value);
+    }
+
+    function getIdAgency(params: string): Object {
+        return agenciesListValues.value
+            .filter((item) => item.name === params)
+            .at(-1).id;
     }
 
     function handleInput(e: object) {
@@ -303,7 +407,7 @@
      * hanlde error before submit
      */
     function hanldeError(): boolean {
-        const isAddressValid = !!(finalFormParams.value as any).longitute;
+        const isAddressValid = !!(finalFormParams.value as any).longitude;
         (errors as any).address = !isAddressValid
             ? 'Votre addrèsse est invalide'
             : '';
@@ -318,6 +422,7 @@
         /**control field
          * address field will be handle by google api
          */
+        console.log(formParams.value);
         const mappedArray = Object.fromEntries(
             formParams.value
                 /** remove address from initial state */
@@ -333,8 +438,43 @@
             /**assign usertype */
             type: props.usertype,
         };
+
+        /**
+         * if has agency => parse obj
+         */
+        if (!hasAgenciesList.value) {
+            let obj: any;
+            console.log('object');
+            // get agency values
+            const agency = {
+                name: (finalFormParams.value as any).agencyName,
+                number: (finalFormParams.value as any).agencyNumber,
+                tva: (finalFormParams.value as any).agencyTva,
+            };
+            // remove agency input values
+            Object.keys(finalFormParams.value).forEach((key) => {
+                if (
+                    key !== 'agencyName' &&
+                    key !== 'agencyNumber' &&
+                    key !== 'agencyTva'
+                ) {
+                    obj = {
+                        ...obj,
+                        [key]: (finalFormParams.value as any)[key],
+                    };
+                }
+            });
+            finalFormParams.value = {
+                ...obj,
+                /**assign agency values */
+                agency,
+            };
+        }
+
+        console.log(finalFormParams.value);
     }
     function handleSubmit() {
+        console.log(errors);
         activeError.value = true;
         /**
          * HANDLE ERROR AND EMPTY FIELD
@@ -343,13 +483,17 @@
 
         formateData();
 
-        console.log(finalFormParams.value, 'finalForm');
-        console.log(errors);
-
         isFormValid && prossToStripSection();
     }
     function prossToStripSection() {
-        console.log('ok');
+        // add [] in typeRole if particular user
+        if (!!!(finalFormParams.value as any).typeRole) {
+            finalFormParams.value = {
+                ...finalFormParams.value,
+                typeRole: [],
+                isAdmin: props.usertype === 'professional',
+            };
+        }
         /** Keep data user into store */
         store.dispatch('UserModule/setRegisteredUser', finalFormParams.value);
         // go to subscription section
@@ -363,7 +507,7 @@
     .auth__form {
         &__title-section {
             :deep() {
-                text-transform: uppercase;
+                // text-transform: uppercase;
                 color: var(--color-gray-icon);
                 margin: 40px 0 10px 0;
                 font-weight: 700;
