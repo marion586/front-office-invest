@@ -6,18 +6,10 @@
     import AddIcon from '@/components/Icon/AddIcon.vue';
     import Button from '@/components/Common/Button/Button.vue';
     import DocsResult from '@/pages/make-offer/doc-offer/ResultMakeOffer.vue';
-    import { ref } from 'vue';
     import Radio from '@/components/Common/Radio/Radio.vue';
+import { ref } from "vue";
 
 
-
-const handleChange = (e: Event) => {
-    console.log(e);
-    console.log("Value", (e.target as HTMLInputElement).value);
-    
-    
-}
-    
 
     let title = "Voir l'aperçu du document";
     let titleContent = "Faire une offre";
@@ -25,16 +17,20 @@ const handleChange = (e: Event) => {
 
     const classFlex = "flex flex-row items-center gap-6";
 
+    let names = ['Pareto', 'Angelo'];
+
     let elementOffer = [
         {
             title: "Les soussignes(es)",
-            name: ["Kary lady"],
+            name: names,
             hasAdd: true,
             dataInput: [
                 {
                     id: "name",
                     placeholder: "Votre nom",
-                    type: "text"
+                    type: "text",
+                    label: '',
+                    unitMesure: ''
                 },
             ]
         },
@@ -45,7 +41,9 @@ const handleChange = (e: Event) => {
                 {
                     id: "priceOffer",
                     placeholder: "Votre proposition",
-                    type:"number"
+                    type:"number",
+                    label: '',
+                    unitMesure: ''
                 }
             ]
         },
@@ -56,7 +54,9 @@ const handleChange = (e: Event) => {
                 {
                     id: "conditions",
                     placeholder: "Ajouter votre condition",
-                    type: "text"
+                    type: "text",
+                    label: '',
+                    unitMesure: ''
                 }
             ]
         },
@@ -84,14 +84,15 @@ const handleChange = (e: Event) => {
                     id: "conditionCredit",
                     label: "Condition de crédit",
                     placeholder: "Montant de crédit",
-                    type: "number"
+                    type: "number",
+                    unitMesure: ''
                 },
                 {
                     id: "durationCredit",
                     label: "Délai de ",
                     placeholder: "0",
                     unitMesure: "semaine(s)",
-                    type: "number"
+                    type: "number",
                 }
             ]
         },
@@ -102,7 +103,9 @@ const handleChange = (e: Event) => {
                 {
                     id: "dateOffer",
                     placeholder: "Select Date",
-                    type: "date"
+                    type: "date",
+                    label: '',
+                    unitMesure: ''
                 }
             ]
         },
@@ -114,12 +117,13 @@ const handleChange = (e: Event) => {
                     label: "Accompte à la signature",
                     placeholder: "0",
                     unitMesure: '%',
-                    type: "number"
+                    type: "number",
                 },
                 {
                     id: "depositSignature",
                     label: "Signature devant notaire",
                     placeholder: "0",
+                    unitMesure: ''
                 }
             ]
         },
@@ -131,12 +135,14 @@ const handleChange = (e: Event) => {
                     id: "documentDwelling",
                     label: "Document fait à ",
                     placeholder: "Lieu",
+                    unitMesure: ''
                 },
                 {
                     id: "documentDate",
                     label: "Le ",
                     placeholder: "22/10/2022",
-                    type: "date"
+                    type: "date",
+                    unitMesure: ''
                 }
             ]
         },
@@ -175,7 +181,45 @@ const handleChange = (e: Event) => {
                 }
             ]
         },
-    ]
+    ];
+
+    const handleChange = (e: Event) => {
+    console.log(e);
+    console.log("Value", (e.target as HTMLInputElement).value);
+}
+
+    const handleInput = (e: Object) => {
+        console.log('handleInput', e);
+        formParams = {
+            ...formParams,
+            ...e,
+        };
+
+        console.log('formParams', formParams);
+    };
+
+
+    const handleAddNameCondition = (name: String) => {
+        switch (name) {
+            case 'name':
+            // names.push(formParams.name);
+                console.log('Name add clicked', names);
+                
+                break;
+
+            case 'conditions':
+            console.log('Condition add clicked');
+            
+            break;
+        
+            default:
+                break;
+        }
+        
+    }
+
+    let formParams = ref({
+    });
 </script>
 
 
@@ -238,15 +282,19 @@ const handleChange = (e: Event) => {
                             class="offer__form-input"
                             >
                                 <AppInput
+                                :name-input="data.id"
                                 :label="data.label"
                                 :type="data.type"
                                 :class="` ${ element.hasAdd || element.hasInputFull ? 'basis-full' : '' }`"
                                 :placeholder="data.placeholder"
                                 :id="data.id"
+                                @onInput="handleInput($event)"
                                 /> 
                                 <span>{{ data.unitMesure }}</span>
-                                <div class="offer__icon-add" v-if="element.hasAdd">
-                                    <AddIcon class="icon-add" v-if="element.hasAdd" />
+                                <div class="offer__icon-add" v-if="element.hasAdd"
+                                @click="handleAddNameCondition(data.id)"
+                                >
+                                    <AddIcon class="icon-add" />
                                 </div>
                             </div>
                         </div>
@@ -268,7 +316,9 @@ const handleChange = (e: Event) => {
 
         <!-- This is the docs result of the form -->
         <div class="offer__content-result">
-                <DocsResult />
+                <DocsResult
+                :names="names"
+                 />
             </div>
         </div>
     

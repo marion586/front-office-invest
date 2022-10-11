@@ -2,6 +2,15 @@
 <script setup lang="ts">
     import Title from "@/components/Common/Title/Title.vue";
 
+    defineProps({
+        names: {
+            type: Array <String>,
+            default() {
+                return [];
+            },
+        }
+    })
+
 
 let titleResult = "Apperçu du document";
 
@@ -33,8 +42,9 @@ const dataResutlHead = {
             <ul class="name-list">
                 <li 
                 class="list-disc ml-6"
+                v-for="(name, index) in names" :key="index"
                 >
-                    Kary lady
+                    {{ name }}
                 </li>
             </ul>
 
