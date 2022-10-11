@@ -1,17 +1,29 @@
+<template>
+    <div class="product-info">
+        <div class="product-info__right">
+            <Filter @on-show-cart="$emit('on-show-cart')" :isMap="true" />
+            <Map
+                class="my-map"
+                :mapCenterCoordinate="data.PlaceCoordinates"
+                :needMarkerLayer="true"
+                :markersCoordinates="data.PlaceCoordinates"
+            />
+        </div>
+        <div class="product-info__left">
+            <ProductCard :DataCard="DataCard" />
+        </div>
+    </div>
+</template>
 <script setup lang="ts">
     import ProductCard from '@/components/Display/productCard/ProductCard.vue';
-    import DataProps from '@/components/Display/productCard/CardType';
-    import { onMounted, onUnmounted, PropType, reactive, ref } from 'vue';
+    import CardType from '@/components/Display/productCard/CardType';
+    import { onMounted, PropType, reactive } from 'vue';
     import Filter from '../Filter/Filter.vue';
-    import Map from '../../../components/section/map/index.vue';
-    import {
-        geocode,
-        removeScript,
-        autocomplet,
-    } from '@/composables/google-maps-api';
+    import Map from '@/components/section/map/index.vue';
+    import { geocode } from '@/composables/google-maps-api';
     defineProps({
         DataCard: {
-            type: Object as PropType<DataProps[]>,
+            type: Object as PropType<CardType>,
             required: true,
         },
     });
@@ -50,37 +62,17 @@
             },
         ],
     });
+
     onMounted(() => {
         const proomise = geocode('Bruxelles Belgique');
         proomise.then((result) => {
-            console.log(result);
-            (data.isMapReady = true),
-                data.PlaceCoordinates.push(result.coordinates);
+            return (
+                (data.isMapReady = true),
+                data.PlaceCoordinates.push(result.coordinates)
+            );
         });
     });
-
-    onUnmounted(() => {
-        removeScript();
-        autocomplet('autocomplet');
-    });
 </script>
-
-<template>
-    <div class="product-info">
-        <div class="product-info__right">
-            <Filter @on-show-cart="$emit('on-show-cart')" :isMap="true" />
-            <Map
-                class="my-map"
-                :mapCenterCoordinate="data.PlaceCoordinates"
-                :needMarkerLayer="true"
-                :markersCoordinates="data.PlaceCoordinates"
-            />
-        </div>
-        <div class="product-info__left">
-            <ProductCard :DataCard="DataCard[0]" />
-        </div>
-    </div>
-</template>
 
 <style lang="scss" scoped>
     .product-info {
@@ -94,7 +86,7 @@
             @apply col-span-1 sm:col-span-2  md:col-span-2 lg:col-span-2 xl:col-span-2   flex flex-col gap-2;
             height: 478px;
             .my-map {
-                height: 478px;
+                height: 80vh;
                 width: 100%;
                 border-radius: 8px;
             }
