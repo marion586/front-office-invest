@@ -53,13 +53,14 @@
 </script>
 <template>
     <div class="w-full py-3">
-        <div class="container-wrapper">
+        <div class="container-wrapper px-3">
             <div class="container-title">
                 <Title
                     class="font-bold"
                     type="normal" 
                     :label="title" 
                 />
+                <hr class="mt-3" v-if="!width">
             </div>
             <MenuButton
                 v-for="(menu, key) in menus"
@@ -103,8 +104,10 @@
     @screen sm{
         .container{
             &-wrapper{
-                @apply container w-full flex-col justify-between;
-            }
+                @apply  container
+                        w-full
+                        flex-col;
+                    }
         }
     }
     @screen md{
