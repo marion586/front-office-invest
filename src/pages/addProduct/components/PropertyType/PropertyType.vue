@@ -15,6 +15,10 @@
         emit('onNext');
     }
 
+    function handleChangeDate(date){
+        console.log("date : ", date);
+    }
+
 </script>
 
 <template>
@@ -22,7 +26,11 @@
         <div class="info__body">
             <p class="info__title">Type d'annonces :</p>
             <hr class="info__divider" />
-            <InputDate />
+
+            <InputDate 
+                @handleChange="handleChangeDate"
+            />
+
             <div class="info__input-container">
                 <div class="info__input-item" v-for="item in element">
                     <SelectInput

@@ -52,3 +52,8 @@ event {
     params : value
   }
 }
+
+## 7. Input Date
+event : {
+  handleChange
+}

@@ -6,7 +6,7 @@ describe("Test the switch component", () => {
       it("Should have ant design swith", () => {
             const wrapper = mount(SwitchBtn);
 
-            expect(wrapper.find('').exists()).toBe(true);
+            expect(wrapper.find('Switch').exists()).toBe(true);
       })
 
 });
