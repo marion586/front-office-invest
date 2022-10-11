@@ -1,4 +1,25 @@
-export const data : Array<Object> = [
+interface SubOptions {
+      id : number,
+      label ?: string,
+      type ?: string,
+      name ?: string
+}
+interface OptionItem{
+      name : string,
+}
+
+interface List {
+      id : number,
+      label : string,
+      type ?:string,
+      name ?:string,
+      placeholder ?:string,
+      options ?: OptionItem[],
+      subOptions ?: SubOptions[]
+}
+
+
+export const data : List[] = [
       {
             id : 0,
             label : "Type de vente",

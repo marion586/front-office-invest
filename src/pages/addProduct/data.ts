@@ -13,12 +13,12 @@ interface SubMenu{
 interface Menu {
       id : number,
       label : string,
-      icon : string,
+      icon : object,
       subMenu ?: SubMenu[],
       component ?: object
 }
 
-export const data : Array<any> = [
+export const data : Menu[] = [
       {
             id : 0,
             label : "Information de base",
