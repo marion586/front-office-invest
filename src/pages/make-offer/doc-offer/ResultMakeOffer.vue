@@ -20,6 +20,15 @@
             default() {
                 return "";
             }
+        },
+        priceOffer: {
+            type: Number,
+            default: 0,
+        },
+
+        hasInputHidden: {
+            type: Boolean,
+            default: false,
         }
     });
 
@@ -31,6 +40,22 @@ const dataResutlHead = {
         price: "1000000",
         reference: "IMM191121113154",
         priceOffer: "0"
+    }
+
+
+const  separatorMillier = (a: any, b?:any) => {
+        a = '' + a;
+        b = b || ' ';
+        var c = '',
+            d = 0;
+        while (a.match(/^0[0-9]/)) {
+            a = a.substr(1);
+        }
+        for (var i = a.length-1; i >= 0; i--) {
+            c = (d !== 0 && d % 3 === 0) ? a[i] + b + c : a[i] + c;
+            d++;
+        }
+        return c;
     }
 
 
@@ -66,7 +91,7 @@ const dataResutlHead = {
                 <p>Titre :  {{ dataResutlHead.title }}</p>
                 <p>Prix :  {{ dataResutlHead.price }}</p>
                 <p>Et référence :  {{ dataResutlHead.reference }}</p>
-                <p>Au prix de :  {{ dataResutlHead.priceOffer }}  €</p>
+                <p>Au prix de :  {{ separatorMillier(priceOffer) }}  €</p>
             </div>
 
             <h4 class="offer__result-title-dark">Pour autant que :</h4>
@@ -122,6 +147,9 @@ const dataResutlHead = {
                 <div class="offer__result-footer-signature">
                     <p>Fait à : </p>
                     <p>Nom et signatures</p>
+                    <div class="inputHidden" v-if="hasInputHidden">
+                        <input type="hidden" name="inputHid" id="hidden" >
+                    </div>
                     <div class="signature__img"
                     v-if="imageSignature != ''"
                     >

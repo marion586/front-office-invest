@@ -11,8 +11,20 @@
 
 
     let signature = ref('');
+    let priceOffer = ref(0);
+    let showInputCondition = ref();
     let title = "Voir l'aperçu du document";
     let titleContent = "Faire une offre";
+
+    let conditionShowingSuspens = ref('');
+
+    
+    let dataParams = ref<{name: String, conditions: String, conditionSuspens:String}>({
+        name: '',
+        conditions: '',
+        conditionSuspens: 'withCondition'
+    });
+
 
 
     const classFlex = "flex flex-row items-center gap-6";
@@ -41,7 +53,7 @@
             dataInput: [
                 {
                     id: "priceOffer",
-                    placeholder: "Votre proposition",
+                    placeholder: "0",
                     type:"number",
                     label: '',
                     unitMesure: ''
@@ -77,10 +89,7 @@
                     label: "Sans",
                     value: "noCondition"
                 }
-            ]
-        },
-        {
-            // class: classFlex,
+            ],
             dataInput: [
                 {
                     id: "conditionCredit",
@@ -97,7 +106,9 @@
                     type: "number",
                 }
             ]
+            
         },
+
         {
             title: "Valabilité de l'offre",
             hasInputFull: true,
@@ -112,7 +123,6 @@
             ]
         },
         {
-            // class: classFlex,
             dataInput: [
                 {
                     id: "depositSignature",
@@ -131,7 +141,6 @@
         },
         {
             titleInput: "Détail du document",
-            // class: classFlex,
             dataInput: [
                 {
                     id: "documentDwelling",
@@ -185,33 +194,56 @@
         },
     ];
 
+    // Function pour les radio
     const handleChangeRadio = (e: Event) => {
-    console.log((e.target as HTMLInputElement).name);
-    console.log("Value", (e.target as HTMLInputElement).value);
+        let key = (e.target as HTMLInputElement).name;
+        let value = (e.target as HTMLInputElement).value;
+        console.log(key);
+        console.log("Value", value);
 
-    dataParams = {
+        dataParams = {
             ...dataParams,
-            ...{[(e.target as HTMLInputElement).name] : (e.target as HTMLInputElement).value}
+            ...{ [key] : value }
         };
-}
 
+        switch (key) {
+            case 'conditionSuspens':
+                if(value === 'withCondition') {
+                    conditionShowingSuspens.value = '' ;
+                    console.log('conditionSuspens >>>>>>>> with', conditionShowingSuspens.value);
+                }
+                else if(value === 'noCondition') {
+                    conditionShowingSuspens.value = "(dataParams.conditionSuspens === 'withCondition' && !(data.id == 'conditionCredit' || data.id == 'durationCredit'))";
+
+                    console.log('conditionSuspens >>>>>>> Noooo', conditionShowingSuspens.value);
+                    
+                };
+                break;
+        
+            default:
+                break;
+        }
+    }
+
+
+
+    // Function pour les input
     const handleInput = (e: Object) => {
         console.log('handleInput', e);
         dataParams = {
             ...dataParams,
             ...e,
         };
+        if (e['priceOffer']) {
+            
+            priceOffer.value = parseInt(e['priceOffer']);
+        }
 
         console.log('dataParams', dataParams);
     };
 
 
-    let dataParams = ref<{name: String, conditions: String}>({
-        name: '',
-        conditions: ''
-    });
-
-
+    // Function pour les icons ajouter (plus)
     const handleAddNameCondition = (name: String) => {
         switch (name) {
             case 'name':
@@ -223,9 +255,8 @@
             case 'conditions':
             conditions.push(dataParams.conditions);
             console.log('Condition add clicked', conditions);
-            
             break;
-        
+
             default:
                 break;
         }
@@ -308,7 +339,8 @@
                             </li>
                         </ul>
                         
-                        <div :class="`offer__form-inline ${ element.hasAdd ? 'flex-nowrap' : 'flex-wrap'}`">
+                        <div :class="`offer__form-inline ${ element.hasAdd ? 'flex-nowrap' : 'flex-wrap'}`"
+                        >
                             <div  v-for="(data, key) in element.dataInput" :key="key"
                             class="offer__form-input"
                             >
@@ -319,14 +351,15 @@
                                 :class="` ${ element.hasAdd || element.hasInputFull ? 'basis-full' : '' }`"
                                 :placeholder="data.placeholder"
                                 :id="data.id"
+                                v-if="!conditionShowingSuspens"
                                 @input="handleInput($event)"
                                 /> 
                                 <span>{{ data.unitMesure }}</span>
                                 <div class="offer__icon-add" v-if="element.hasAdd"
                                 @click="handleAddNameCondition(data.id)"
                                 >
-                                    <AddIcon class="icon-add" />
-                                </div>
+                                <AddIcon class="icon-add" />
+                            </div>
                             </div>
                         </div>
 
@@ -350,6 +383,7 @@
                 <DocsResult
                 :names="names"
                 :conditions="conditions"
+                :priceOffer="priceOffer"
                 :imageSignature="signature"
                  />
             </div>
