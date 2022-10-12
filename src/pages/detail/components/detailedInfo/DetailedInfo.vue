@@ -1,5 +1,6 @@
 <template>
     <div class="info">
+        <BackButton @return="back" />
         <span class="info__title">Description</span>
         <div class="info__txtInfo">
             <div class="info__txt">
@@ -17,10 +18,12 @@
             <div class="info__txt">
                 <span class="font-semibold">Résultat PEB</span>
             </div>
-            <div class="info__pebTxt ">
+            <div class="info__pebTxt">
                 <div class="info__txt lg:w-[50%]">
                     <span class="leftTxt">Energie Primaire</span>
-                    <span class="rightTxt" data-test="energiePrimaire">120 kWh/m²</span>
+                    <span class="rightTxt" data-test="energiePrimaire"
+                        >120 kWh/m²</span
+                    >
                 </div>
                 <div class="info__txt lg:w-[50%]">
                     <span class="leftTxt lg:ml-[18px]">Energie Primaire</span>
@@ -34,6 +37,16 @@
 
 <script lang="ts" setup>
     import PebG from '@/components/Icon/PebG.vue';
+    import BackButton from '@/components/Common/BackButton/BackButton.vue';
+
+    const emit = defineEmits<{
+        (e: 'hideInfo'): void;
+    }>();
+
+    function back(): void {
+        console.log('second');
+        emit('hideInfo');
+    }
 </script>
 
 <style lang="scss" scoped>
@@ -46,7 +59,7 @@
         }
         &__txtInfo {
             background-color: var(--color-gray);
-            @apply w-full p-4 rounded-lg;
+            @apply w-full p-4 rounded-lg mt-[18px];
             // @apply bg-[var(--color-gray)];
             //responsive
             @apply lg:w-full;
@@ -61,7 +74,7 @@
             font-family: 'Montserrat';
             @apply font-semibold text-sm leading-[17px];
         }
-        &__pebTxt{
+        &__pebTxt {
             //responsive
             @apply lg:flex lg:flex-row lg:items-center justify-center;
         }

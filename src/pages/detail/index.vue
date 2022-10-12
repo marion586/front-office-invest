@@ -3,9 +3,9 @@
     <div class="detail">
         <div>
             <transition name="fade">
-                <component :is="activeView" @return="changeView" />
+                <component :is="activeView" />
             </transition>
-            <DetailedInfo v-if="showInfo" />
+            <DetailedInfo v-if="showInfo" @hideInfo="func" />
             <div class="flex flex-col detail__txtDetail">
                 <ButtonDetail
                     class="detail__btnList"
@@ -109,11 +109,11 @@
     let showProductCard = ref<boolean>(false);
 
     function changeView(view: any) {
-        showInfo.value = false;
         console.log('view:', view);
         console.log('activeView:', activeView.value);
         switch (view) {
             case 'LiveVideo':
+                showInfo.value = false;
                 activeView.value = viewList['LiveVideo'];
                 break;
             case 'DetailedInfo':
@@ -122,6 +122,10 @@
                 activeView.value = viewList['MainDetail'];
                 break;
         }
+    }
+    function func(): void {
+        console.log('last');
+        showInfo.value = false;
     }
     // function showDetailedInfo(component?: string): void {
     //     console.log('component:', component);
