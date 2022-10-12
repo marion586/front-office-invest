@@ -5,7 +5,9 @@
             <transition name="fade">
                 <component :is="activeView" />
             </transition>
-            <DetailedInfo v-if="showInfo" @hideInfo="func" />
+            <transition name="fade">
+                <DetailedInfo v-if="showInfo" @hideInfo="hide" />
+            </transition>
             <div class="flex flex-col detail__txtDetail">
                 <ButtonDetail
                     class="detail__btnList"
@@ -123,8 +125,7 @@
                 break;
         }
     }
-    function func(): void {
-        console.log('last');
+    function hide(): void {
         showInfo.value = false;
     }
     // function showDetailedInfo(component?: string): void {

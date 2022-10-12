@@ -3,14 +3,14 @@
         <ButtonMenu
             :is-icon="Professional"
             width="100%"
-            @click="handleChoices('professionnel')"
+            @click="handleChoices('professional')"
         >
             Professionnel
         </ButtonMenu>
         <ButtonMenu
             :is-icon="User"
             width="100%"
-            @click="handleChoices('particulier')"
+            @click="handleChoices('particular')"
         >
             Particulier
         </ButtonMenu>
@@ -24,11 +24,11 @@
     const emit = defineEmits<{
         (
             event: 'on-click-choices',
-            userType: 'particulier' | 'professionnel' | ''
+            userType: 'particular' | 'professional' | ''
         ): void;
     }>();
 
-    function handleChoices(userType: 'particulier' | 'professionnel' | '') {
+    function handleChoices(userType: 'particular' | 'professional' | '') {
         emit('on-click-choices', userType);
     }
 </script>

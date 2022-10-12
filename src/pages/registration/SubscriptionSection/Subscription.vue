@@ -4,7 +4,15 @@
             v-if="step === 0"
             @on-choose-card="handleChooseCard"
         />
-        <SubscriptionForm v-if="step === 1" />
+        <SubscriptionForm
+            :subscriptionCards="subscriptionCards"
+            v-if="step === 1"
+            @goback="
+                () => {
+                    step = 0;
+                }
+            "
+        />
     </div>
 </template>
 <script lang="ts" setup>
@@ -16,9 +24,11 @@
     const route: RouteLocationNormalizedLoaded = useRoute();
 
     const step = ref<number>(0);
+    const subscriptionCards = ref<ISubscriptionCards | {}>({});
 
-    function handleChooseCard() {
+    function handleChooseCard(card: ISubscriptionCards | undefined) {
         step.value = 1;
+        subscriptionCards.value = { ...card };
     }
 </script>
 <style lang=""></style>

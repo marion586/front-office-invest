@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import ASteps from "ant-design-vue/lib/steps";
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import ArrowMenu from '@/components/Icon/ArrowMenu.vue';
 
 
 const AStep  = ASteps.Step;
 const step = ref<number>(0);
-const idActive = ref<Array<number>>([0]);
+const idActive = ref<Array<number>>([1]);
 const idItemActive = ref<Array<number>>([0])
 
 const emit = defineEmits(['component'])
@@ -46,8 +46,13 @@ function clickItem(item : any, subitem ?: any) : void{
                               <arrow-menu/>
                         </template>
                         <template #description >
-                              <a-steps progress-dot class="steps-description hidden md:flex" direction="vertical" v-if="item.id === idItemActive[idItemActive.length - 1]">
-                                    <a-step v-for="subItem in item.subMenu" @click="clickItem(item, subItem)" :class="[subItem.id === idActive[idActive.length - 1] ? 'sub-item-active' : '']">
+                              <a-steps 
+                                    class="steps-description hidden md:flex" 
+                                    direction="vertical" 
+                                    v-if="item.id === idItemActive[idItemActive.length - 1]"
+                                    :current="idActive[idActive.length - 1]"
+                              >
+                                    <a-step v-for="subItem in item.subMenu" :class="[subItem.id === idActive[idActive.length - 1] ? 'sub-item-active' : '']">
                                           <template #title>
                                                 {{subItem.label}}
                                           </template>

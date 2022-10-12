@@ -1,5 +1,5 @@
 <template>
-    <button @click="returnEmit" class="backBtn">
+    <button @click:any="returnEmit" class="backBtn">
         <ArrowBack />
         <span class="backBtn__txt" data-test="returnTxt">Retour</span>
     </button>
@@ -13,7 +13,6 @@
     }>();
 
     function returnEmit(): void {
-        console.log("first emit")
         emit('return');
     }
 </script>
