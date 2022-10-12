@@ -6,11 +6,8 @@
             >{{ label }}</label
         >
         <a-input
-<<<<<<< HEAD
-=======
             :disabled="disabled"
             :id="id"
->>>>>>> 4cd430e49a812a9bbcd42c52e454e6c19a5f2f9e
             style=""
             :placeholder="placeholder"
             :type="inputType"

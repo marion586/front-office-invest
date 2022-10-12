@@ -24,21 +24,25 @@ const props = defineProps({
         default : ()=> {}
     }
 })
+
+const emit = defineEmits(["touched"]);
+
 onMounted(() => {
     const map = new Map("map");
-    map.fitBound([props.markersCoordinates[0].lat,props.markersCoordinates[0].lng]);
     if (props.needMarkerLayer) {
+    map.fitBound([props.markersCoordinates[0].lat,props.markersCoordinates[0].lng]);
             props.markersCoordinates.forEach((marker)=>{
-                map.addMarker(marker);
+                map.addMarker(marker,()=>{
+                    emit('touched', marker);
+                });
             })
     }
-    map.addMarker([51.505, -0.09]);
     map.addDrawControl();
     map.addPrintControl();
     map.DrawingLayerListener();
     })
     const getFeatures = ()=> props.getFeatures(map.layers);
-    
+    //marker1.onClick()
 </script>
 <template>
         <div
