@@ -8,20 +8,22 @@
                 @on-show-info="showInfo"
                 @change-select="handleSelect"
             />
-            <!-- <p v-if="dataCard.length == 0" class="list__container-spinner">
-                Loading ...
-            </p> -->
-            <div v-if="isListCards" class="list__container-product">
+            <Loader v-if="dataCard.length == 0" />
+            <div
+                v-if="isListCards && dataCard.length > 0"
+                class="list__container-product"
+            >
                 <CardProducts :DataCard="dataCard" />
             </div>
-            <Map
-                @click="showInfo"
-                v-if="isShowCart"
-                class="my-map"
-                :mapCenterCoordinate="data.PlaceCoordinates"
-                :needMarkerLayer="true"
-                :markersCoordinates="data.PlaceCoordinates"
-            />
+            <div @click="showInfo">
+                <Map
+                    v-if="isShowCart"
+                    class="my-map"
+                    :mapCenterCoordinate="data.PlaceCoordinates"
+                    :needMarkerLayer="true"
+                    :markersCoordinates="mapData"
+                />
+            </div>
 
             <div v-if="isShowInfo" class="list__container-information">
                 <div>
@@ -40,14 +42,13 @@
     import { onMounted, provide, reactive, ref, computed } from 'vue';
     import Filter from './Filter/Filter.vue';
     import ProductInfo from './ProductInfo/ProductInfo.vue';
-    import DataProps from '@/components/Display/productCard/CardType';
     import Map from '@/components/section/map/index.vue';
     import { geocode } from '@/composables/google-maps-api';
     import { Store, useStore } from 'vuex';
+    import Loader from '@/components/Common/Loader/Loader.vue';
+
     const store: Store<any> = useStore();
-
     let dataCard = ref<any>([]);
-
     let isShowCart = ref<boolean>(false);
     let isListCards = ref<boolean>(true);
     let isShowInfo = ref<boolean>(false);
@@ -67,13 +68,14 @@
         isShowInfo.value = true;
         isShowCart.value = false;
         isListCards.value = false;
+        console.log('info');
     };
 
     let filterObject = ref<object>({ isShowCart, isListCards, isShowInfo });
 
     provide('filterObject', filterObject);
 
-    const data = reactive({
+    const data: any = reactive({
         isMapReady: false,
         PlaceCoordinates: [],
         fields: [
@@ -108,10 +110,13 @@
             },
         ],
     });
+    const mapData = computed(
+        () => store.getters['ProductsListModule/getMapData']
+    );
 
     onMounted(async () => {
         const proomise = geocode('Bruxelles Belgique');
-        proomise.then((result) => {
+        proomise.then((result: any) => {
             return (
                 (data.isMapReady = true),
                 data.PlaceCoordinates.push(result.coordinates)
