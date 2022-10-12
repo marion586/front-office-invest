@@ -27,7 +27,7 @@ export const data : Menu[] = [
             subMenu : [
                   {
                         id : 0,
-                        label : "Type de bien",
+                        label : "Type d'annonce",
                         component : PropertyType
                   },
                   {
