@@ -142,10 +142,11 @@
             }
 
             &-content {
-                @apply flex items-center gap-4;
+                @apply flex  gap-4;
+                height: 33px;
                 &-select {
                     width: 126px;
-                    .select {
+                    .custom-select__wrapper {
                         &:deep() {
                             .ant-select-selector {
                                 border: none;

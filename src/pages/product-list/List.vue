@@ -122,7 +122,6 @@
             () => store.getters['ProductsListModule/getProductsListData']
         );
         dataCard.value = [...data.value];
-        console.log(dataCard.value, 'data card');
     });
     const handleSelect = (value: any): void => {
         console.log(value);
