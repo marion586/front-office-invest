@@ -387,7 +387,7 @@
     }
 
     &__content{
-        @apply bg-[#fff] p-2.5 ;
+        @apply bg-[#fff] p-2.5 rounded-lg ;
         margin-left: 2%;
         margin-right: 2%;
     }
