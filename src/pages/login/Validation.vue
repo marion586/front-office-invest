@@ -1,22 +1,33 @@
 <template>
-    <div class="confirm-subscription">
+    <Loader v-if="loadingValidation" />
+    <div v-else class="confirm-subscription">
         <div class="confirm-subscription__content">
             <div class="flex items-center justify-center flex-col gap-[20px]">
-                <Check size="lg" />
+                <img
+                    v-if="errorMsg"
+                    src="@/static/images/error-primary.png"
+                    alt="erreur"
+                />
+                <Check v-else size="lg" />
                 <Title
-                    label="Félicitations! Vous êtes inscrit."
+                    :label="
+                        errorMsg
+                            ? 'Une erreur est survenue'
+                            : 'Félicitations! Vous êtes inscrit.'
+                    "
                     type="h1"
                     weight="700"
                 />
                 <Paragraphe class="info">
-                    Vous pouvez maintenant vous connecter.
+                    {{
+                        errorMsg
+                            ? "Veuillez contacter l'administrateur"
+                            : 'Vous pouvez maintenant vous connecter.'
+                    }}
                 </Paragraphe>
-                <Button @click="onRedirect" type="secondary"
-                    ><LoadingButton size="sm" v-if="loadingRedirect" /><span
-                        v-else
-                        >Connexion</span
-                    ></Button
-                >
+                <Button @click="onRedirect" type-button="secondary">{{
+                    errorMsg ? 'Accueil' : 'Se connecter'
+                }}</Button>
             </div>
         </div>
     </div>
@@ -28,41 +39,46 @@
     import Button from '@/components/Common/Button/Button.vue';
     import { onMounted, ref } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
-    import LoadingButton from '@/components/Icon/LoadingButton.vue';
     import UserService from '@/services/userService';
+    import Loader from '@/components/Common/Loader/Loader.vue';
 
     const route = useRoute();
     const router = useRouter();
 
-    const loadingRedirect = ref<boolean>(false);
     const token = ref<any>();
+    const errorMsg = ref<string>();
+    const loadingValidation = ref<boolean>(false);
 
     onMounted(() => {
-        token.value = route.params.token;
+        onVaidate();
     });
 
-    async function onRedirect() {
-        loadingRedirect.value = true;
+    async function onVaidate() {
+        token.value = route.params.token;
+        loadingValidation.value = true;
         try {
             const res = await UserService.validate({
                 id: token.value,
             });
-            if (res.code === 200) {
-                router.push('/connexion');
-            } else if (res.code === 404) {
-                console.log('user already here');
+            if (res.code === 404) {
+                errorMsg.value = "Une erreur s'est produite!";
             }
-            console.log(res.code, 'status');
-            console.log(res, 'res');
         } catch (error) {
             console.log(error);
         } finally {
-            loadingRedirect.value = false;
+            loadingValidation.value = false;
         }
+    }
+    function onRedirect() {
+        router.push({ name: errorMsg ? 'home' : 'authLogin' });
     }
 </script>
 <style lang="scss" scoped>
     .confirm-subscription {
+        img {
+            width: 100%;
+            height: auto;
+        }
         width: 100%;
         height: 93vh;
         padding: 20px;
