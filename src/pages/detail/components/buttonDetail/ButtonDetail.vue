@@ -5,7 +5,9 @@
             :key="index"
             :isIcon="item.icon"
             class="btnDetail__btn"
-            @click="changeView(item.case)"
+            @on-click="
+                eventBtnDetail(item.case)
+            "
         >
             {{ item.label }}</ButtonMenu
         >
@@ -17,12 +19,20 @@
     import btnList from '@/pages/detail/data/BtnList';
 
     const emit = defineEmits<{
-        (e: 'on-click' ,value : any): void;
+        (e: 'clickChangeView', value: any): void;
+        (e: 'changeViewDetailedInfo', value: any): void;
     }>();
 
-    function changeView(view: any): void {
-        emit('on-click', view);
+    function eventBtnDetail(view: any): void {
+        emit('clickChangeView', view);
+        emit('changeViewDetailedInfo', view);
     }
+    // function clickChangeView(view: any): void {
+    //     emit('clickChangeView', view);
+    // }
+    // function changeViewDetailedInfo(component: any): void {
+    //     emit('changeViewDetailedInfo', component);
+    // }
 </script>
 
 <style scoped lang="scss">

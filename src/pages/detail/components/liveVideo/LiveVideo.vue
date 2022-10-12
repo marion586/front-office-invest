@@ -6,11 +6,10 @@
         </div>
         <div class="video__play">
             <iframe
-                class="w-full rounded"
+                class="video__iframe"
                 height="360"
                 src="https://www.youtube.com/embed/Zc-EKDhqwWg?list=RDZc-EKDhqwWg"
                 title="Mila Revolution official Video Maddy Roots"
-                frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
             ></iframe>
@@ -41,6 +40,11 @@
         &__play {
             margin-left: 1.25rem;
             margin-right: 1.25rem;
+        }
+        &__iframe{
+            @apply w-full rounded h-[223px];
+            //responsive
+            @apply lg:h-[440px]
         }
     }
 </style>

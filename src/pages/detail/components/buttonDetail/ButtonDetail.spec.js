@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount, shallowMount } from '@vue/test-utils';
-import ButtonDetail from '@/pages/detail/component/ButtonDetail.vue';
+import ButtonDetail from '@/pages/detail/component/buttonDeatil/ButtonDetail.vue';
 import ButtonMenu from '@/components/common/ButtonMenu/ButtonMenu.vue';
 describe('Buttons detail', () => {
     it('Button exist', () => {

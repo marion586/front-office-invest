@@ -8,7 +8,7 @@
                 data-test="headProduct"
             />
             <img
-                src="../../../assets/immo.jpeg"
+                src="../../../../assets/immo.jpeg"
                 alt=""
                 class="object-cover detail__img"
             />

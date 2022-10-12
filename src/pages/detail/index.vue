@@ -2,11 +2,15 @@
     <BreadCrumb class="relative mb-2" :items="breadcrumbs" />
     <div class="detail">
         <div>
-            <transition name="slide-fade">
-                <component :is="activeView" @return="changeView"/>
+            <transition name="fade">
+                <component :is="activeView" @return="changeView" />
             </transition>
+            <DetailedInfo v-if="showInfo" />
             <div class="flex flex-col detail__txtDetail">
-                <ButtonDetail class="detail__btnList" @on-click="changeView" />
+                <ButtonDetail
+                    class="detail__btnList"
+                    @clickChangeView="changeView"
+                />
                 <div class="detail__btnContainer">
                     <Button class="detail__btnOffer">Faire un offre</Button>
                     <Button
@@ -25,13 +29,19 @@
     </div>
 </template>
 <script setup lang="ts">
+    // @changeViewDetailedInfo="showDetailedInfo"
+
     import { computed, shallowRef, ref } from '@vue/runtime-core';
     import BreadCrumb from '@/components/Display/BreadCrumb/BreadCrumb.vue';
-    import ButtonDetail from '@/pages/detail/components/ButtonDetail.vue';
+    import ButtonDetail from '@/pages/detail/components/buttonDetail/ButtonDetail.vue';
     import Button from '@/components/Common/Button/Button.vue';
-    import MainDetail from '@/pages/detail/components/MainDetail.vue';
+    import MainDetail from '@/pages/detail/components/mainDetail/MainDetail.vue';
     import ProductCards from '@/pages/product-list/CardProducts/CardProducts.vue';
-    import LiveVideo from '@/pages/detail/components/LiveVideo.vue';
+    import LiveVideo from '@/pages/detail/components/liveVideo/LiveVideo.vue';
+    import DetailedInfo from '@/pages/detail/components/detailedInfo/DetailedInfo.vue';
+
+    // @click="showDetailedInfo"
+    //
 
     const breadcrumbs = computed(() => {
         return [
@@ -51,6 +61,7 @@
     const viewList: string[] | any = {
         MainDetail,
         LiveVideo,
+        DetailedInfo,
     };
     const dataCard = ref([
         {
@@ -88,23 +99,40 @@
         },
     ]);
 
-    const activeView = shallowRef(viewList['MainDetail']);
+    //dynamic component data
+    const activeView = shallowRef<string>(viewList['MainDetail']);
+    //screen size
     const screenType = ref<string | number>(screen.width);
-    let showProductCard = ref(false);
+    //detailedInfo
+    let showInfo = ref<boolean>(false);
+    //property list
+    let showProductCard = ref<boolean>(false);
 
     function changeView(view: any) {
+        showInfo.value = false;
         console.log('view:', view);
+        console.log('activeView:', activeView.value);
         switch (view) {
             case 'LiveVideo':
                 activeView.value = viewList['LiveVideo'];
                 break;
+            case 'DetailedInfo':
+                showInfo.value = !showInfo.value;
             default:
                 activeView.value = viewList['MainDetail'];
                 break;
         }
     }
+    // function showDetailedInfo(component?: string): void {
+    //     console.log('component:', component);
+    //     if (component === 'DetailedInfo') {
+    //         //reset view to default
+    //         changeView('MainDetail');
+    //         showInfo.value = !showInfo.value;
+    //     }
+    // }
 
-    function showProduct() {
+    function showProduct(): void {
         showProductCard.value = !showProductCard.value;
     }
     // console.log('BtnList:', btnList);
@@ -116,7 +144,7 @@
         @apply lg:bg-white lg:rounded-lg lg:mx-4 lg:mt-0 lg:mb-4 lg:p-3 lg:flex lg:flex-row;
 
         &__txtDetail {
-            @apply rounded bg-[#ffffff] mt-[10px] mr-[10px] mb-0 ml-[10px] p-[10px];
+            @apply rounded bg-[#ffffff] mr-[10px] mb-0 ml-[10px] p-[10px];
             //responsive 1024px
             @apply lg:mt-[18px] lg:mx-5 lg:shadow-[4px_4px_8px_rgba(0,0,0,0.05)];
         }
@@ -140,17 +168,13 @@
 
         //responsive
     }
-    .slide-fade-enter-active {
-        transition: all 0.3s ease-out;
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity 0.5s ease;
     }
 
-    .slide-fade-leave-active {
-        transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-    }
-
-    .slide-fade-enter-from,
-    .slide-fade-leave-to {
-        transform: translateX(20px);
+    .fade-enter-from,
+    .fade-leave-to {
         opacity: 0;
     }
 </style>
