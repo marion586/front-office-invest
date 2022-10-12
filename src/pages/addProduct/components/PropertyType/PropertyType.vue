@@ -15,7 +15,7 @@
         emit('onNext');
     }
 
-    function handleChangeDate(date){
+    function handleChangeDate(date :string){
         console.log("date : ", date);
     }
 
@@ -27,8 +27,8 @@
             <p class="info__title">Type d'annonces :</p>
             <hr class="info__divider" />
             <div class="info__input-container">
-                <div class="info__input-item" v-for="item in element" :key="item.id">
-                    <div class="" :class="[item.subOptions ? 'flex flex-row' :'']">
+                <div class="info__input-item" :class="[item.subOptions ? 'info__have-subsection' :'']" v-for="item in element" :key="item.id">
+                    <div class="info__input">
                         <SelectInput
                             v-if="item.type === 'select'"
                             :label="item.label"
@@ -40,8 +40,8 @@
                                 :item-label="item.label"
                                 v-else-if="item.type === 'switch'"
                         />
-                    </div>                    
-                    <div class="" v-for="sub in item.subOptions">
+                    </div>
+                    <div class="info__sub" v-for="sub in item.subOptions">
                         <InputDate
                             :label="sub.label"
                             @handleChange="handleChangeDate"
@@ -81,5 +81,18 @@
         &__input-item {
             @apply flex flex-col gap-[10px];
         }
+        &__have-subsection{
+            @apply flex;
+            flex-direction: unset;
+        }
+        &__input{
+            @apply flex flex-1 w-[100%];
+        }
+        &__sub{
+            @apply flex flex-1 w-[100%];
+        }
+    }
+    .custom-select__wrapper{
+        @apply w-[100%];
     }
 </style>

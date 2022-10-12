@@ -63,7 +63,7 @@ function changeComponent(data : Array<any>, first : any){
                   size="small"
                   class="hidden md:flex"
             >
-                  <a-step v-for="item in menuList">
+                  <a-step v-for="item in menuList" :class="[item.subItem && item.id === current ? '' : '']">
                         <template #title>
                               {{item.label}}
                         </template>
