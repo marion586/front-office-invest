@@ -35,6 +35,9 @@
             title: "A partir d'un dessin sur la carte",
             desc: 'rechercher un bien dans une zone délimitée par un dessin sur la carte',
             icon: MapCardIcon,
+            handler : ()=>{
+                router.push("/recherche-bien/carte")
+            }
         },
         {
             title: 'A partir des critères',

@@ -41,7 +41,7 @@ export default class Map {
     init(){
 
         L.tileLayer(
-            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
             {
                 maxZoom: 50,
             }

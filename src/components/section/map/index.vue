@@ -52,6 +52,6 @@ onMounted(() => {
 </template>
 <style lang="scss" scoped>
 .fix-z-index{
-    z-index: -10;
+    z-index: -100;
 }
 </style>

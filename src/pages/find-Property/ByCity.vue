@@ -3,7 +3,10 @@ import {removeScript, useGoogleMapAPI} from "@/composables/google-maps-api";
 import Input from "@/components/Common/Input/Input.vue" 
 import SearchIcon from "@/components/Icon/Search.vue";
 import Title from "@/components/Common/Title/Title.vue";
+import P from "@/components/Common/Paragraphe/Paragraphe.vue";
+
 import {ref,reactive, onMounted, onBeforeMount, onUnmounted} from "vue";
+
 
 const title = ref("Recherche");
 const section = ref("| A partir d'une ville");
@@ -27,7 +30,6 @@ onMounted(()=>{
             auto = new google.maps.places.Autocomplete(input_id,options);
             auto.addListener('place_changed', (e) => {
                 const res = auto.getPlace();
-                console.log(" ndao ary hoe >>>>>",res)
                 data.result = res
             }); 
         })
@@ -35,7 +37,6 @@ onMounted(()=>{
             auto = new window.google.maps.places.Autocomplete(input, options);
             auto.addListener('place_changed', (e) => {
                 const res = auto.getPlace();
-                console.log(" ndao ary hoe >>>>>",res)
                 data.result = res
             });
     }
@@ -58,7 +59,7 @@ onUnmounted(()=>{
                     />
                 </div>
                 <div>
-                    <p class="font-bold">{{ section }}</p>
+                    <P type="bold">{{ section }}</P>
                 </div>
             </div>
             <hr class="my-3">
