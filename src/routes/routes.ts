@@ -29,6 +29,16 @@ const routes = <Array<RouteRecordRaw>>[
             import('@/pages/registration/SubscriptionSection/Subscription.vue'),
     },
     {
+        name: 'authValidation',
+        path: '/success/:token',
+        component: () => import('@/pages/login/Validation.vue'),
+    },
+    {
+        name: 'authSubscriptionConfirmation',
+        path: '/confirmation',
+        component: () => import('@/pages/registration/Confirmation.vue'),
+    },
+    {
         path: '/styleguide',
         component: () => import('@/pages/styleguide.vue'),
     },
@@ -73,8 +83,8 @@ const routes = <Array<RouteRecordRaw>>[
     },
     {
         name: 'add',
-        path: '/add',
-        component: () => import('@/pages/add/index.vue'),
+        path: '/ajouter',
+        component: () => import('@/pages/addProduct/addProduct.vue'),
     },
     {
         name: 'not-found',

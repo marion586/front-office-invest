@@ -1,8 +1,9 @@
 <template>
-    <div class="subscription">
+    <Loader v-if="loadCards" />
+    <div v-else class="subscription">
         <div class="subscription__header">
             <div @click="goBack" class="subscription__header__back">
-                <span><span>&larr;</span> Retour</span>
+                <ArrowBack color="light" /><span> Retour</span>
             </div>
             <div class="subscription__header__content">
                 <Title type="h2" label="Choisir l'abonnement" weight="600" />
@@ -15,8 +16,10 @@
         </div>
         <div class="subscription__core">
             <CardItem
-                @on-choose-card="$emit('on-choose-card')"
-                :subscription-cards="subscriptionCards"
+                v-for="(card, index) in cardList"
+                :key="index"
+                @on-choose-card="hanldeChooseCard"
+                :subscription-cards="card"
             />
         </div>
     </div>
@@ -28,62 +31,61 @@
     import Paragraphe from '../../../../components/Common/Paragraphe/Paragraphe.vue';
     import Title from '@/components/Common/Title/Title.vue';
     import CardItem from './CardItem/CardItem.vue';
+    import ArrowBack from '@/components/Icon/ArrowBack.vue';
+    import Loader from '../../../../components/Common/Loader/Loader.vue';
 
     const router: Router = useRouter();
-
-    const subscriptionCards = reactive<ISubscriptionCards>({
-        subscriptionAmount: 0.0,
-        subscriptionDesc: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non quibusdam ad aut veritatis. Hic repellat`,
-        subscriptionInfo: [
-            'Lorem ipsum dolor sit',
-            'Lorem ipsum dolor sit',
-            'Lorem ipsum dolor sit',
-        ],
-        subscriptionType: 'GRATUIT',
-    });
     const store: Store<any> = useStore();
-    const cardTypes = ref<Array<string>>([]);
-    const particularCardTypes: string[] = [
-        'Economique',
-        'Premium',
-        'Gold',
-        'Gratuit',
-    ];
-    const professionalCardTypes: string[] = [
-        'Basic',
-        'Premium',
-        'Gold',
-        'Gratuit',
-    ];
+    let cardList = reactive<Array<ISubscriptionCards>>([]);
+    const loadCards = ref<boolean>(false);
+
     onMounted(() => {
         initCard();
     });
 
-    function initCard() {
-        const usertype: string =
-            store.getters['UserModule/getRegisteredUser'].usertype;
-        switch (usertype) {
-            case 'particulier':
-                cardTypes.value = [...particularCardTypes];
-                break;
-            case 'professionnel':
-                cardTypes.value = [...professionalCardTypes];
-                break;
-            default:
-                break;
-        }
+    const emit = defineEmits<{
+        (e: 'on-choose-card', v: ISubscriptionCards | undefined): void;
+    }>();
 
-        console.log(cardTypes.value);
+    async function getSubscriptionCard(usertype: string) {
+        loadCards.value = true;
+        try {
+            loadCards.value = true;
+            await store.dispatch(
+                'SubscriptionModule/setSubscriptionCards',
+                usertype
+            );
+            cardList = Object.assign(
+                cardList,
+                store.getters['SubscriptionModule/getSubscriptionCard'].data
+            ).sort((a: ISubscriptionCards, b: ISubscriptionCards) =>
+                a.price > b.price ? 1 : -1
+            );
+            loadCards.value = false;
+        } catch (error) {
+            console.log(error);
+            loadCards.value = false;
+        }
+    }
+    async function initCard() {
+        const registerUserStore = store.getters['UserModule/getRegisteredUser'];
+        const usertype: string =
+            registerUserStore.type === 'professionnal' ? 'pro' : 'part';
+        getSubscriptionCard(usertype);
     }
 
     function goBack() {
         router.go(-1);
     }
+
+    function hanldeChooseCard(params: ISubscriptionCards | undefined) {
+        emit('on-choose-card', params);
+    }
 </script>
 <style lang="scss">
     // this styles if for test pupose
     .subscription {
-        position: relative;
+        // position: relative;
         padding: 18px;
         &__header {
             * {
@@ -100,13 +102,14 @@
                 }
             }
             &__back {
+                @apply flex items-center gap-[10px];
                 &:hover {
                     cursor: pointer;
                 }
             }
         }
         &__core {
-            position: absolute;
+            // position: absolute;
             top: 66%;
             height: 100%;
             width: 100%;
@@ -117,6 +120,7 @@
             }
             right: 0;
             @apply flex justify-center flex-row flex-wrap gap-[50px];
+            margin-top: -77px;
         }
     }
 </style>

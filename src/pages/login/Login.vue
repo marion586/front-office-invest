@@ -3,7 +3,8 @@
         <div class="auth__form-container">
             <div class="auth__head">
                 <figure class="auth__image">
-                    <img src="" alt="" />
+                    <!-- <img src="" alt="" /> -->
+                    <User size="lg" />
                 </figure>
                 <Title type="h3" label="Connexion" :weight="700" />
             </div>
@@ -37,11 +38,13 @@
                 <!-- FIELDS END -->
 
                 <!-- MOT DE PASS OUBLIER -->
-                <router-link to="/" class="auth__link">
-                    <Paragraphe is="span" type="bold"
-                        >Mot de passe oublier?</Paragraphe
-                    >
-                </router-link>
+                <div class="flex justify-end">
+                    <router-link to="/" class="auth__link">
+                        <Paragraphe is="span" type="bold"
+                            >Mot de passe oublier?</Paragraphe
+                        >
+                    </router-link>
+                </div>
 
                 <!-- ERREUR SERVER -->
                 <small
@@ -52,11 +55,10 @@
 
                 <!-- BOUTTON SOUMETTRE -->
                 <Button
-                    :disabled="false"
+                    :disabled="loadingLogin"
                     type="secondary"
                     html-type="submit"
                     width="100%"
-                    @on-click="test"
                 >
                     <LoadingButton size="sm" v-if="loadingLogin" />
                     <span v-else>Connexion</span>
@@ -76,7 +78,7 @@
             </form>
         </div>
         <figure class="auth__bg">
-            <img src="" alt="" />
+            <img src="@/static/images/bg-auth.png" alt="illustration-maison" />
         </figure>
     </div>
 </template>
@@ -94,6 +96,7 @@
 
     import '@/assets/style/auth.scss';
     import LoadingButton from '@/components/Icon/LoadingButton.vue';
+    import User from '@/components/Icon/User.vue';
 
     // route
     const route = useRoute();
@@ -126,6 +129,7 @@
 
     // fn
     const handleInput = (e: IFormParams | Object) => {
+        serverErrorMsg.value = '';
         for (const key in e) {
             (formParams as any)[key] = (e as any)[key];
             if ((formParams as any)[key] === '') {
@@ -170,11 +174,7 @@
         }
     };
 
-    function test() {
-        console.log('object');
-    }
-
-    function handleServerErrors({ data, status }: any) {
+    function handleServerErrors(error: any) {
         /**
          * init all error and field
          */
@@ -185,7 +185,8 @@
         /**
          *
          */
-        if (status === 401) {
+        serverErrorMsg.value = "Une erreur s'est produite, Veuillez réessayer";
+        if (!!error.status && error?.status === 401) {
             serverErrorMsg.value = 'Identifiants incorrects';
         }
     }
@@ -202,11 +203,13 @@
     };
 </script>
 <style lang="scss">
-    .auth__form-container--error-server {
-        color: salmon;
-        font-size: 14px;
-        text-align: center;
-        display: block;
-        margin-bottom: 10px;
+    .auth {
+        &__form-container--error-server {
+            color: salmon;
+            font-size: 14px;
+            text-align: center;
+            display: block;
+            margin-bottom: 10px;
+        }
     }
 </style>

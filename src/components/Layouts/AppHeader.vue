@@ -1,13 +1,18 @@
 <script setup lang="ts">
     import store from '@/store';
-    import { ref, watch, onMounted } from 'vue';
+    import { ref, watch, onMounted, watchEffect } from 'vue';
     import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
-    // import AAffix from 'ant-design-vue/lib/affix';
-    // import AMenu from 'ant-design-vue/lib/menu';
-    // import ASubMenu from 'ant-design-vue/lib/menu/src/SubMenu';
-    // import AMenuItemGroup from 'ant-design-vue/lib/menu/src/ItemGroup';
-    // import AMenuItem from 'ant-design-vue/lib/menu/src/MenuItem';
+
+    /* icon */
+    import Login from '@/components/Icon/Login.vue';
+    import Logout from '@/components/Icon/Logout.vue';
+    import AddUser from '@/components/Icon/AddUser.vue';
     import ArrowBottom from '@/components/Icon/ArrowBottom.vue';
+    import Search from '@/components/Icon/Search.vue';
+    import User from '@/components/Icon/User.vue';
+
+    import { dataMenu } from './dataHeader';
+
     import {
         Affix as AAffix,
         Menu as AMenu,
@@ -16,19 +21,28 @@
         MenuItem as AMenuItem,
     } from 'ant-design-vue';
 
-    /* icon */
-    import IconMenu from '@/components/Icon/IconMenu.vue';
-    import Search from '@/components/Icon/Search.vue';
-    /* end icon */
-
     const isLoggedIn = ref<boolean>(false);
     const isMenu = ref<boolean>(false);
+    const fakeLoadAvatar = ref<boolean>(true);
 
     const handleShowMenu = () => {
         isMenu.value = !isMenu.value;
     };
     onMounted(() => {
-        console.log('update');
+        setTimeout(() => {
+            fakeLoadAvatar.value = false;
+        }, 1000);
+    });
+    watchEffect(() => {
+        console.log(window.screen);
+        window.addEventListener('resize', () => {
+            fakeLoadAvatar.value = true;
+            setTimeout(() => {
+                fakeLoadAvatar.value = false;
+            }, 1000);
+            console.log('object');
+        });
+        window.removeEventListener('resize', () => {});
     });
     watch(
         () => store.getters['UserModule/getUserDetails'],
@@ -41,111 +55,30 @@
         },
         { immediate: true, deep: true }
     );
-
-    const dataMenu = [
-        {
-            label: 'Accueil',
-            path: '/',
-        },
-        {
-            label: 'Immobilier',
-            path: '#',
-            submenu: [
-                {
-                    label: 'Vendre un bien',
-                    path: '/ajouter',
-                },
-                {
-                    label: 'Acquérir un bien',
-                    path: '/',
-                },
-                {
-                    label: 'Mettre un bien en location',
-                    path: '/',
-                },
-                {
-                    label: 'Louer un bien',
-                    path: '/',
-                },
-                {
-                    label: 'ImmoGo',
-                    path: '/',
-                },
-            ],
-        },
-        {
-            label: 'Finance',
-            path: '#',
-            submenu: [
-                {
-                    label: 'Vendre un bien',
-                    path: '/',
-                },
-                {
-                    label: 'Acquérir un bien',
-                    path: '/',
-                },
-                {
-                    label: 'Mettre un bien en location',
-                    path: '/',
-                },
-                {
-                    label: 'Louer un bien',
-                    path: '/',
-                },
-                {
-                    label: 'ImmoGo',
-                    path: '/',
-                },
-            ],
-        },
-        {
-            label: 'Travaux',
-            path: '#',
-            submenu: [
-                {
-                    label: 'Vendre un bien',
-                    path: '/',
-                },
-                {
-                    label: 'Acquérir un bien',
-                    path: '/',
-                },
-                {
-                    label: 'Mettre un bien en location',
-                    path: '/',
-                },
-                {
-                    label: 'Louer un bien',
-                    path: '/',
-                },
-                {
-                    label: 'ImmoGo',
-                    path: '/',
-                },
-            ],
-        },
-        {
-            label: 'Transport',
-            path: '/',
-        },
-        {
-            label: 'Art’home',
-            path: '/',
-        },
-    ];
 </script>
 
 <template>
-    <a-affix :offset-top="0">
+    <a-affix>
         <header class="header">
             <div class="header__mobile">
                 <div>
                     <Paragraphe type="bold"> Accueil </Paragraphe>
                 </div>
-                <div class="header__menu" @click="handleShowMenu">
-                    <IconMenu />
+                <div
+                    class="header__menu"
+                    :class="{ 'header__menu--active': isMenu }"
+                    @click="handleShowMenu"
+                >
+                    <!-- <IconMenu /> -->
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
+                <div
+                    class="header__overlay"
+                    :class="{ 'overlay-active': isMenu }"
+                    @click="handleShowMenu"
+                ></div>
                 <div
                     class="header__content-menu-mobile"
                     :class="{ 'menu-active': isMenu }"
@@ -157,14 +90,19 @@
                                     <router-link
                                         @click="handleShowMenu"
                                         :to="d.path"
+                                        class="header__nav"
                                     >
+                                        <component :is="d.icon"></component>
                                         {{ d.label }}
                                     </router-link>
                                 </a-menu-item>
                             </template>
                             <a-sub-menu :key="`sub-${index}`" v-else>
                                 <template #title>
-                                    <span>{{ d.label }}</span>
+                                    <component :is="d.icon"></component>
+                                    <span class="header__nav">{{
+                                        d.label
+                                    }}</span>
                                 </template>
                                 <a-menu-item-group
                                     v-for="(s, key) in d.submenu"
@@ -186,15 +124,21 @@
                                 <router-link
                                     @click="handleShowMenu"
                                     to="/connexion"
-                                    >Connexion</router-link
+                                    class="header__nav"
                                 >
+                                    <Login />
+                                    Connexion
+                                </router-link>
                             </a-menu-item>
-                            <a-menu-item :key="`setting:1001`">
+                            <a-menu-item :key="`setting:101`">
                                 <router-link
                                     @click="handleShowMenu"
                                     to="/inscription"
-                                    >Inscription</router-link
+                                    class="header__nav"
                                 >
+                                    <AddUser />
+                                    Inscription
+                                </router-link>
                             </a-menu-item>
                         </template>
                         <template v-else>
@@ -202,26 +146,32 @@
                                 <router-link
                                     @click="handleShowMenu"
                                     to="/logout"
-                                    >Deconnection</router-link
+                                    class="header__nav"
                                 >
+                                    <Logout />
+                                    Deconnection
+                                </router-link>
                             </a-menu-item>
                         </template>
                     </a-menu>
                 </div>
             </div>
             <div class="header__desc">
-                <Paragraphe type="bold"> Immo </Paragraphe>
+                <Paragraphe type="bold"> IMMO </Paragraphe>
                 <div class="header__content-menu">
                     <a-menu mode="horizontal">
                         <template v-for="(d, index) in dataMenu">
-                            <template v-if="!d.submenu">
+                            <template v-if="!d.submenu && d.view === 'all'">
                                 <a-menu-item :key="`alipay-${index}`">
                                     <router-link :to="d.path">
                                         {{ d.label }}
                                     </router-link>
                                 </a-menu-item>
                             </template>
-                            <a-sub-menu :key="`sub-${index}`" v-else>
+                            <a-sub-menu
+                                :key="`sub-${index}`"
+                                v-else-if="d.submenu && d.view !== 'mobile'"
+                            >
                                 <template #title>
                                     <span>{{ d.label }}</span>
                                     <ArrowBottom
@@ -242,7 +192,7 @@
                         </template>
                     </a-menu>
                 </div>
-                <div v-if="!isMenu" class="header__user header__menu-rigth">
+                <div class="header__user header__menu-rigth">
                     <a-menu mode="horizontal">
                         <a-menu-item key="20">
                             <router-link to="/">
@@ -251,9 +201,14 @@
                         </a-menu-item>
                         <a-sub-menu key="sub-100">
                             <template #title>
-                                <figure class="header__avatar">
-                                    <img src="" alt="" />
+                                <figure
+                                    v-if="!fakeLoadAvatar"
+                                    class="header__avatar"
+                                >
+                                    <User />
+                                    <!-- <img src="" alt="" /> -->
                                 </figure>
+                                <span v-else>...</span>
                                 <ArrowBottom />
                             </template>
                             <a-menu-item-group v-if="!isLoggedIn">
@@ -292,11 +247,76 @@
         box-shadow: 0 0 3px var(--color-primary);
         &__menu {
             cursor: pointer;
+            @apply flex flex-col justify-center gap-[4px];
+            span {
+                background-color: var(--color-secondary);
+                @apply block w-[16px] h-[2px];
+                &:nth-child(2) {
+                    transform: translateX(100%);
+                    @apply w-[8px];
+                    transition: transform 0.18s ease;
+                }
+            }
+            &--active {
+                span {
+                    &:nth-child(2) {
+                        transform: translateX(0);
+                    }
+                }
+            }
         }
         &__mobile {
             @apply flex justify-between;
             @screen lg {
                 display: none;
+            }
+            &:deep() {
+                .ant-menu-item,
+                .ant-menu-submenu-title {
+                    padding-left: 10px !important;
+                }
+                .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+                    background-color: var(--color-gray);
+                    border-radius: 8px;
+                    a {
+                        color: var(--color-secondary);
+                    }
+                }
+                .ant-menu-submenu-open {
+                    .ant-menu-submenu-title {
+                        background-color: var(--color-gray);
+                        border-radius: 8px;
+                    }
+                    .ant-menu-submenu-arrow {
+                        color: var(--color-secondary);
+                    }
+                }
+                .ant-menu-submenu:hover
+                    > .ant-menu-submenu-title
+                    > .ant-menu-submenu-arrow {
+                    color: var(--color-secondary);
+                }
+                .ant-menu-sub.ant-menu-inline .ant-menu-item-group-title {
+                    display: none;
+                }
+                .ant-menu-sub {
+                    body & {
+                        background-color: transparent;
+                        @apply pl-[25px] relative;
+                    }
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        left: 15px;
+                        border-left: 1px solid var(--color-gray);
+                        height: 100%;
+                        top: 0;
+                        display: inline-block;
+                    }
+                    .ant-menu-item {
+                        @apply py-[5px];
+                    }
+                }
             }
         }
         &__desc {
@@ -318,7 +338,8 @@
             width: 35px;
             height: 35px;
             border-radius: 50%;
-            background-color: var(--color-primary);
+            background-color: var(--color-stroke-gray);
+            @apply flex justify-center items-center;
         }
         &__content-menu-mobile {
             position: fixed;
@@ -331,11 +352,17 @@
             border-top-left-radius: 15px;
             border-bottom-left-radius: 15px;
             overflow: auto;
+            padding: 0 10px;
             transition: transform 0.25s ease;
         }
         .menu-active {
             transform: translateX(0);
             transition: transform 0.25s ease;
+            box-shadow: 1px 1px 10px var(--color-stroke-gray);
+        }
+        .overlay-active {
+            opacity: 0.25;
+            visibility: visible;
         }
         &__menu-rigth {
             body & {
@@ -371,6 +398,34 @@
             .ant-menu-vertical {
                 padding-top: 10px;
             }
+            .ant-menu-vertical .ant-menu-item::after,
+            .ant-menu-vertical-left .ant-menu-item::after,
+            .ant-menu-vertical-right .ant-menu-item::after,
+            .ant-menu-inline .ant-menu-item::after {
+                content: none;
+            }
+            .ant-menu-inline,
+            .ant-menu-vertical,
+            .ant-menu-vertical-left {
+                border: none;
+            }
+        }
+        &__overlay {
+            position: fixed;
+            top: 49px;
+            right: 0;
+            width: 100vw;
+            height: calc(100% - 49px);
+            background-color: var(--color-secondary);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            z-index: -1;
+            visibility: hidden;
+        }
+        &__nav {
+            @apply flex gap-[10px] items-center;
+            color: var(--color-secondary);
+            font-weight: 600;
         }
     }
 </style>
