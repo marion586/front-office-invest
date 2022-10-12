@@ -1,79 +1,74 @@
 <template>
-    <div>
-        <form @submit.prevent="handleSubmit" class="auth__form">
-            <div
-                class="auth__form__title-section"
-                v-if="usertype === 'professional'"
-            >
-                <Paragraphe>Information sur l'entreprise</Paragraphe>
-                <hr />
-            </div>
-            <Select
-                placeholder="Selectionnez"
-                name="typeRole"
-                :options="professionnalUserOption"
-                @change="handleChangeSelect"
-                label="Vous etes"
-                :required="true"
-                :mode="usertype !== 'particular' ? 'multiple' : undefined"
-                :defaultValue="
-                    usertype === 'particular' ? particularUserOption : undefined
-                "
-                :disabled="usertype === 'particular'"
-                :has-error="{
+    <form v-show="hiddenForm" @submit.prevent="handleSubmit" class="auth__form">
+        <div
+            class="auth__form__title-section"
+            v-if="usertype === 'professional'"
+        >
+            <Paragraphe>Information sur l'entreprise</Paragraphe>
+            <hr />
+        </div>
+        <Select
+            placeholder="Selectionnez"
+            name="typeRole"
+            :options="professionnalUserOption"
+            @change="handleChangeSelect"
+            label="Vous etes"
+            :required="true"
+            :mode="usertype !== 'particular' ? 'multiple' : undefined"
+            :defaultValue="
+                usertype === 'particular' ? particularUserOption : undefined
+            "
+            :disabled="usertype === 'particular'"
+            :has-error="{
                         status: usertype === 'professional' && (!!(errors as any).typeRole && (errors as any).typeRole !== '' && activeError),
                         errorMsg: (errors as any).typeRole || '',
                     }"
+        />
+        <template v-if="usertype === 'professional'">
+            <div v-if="loadAgenciesList" class="flex justify-center">
+                <LoadingButton theme="dark" />
+            </div>
+            <Select
+                v-else
+                placeholder="Selectionnez"
+                name="agency"
+                :options="agenciesListLabel"
+                @change="handleChangeSelect"
+                label="Agence(s) disponible(s)"
+                :required="true"
+                defaultValue="Ajoutez une agence"
             />
-            <template v-if="usertype === 'professional'">
-                <div v-if="loadAgenciesList" class="flex justify-center">
-                    <LoadingButton theme="dark" />
-                </div>
-                <Select
-                    v-else
-                    placeholder="Selectionnez"
-                    name="agency"
-                    :options="agenciesListLabel"
-                    @change="handleChangeSelect"
-                    label="Agence(s) disponible(s)"
-                    :required="true"
-                    defaultValue="Ajoutez une agence"
-                />
-            </template>
+        </template>
 
-            <div v-for="(field, index) in formParams">
-                <div
-                    class="auth__form__title-section"
-                    v-if="
-                        usertype === 'professional' &&
-                        field.name === 'firstname'
-                    "
-                >
-                    <Paragraphe>Information personnelle</Paragraphe>
-                    <hr />
-                </div>
-                <Input
-                    :disabled="loadGoogleMap && field.name === 'address'"
-                    :id="field.id"
-                    :key="field.id"
-                    :label="field.label"
-                    :required="field.required"
-                    :placeholder="field.placeholder"
-                    :name-input="field.name"
-                    :inputType="field?.type"
-                    @input="handleInput"
-                    :has-error="{
+        <div v-for="(field, index) in formParams">
+            <div
+                class="auth__form__title-section"
+                v-if="usertype === 'professional' && field.name === 'firstname'"
+            >
+                <Paragraphe>Information personnelle</Paragraphe>
+                <hr />
+            </div>
+            <Input
+                :disabled="loadGoogleMap && field.name === 'address'"
+                :id="field.id"
+                :key="field.id"
+                :label="field.label"
+                :required="field.required"
+                :placeholder="field.placeholder"
+                :name-input="field.name"
+                :inputType="field?.type"
+                @input="handleInput"
+                :has-error="{
                         status: !!(errors as any)[field.name] && (errors as any)[field.name] !== '' && activeError,
                         errorMsg: (errors as any)[field.name] || '',
                     }"
-                />
-            </div>
-            <input type="text" id="addresss" />
-            <Button type="secondary" html-type="submit" width="100%"
-                ><span>S'inscrire</span></Button
-            >
-        </form>
-    </div>
+            />
+        </div>
+        <input type="text" id="addresss" />
+        <Button type-button="secondary" html-type="submit" width="100%"
+            ><span>S'inscrire</span></Button
+        >
+    </form>
 </template>
 
 <script lang="ts" setup>
@@ -149,6 +144,7 @@
     let agenciesListValues = ref<Array<any>>([]);
     const loadAgenciesList = ref<boolean>(false);
     const loadGoogleMap = ref<boolean>(false);
+    const hiddenForm = ref<boolean>(true);
 
     /**
      * INITIALIZATION STATE
@@ -556,9 +552,16 @@
         /** Keep data user into store */
         store.dispatch('UserModule/setRegisteredUser', finalFormParams.value);
         // go to subscription section
-        router.push({
-            name: 'authSubscription',
-        });
+
+        /**
+         * THIS IS NEEDED FOR AVOID BUG ON LOADING RENDING
+         */
+        hiddenForm.value = false;
+        setTimeout(() => {
+            router.push({
+                name: 'authSubscription',
+            });
+        }, 350);
     }
 </script>
 

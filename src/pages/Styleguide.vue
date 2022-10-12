@@ -21,10 +21,15 @@
             <Title type="h2" label="Select" :weight="600" />
             <Select name="select" placeholder="select" :options="options" />
         </div>
+        <div>
+            <Title type="h2" label="Upload image" :weight="600" />
+            <UploadImage />
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
+    import UploadImage from '@/components/Display/UploadImage/UploadImage.vue';
     import Button from '@/components/Common/Button/Button.vue';
     import Input from '@/components/Common/Input/Input.vue';
     import Title from '@/components/Common/Title/Title.vue';

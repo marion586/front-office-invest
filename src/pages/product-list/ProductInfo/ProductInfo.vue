@@ -6,7 +6,7 @@
                 class="my-map"
                 :mapCenterCoordinate="data.PlaceCoordinates"
                 :needMarkerLayer="true"
-                :markersCoordinates="data.PlaceCoordinates"
+                :markersCoordinates="mapData"
             />
         </div>
         <div class="product-info__left">
@@ -17,17 +17,25 @@
 <script setup lang="ts">
     import ProductCard from '@/components/Display/productCard/ProductCard.vue';
     import CardType from '@/components/Display/productCard/CardType';
-    import { onMounted, PropType, reactive } from 'vue';
+    import { computed, onMounted, PropType, reactive, ref } from 'vue';
     import Filter from '../Filter/Filter.vue';
     import Map from '@/components/section/map/index.vue';
     import { geocode } from '@/composables/google-maps-api';
+    import { Store, useStore } from 'vuex';
+
+    const store: Store<any> = useStore();
+    let mapData: any = ref([]);
+    const mapDataStore = computed(
+        () => store.getters['ProductsListModule/getMapData']
+    );
+    mapData.value = [...mapDataStore.value];
     defineProps({
         DataCard: {
             type: Object as PropType<CardType>,
             required: true,
         },
     });
-    const data = reactive({
+    const data: any = reactive({
         isMapReady: false,
         PlaceCoordinates: [],
         fields: [
@@ -63,9 +71,9 @@
         ],
     });
 
-    onMounted(() => {
+    onMounted(async () => {
         const proomise = geocode('Bruxelles Belgique');
-        proomise.then((result) => {
+        await proomise.then((result: any) => {
             return (
                 (data.isMapReady = true),
                 data.PlaceCoordinates.push(result.coordinates)
