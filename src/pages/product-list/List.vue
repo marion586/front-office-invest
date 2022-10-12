@@ -46,7 +46,7 @@
     import { Store, useStore } from 'vuex';
     const store: Store<any> = useStore();
 
-    let dataCard = reactive<any>([]);
+    let dataCard = ref<any>([]);
 
     let isShowCart = ref<boolean>(false);
     let isListCards = ref<boolean>(true);
@@ -118,18 +118,22 @@
             );
         });
         await store.dispatch('ProductsListModule/setData');
-        dataCard = computed(
+        const data = computed(
             () => store.getters['ProductsListModule/getProductsListData']
         );
-        console.log(dataCard, 'data card');
+        dataCard.value = [...data.value];
+        console.log(dataCard.value, 'data card');
     });
     const handleSelect = (value: any): void => {
         console.log(value);
         if (value.select === 'Prix asc') {
-            dataCard = dataCard.sort((a, b) => a.prices - b.prices);
-            console.log(dataCard);
+            dataCard.value = dataCard.value.sort(
+                (a: any, b: any) => a.prices - b.prices
+            );
         } else {
-            dataCard = dataCard.sort((a, b) => b.prices - a.prices);
+            dataCard.value = dataCard.value.sort(
+                (a: any, b: any) => b.prices - a.prices
+            );
         }
     };
 </script>
