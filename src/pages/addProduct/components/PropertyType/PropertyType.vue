@@ -24,8 +24,6 @@
 <template>
     <div class="info__container">
         <div class="info__body">
-            <p class="info__title">Type d'annonces :</p>
-            <hr class="info__divider" />
             <div class="info__input-container">
                 <div class="info__input-item" :class="[item.subOptions ? 'info__have-subsection' :'']" v-for="item in element" :key="item.id">
                     <div class="info__input">

@@ -33,14 +33,14 @@ function changeComponent(data : Array<any>, first : any){
       data.forEach((item : any) => {
             if(!item.subMenu){
                   if(item.id === first){
-                  emit('component', item.component);
+                  emit('component', item.component, item.label);
                   console.log("item\n", item.component);
                   
                   }  
             }else{
                   item.subMenu.forEach((subItem: any) => {
                         if(subItem.id === first){
-                              emit('component', subItem.component);
+                              emit('component', subItem.component, subItem.label);
                         }
                         
                   });
