@@ -1,10 +1,31 @@
 <script lang="ts" setup>
-const emit = defineEmits(['onPrev', 'onNext'])
+import { inputList } from "@/pages/addProduct/components/Address/data";
+import Input from "@/components/Common/Input/Input.vue";
 
 </script>
 
 <template>
-      <h3>Adresse</h3>
-      <button @click="() => emit('onPrev')">Prev</button>
-      <button @click="() => emit('onNext')">Next</button>
+      <div class="adress__container">
+            <div class="" v-for="item in inputList" :key="item.id">
+                  <Input 
+                        :label="item.label"
+                        :name-input="item.name"
+                        required
+                  />
+                  <div class="adress__map" v-if="item.hasMap">
+
+                  </div>
+            </div>
+      </div>
 </template>
+
+<style scoped lang="scss">
+      .adress{
+            &__container{
+
+            }
+            &__map{
+                  @apply border rounded-sm h-[258px] mb-[10px];
+            }
+      }
+</style>

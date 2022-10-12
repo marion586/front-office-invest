@@ -33,11 +33,18 @@
                             :name="item.name"
                             :options="item.options"
                             :placeholder="item.placeholder"
+                            required
                         />
                         <Switch
                                 :item-label="item.label"
                                 v-else-if="item.type === 'switch'"
                         />
+                        <div 
+                            class="info__file" 
+                            v-if="item.type === 'file'"
+                        >
+                            +
+                        </div>
                     </div>
                     <div class="info__sub" v-for="sub in item.subOptions">
                         <InputDate
@@ -80,14 +87,17 @@
             @apply flex flex-col gap-[10px];
         }
         &__have-subsection{
-            @apply flex;
+            @apply flex flex-wrap;
             flex-direction: unset;
         }
         &__input{
-            @apply flex flex-1 w-[100%];
+            @apply flex md:flex-1 w-[100%];
         }
         &__sub{
-            @apply flex flex-1 w-[100%];
+            @apply flex md:flex-1 w-[100%];
+        }
+        &__file{
+            @apply w-[150px] h-[150px] rounded-md bg-slate-200 flex justify-center items-center;
         }
     }
     .custom-select__wrapper{
