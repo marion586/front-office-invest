@@ -17,10 +17,8 @@ const active = ref<number>(PEBValue.length-1);
                   />
             </div>
             <div class="energy__valuePEB-container">
-                  <div v-for="item in PEBValue" :key="item.id" class="">
-                        <div :class="[item.id === active ? 'energy__active' : '']" class="energy__valuePEB" >
-                              <Paragraphe :style="{background : item.color}" >{{item.label}}</Paragraphe>
-                        </div>
+                  <div v-for="item in PEBValue" :key="item.id" :class="[item.id === active ? 'energy__active' : '']" class="energy__valuePEB" >
+                        <Paragraphe :style="{background : item.color}" >{{item.label}}</Paragraphe>
                   </div>
             </div>
       </div>
@@ -39,7 +37,7 @@ const active = ref<number>(PEBValue.length-1);
       }
       &__valuePEB{
             p {
-                  @apply  text-[white] w-[33px] h-[33px] rounded-[50%] flex justify-center items-center;
+                  @apply  text-[white] w-[33px] h-[33px] rounded-[50%] flex justify-center items-center flex-wrap;
             }
       }
       &__active{
