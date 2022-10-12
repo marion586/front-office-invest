@@ -37,7 +37,7 @@ export const data : Menu[] = [
                   },
                   {
                         id : 2,
-                        label : "Photos",
+                        label : "Photo et vidéo",
                         component : Photos
                   },
                   {

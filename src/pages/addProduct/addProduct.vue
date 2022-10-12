@@ -31,15 +31,17 @@
         <div class="add__container">
             <SideBar :currentItem="current" @component="changeComponent" />
             <div class="add__content">
-                <div class="add__header">
-                    <p class="add__title">{{title}}</p>
-                    <hr class="add__divider" />
+                <div class="">
+                    <div class="add__header">
+                        <p class="add__title">{{title}}</p>
+                        <hr class="add__divider" />
+                    </div>
+                    <component
+                        :is="activeComp[activeComp.length - 1]"
+                        @onNext="next"
+                        @onPrev="prev"
+                    />
                 </div>
-                <component
-                    :is="activeComp[activeComp.length - 1]"
-                    @onNext="next"
-                    @onPrev="prev"
-                />
                 <div class="add__footer">
                     <p>(*) champ obligatoire</p>
                     <div class="add__btn-foot">
