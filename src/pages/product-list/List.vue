@@ -8,23 +8,22 @@
                 @on-show-info="showInfo"
                 @change-select="handleSelect"
             />
-            <p v-if="dataCard.length == 0" class="list__container-spinner">
-                Loading ...
-            </p>
+            <Loader v-if="dataCard.length == 0" />
             <div
                 v-if="isListCards && dataCard.length > 0"
                 class="list__container-product"
             >
                 <CardProducts :DataCard="dataCard" />
             </div>
-            <Map
-                @click="showInfo"
-                v-if="isShowCart"
-                class="my-map"
-                :mapCenterCoordinate="data.PlaceCoordinates"
-                :needMarkerLayer="true"
-                :markersCoordinates="data.PlaceCoordinates"
-            />
+            <div @click="showInfo">
+                <Map
+                    v-if="isShowCart"
+                    class="my-map"
+                    :mapCenterCoordinate="data.PlaceCoordinates"
+                    :needMarkerLayer="true"
+                    :markersCoordinates="mapData"
+                />
+            </div>
 
             <div v-if="isShowInfo" class="list__container-information">
                 <div>
@@ -40,15 +39,16 @@
 
 <script setup lang="ts">
     import CardProducts from './CardProducts/CardProducts.vue';
-    import { onMounted, provide, reactive, ref } from 'vue';
+    import { onMounted, provide, reactive, ref, computed } from 'vue';
     import Filter from './Filter/Filter.vue';
     import ProductInfo from './ProductInfo/ProductInfo.vue';
-    import DataProps from '@/components/Display/productCard/CardType';
     import Map from '@/components/section/map/index.vue';
-    import { Http } from '@/services/http';
     import { geocode } from '@/composables/google-maps-api';
-    let dataCard = reactive<DataProps[]>([]);
+    import { Store, useStore } from 'vuex';
+    import Loader from '@/components/Common/Loader/Loader.vue';
 
+    const store: Store<any> = useStore();
+    let dataCard = ref<any>([]);
     let isShowCart = ref<boolean>(false);
     let isListCards = ref<boolean>(true);
     let isShowInfo = ref<boolean>(false);
@@ -68,11 +68,14 @@
         isShowInfo.value = true;
         isShowCart.value = false;
         isListCards.value = false;
+        console.log('info');
     };
 
     let filterObject = ref<object>({ isShowCart, isListCards, isShowInfo });
+
     provide('filterObject', filterObject);
-    const data = reactive({
+
+    const data: any = reactive({
         isMapReady: false,
         PlaceCoordinates: [],
         fields: [
@@ -107,49 +110,34 @@
             },
         ],
     });
+    const mapData = computed(
+        () => store.getters['ProductsListModule/getMapData']
+    );
 
-    const parseData = (data: DataProps[]): void => {
-        data.forEach((element: DataProps) => {
-            dataCard.push({
-                id: element.id,
-                propertyImages: element.propertyImages,
-                propertyType: element.propertyType,
-                prices: +element.prices,
-                roomcount: +element.roomcount,
-                bedroomcount: +element.bedroomcount,
-                surface: +element.surface,
-                address: element.address,
-                user: element.user,
-                title: element.title,
-            });
-        });
-    };
-    const getProductList = async (): Promise<void> => {
-        try {
-            const { data } = await Http.get('/the_property/list');
-            parseData(data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-    onMounted(() => {
+    onMounted(async () => {
         const proomise = geocode('Bruxelles Belgique');
-        proomise.then((result) => {
+        proomise.then((result: any) => {
             return (
                 (data.isMapReady = true),
                 data.PlaceCoordinates.push(result.coordinates)
             );
         });
-
-        getProductList();
+        await store.dispatch('ProductsListModule/setData');
+        const data = computed(
+            () => store.getters['ProductsListModule/getProductsListData']
+        );
+        dataCard.value = [...data.value];
     });
     const handleSelect = (value: any): void => {
         console.log(value);
         if (value.select === 'Prix asc') {
-            dataCard = dataCard.sort((a, b) => a.prices - b.prices);
-            console.log(dataCard);
+            dataCard.value = dataCard.value.sort(
+                (a: any, b: any) => a.prices - b.prices
+            );
         } else {
-            dataCard = dataCard.sort((a, b) => b.prices - a.prices);
+            dataCard.value = dataCard.value.sort(
+                (a: any, b: any) => b.prices - a.prices
+            );
         }
     };
 </script>
