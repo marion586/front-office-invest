@@ -3,9 +3,7 @@
         <button
             :disabled="disabled"
             @click="!disabled && $emit('on-click')"
-            :class="`button__${type ?? 'primary'} ${
-                disabled ? '--disabled' : ''
-            }`"
+            :class="`button__${typeButton} ${disabled ? '--disabled' : ''}`"
             :type="htmlType"
         >
             <slot />
@@ -14,17 +12,17 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, PropType } from 'vue';
 
     interface Props {
-        type?: {
-            type: string;
-            default: 'primary';
-        };
-        htmlType?: 'button' | 'submit' | 'reset';
-        width?: string;
-        disabled?: boolean;
-        theme?: 'light' | undefined;
+        // typeButton?: {
+        //     type: string;
+        //     default: 'primary';
+        // };
+        // htmlType?: 'button' | 'submit' | 'reset';
+        // width?: string;
+        // disabled?: boolean;
+        // theme?: 'light' ;
     }
 
     const theme = ref<{
@@ -37,7 +35,24 @@
         backgroundColorDisabled: 'rgb(148 159 181 / 77%)',
     });
 
-    const props = defineProps<Props>();
+    const props = defineProps({
+        typeButton: {
+            type: String as PropType<'primary' | 'secondary'>,
+            default: 'primary',
+        },
+        htmlType: {
+            type: String as PropType<'button' | 'submit' | 'reset'>,
+            default: 'button',
+        },
+        width: String,
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        theme: {
+            type: String as PropType<'light'>,
+        },
+    });
 
     onMounted(() => {
         if (props.theme === 'light') {
