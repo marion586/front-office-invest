@@ -36,34 +36,42 @@ export const menuList :List[] = [
 export const PEBValue :Peb[] = [
       {
             id : 0,
-            label : "A+"
+            label : "A+",
+            color : "#0F8841"
       },
       {
             id : 1,
-            label : "A"
+            label : "A",
+            color : "#18B357"
       },
       {
             id : 2,
-            label : "B"
+            label : "B",
+            color : "#35CA34"
       },
       {
             id : 3,
-            label : "C"
+            label : "C",
+            color : "#68FB33"
       },
       {
             id : 4,
-            label : "D"
+            label : "D",
+            color : "#CDFD38"
       },
       {
             id : 5,
-            label : "E"
+            label : "E",
+            color : "#FFE556"
       },
       {
             id : 6,
-            label : "F"
+            label : "F",
+            color : "#FEC601"
       },
       {
             id : 7,
-            label : "G"
+            label : "G",
+            color : "#FF9935"
       },
 ]
