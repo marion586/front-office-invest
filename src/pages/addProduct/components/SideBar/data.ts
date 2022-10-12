@@ -4,6 +4,9 @@ import Adress from '@/pages/addProduct/components/Address/Address.vue';
 import Photos from '@/pages/addProduct/components/Photos/Photos.vue';
 import Price from '@/pages/addProduct/components/Price/Price.vue';
 import PropertyType from '@/pages/addProduct/components/PropertyType/PropertyType.vue';
+import General from "@/pages/addProduct/components/General/General.vue";
+import Inside from '@/pages/addProduct/components/Inside/Inside.vue';
+import Energy from '@/pages/addProduct/components/Energy/Energy.vue';
 
 interface SubMenu{
       id : number,
@@ -33,12 +36,12 @@ export const data : Menu[] = [
                   {
                         id : 1,
                         label : "Adresse",
-                        component : Adress
+                        component : Adress,
                   },
                   {
                         id : 2,
                         label : "Photo et vidéo",
-                        component : Photos
+                        component : Photos,
                   },
                   {
                         id : 3,
@@ -55,14 +58,17 @@ export const data : Menu[] = [
                   {
                         id : 4,
                         label : "Générale",
+                        component : General,
                   },
                   {
                         id : 5,
-                        label : "intérieur",
+                        label : "Intérieur",
+                        component : Inside,
                   },
                   {
                         id : 6,
                         label : "Caractéristique énergetique",
+                        component : Energy,
                   },
             ]
       },
