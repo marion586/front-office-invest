@@ -44,6 +44,7 @@
     }>();
 
     function back(): void {
+        console.log("second")
         emit('hideInfo');
     }
 </script>

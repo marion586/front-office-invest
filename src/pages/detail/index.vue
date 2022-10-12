@@ -126,6 +126,7 @@
         }
     }
     function hide(): void {
+        console.log("last")
         showInfo.value = false;
     }
     // function showDetailedInfo(component?: string): void {
