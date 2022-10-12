@@ -27,6 +27,9 @@
             title: "A partir d'une agence",
             desc: 'Sélectionner une agence',
             icon: CityOutlinedIcon,
+            handler : ()=>{
+                router.push("/recherche-bien/agence")
+            }
         },
         {
             title: "A partir d'un dessin sur la carte",
