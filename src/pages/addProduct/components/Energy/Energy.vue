@@ -2,6 +2,9 @@
 import { menuList, PEBValue } from "@/pages/addProduct/components/Energy/data";
 import Input from "@/components/Common/Input/Input.vue";
 import Paragraphe from "@/components/Common/Paragraphe/Paragraphe.vue";
+import { ref } from "vue";
+
+const active = ref<number>(PEBValue.length-1);
 
 </script>
 
@@ -14,8 +17,10 @@ import Paragraphe from "@/components/Common/Paragraphe/Paragraphe.vue";
                   />
             </div>
             <div class="energy__valuePEB-container">
-                  <div v-for="item in PEBValue" :key="item.id" class="energy__valuePEB" :style="{background : item.color}" >
-                        <Paragraphe>{{item.label}}</Paragraphe>
+                  <div v-for="item in PEBValue" :key="item.id" class="">
+                        <div :class="[item.id === active ? 'energy__active' : '']" class="energy__valuePEB" >
+                              <Paragraphe :style="{background : item.color}" >{{item.label}}</Paragraphe>
+                        </div>
                   </div>
             </div>
       </div>
@@ -30,10 +35,29 @@ import Paragraphe from "@/components/Common/Paragraphe/Paragraphe.vue";
 
       }
       &__valuePEB-container{
-            @apply flex w-[100%] gap-[20px];
+            @apply flex w-[100%] gap-[20px] flex-wrap;
       }
       &__valuePEB{
-            @apply  text-[white] w-[33px] h-[33px] rounded-[50%] flex justify-center items-center;
+            p {
+                  @apply  text-[white] w-[33px] h-[33px] rounded-[50%] flex justify-center items-center;
+            }
+      }
+      &__active{
+            position: relative;
+            z-index: 9;
+            &::after {
+                  content: "";
+                  width: 115%;
+                  height: 115%;
+                  display: inline-block;
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  border-radius: 50%;
+                  background-color: var(--color-primary);
+                  z-index: -1;
+            }
       }
 }
 
