@@ -4,6 +4,8 @@
     import VPerfectSignature from 'v-perfect-signature';
     import IconCheck from '@/components/Icon/CheckIcon.vue';
     import IconCancel from '@/components/Icon/CancelIcon.vue';
+    import { message } from 'ant-design-vue';
+
 
     const props = defineProps({
         hasTitle: {
@@ -16,7 +18,7 @@
         },
         sizePen: {
           type: Number,
-          default: 1.5
+          default: 2.5
         },
         width: {
           type: String,
@@ -25,9 +27,14 @@
         height: {
           type: String,
           default: '132px'
-        }
+        },
 
     });
+
+    const emit = defineEmits<{
+        (event: "signature", value: String): void,
+        (event: "supp", value: String): void
+    }>();
 
     const signaturePad = ref();
 
@@ -38,18 +45,27 @@
       streamline: 0.5,
     };
 
-    let imageSignature = ref(null);
+    let imageSignature = ref('null');
+
     const save = () => {
-      const dataURL = signaturePad.value.toDataURL();
-      imageSignature.value = dataURL;
-      console.log(imageSignature.value);
+      if(!signaturePad.value.isEmpty()){
+        const dataURL = signaturePad.value.toDataURL();
+        imageSignature.value = dataURL;
+      message.success("Signature enregistrer");
+
+      emit("signature", imageSignature.value);
+
+        console.log(imageSignature.value);
+      }else{
+        message.warning("Veuillez remplir le signature");
+      }
       
     }
 
     const undo = () => {
       signaturePad.value.clear();
-      imageSignature.value = null;
-      console.log(imageSignature.value);
+      imageSignature.value = '';
+      emit("supp", imageSignature.value);
       
     }
 
@@ -73,14 +89,14 @@
         </div>
       </div>
     </div>
-    <div class="signature__img"
-    v-if="imageSignature != null"
+    <!-- <div class="signature__img"
+    v-if="imageSignature != ''"
     >
     <p>Votre signature: </p>
       <img :src="`${imageSignature}`"
       alt="img signature"
       >
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -98,42 +114,32 @@
       color: #949FB5;
     }
     &__component{
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;  
+      @apply flex flex-row justify-start ;
     }
 
     &__component-draw{
       width: v-bind(width);
       height: v-bind(height);
 
-      background: #FFFFFF;
+      @apply bg-[#FFFFFF] rounded;
       box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
-      border-radius: 5px;
+
+      @screen md{
+        @apply w-64 h-32 ;
+      }
     }
 
     &__button{
-      margin-left: 5px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
+      @apply ml-1 flex flex-col justify-start ;
     }
 
     &__img{
-      width: 150px;
-      height: 130px;
-      margin-top: 58px;
+      @apply w-36 h-32 mt-14 ;
     }
 }
 
   .btn-save, .btn-cancel{
-    width: 25px;
-    height: 25px;
-    background: #FFFFFF;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @apply w-[25px] h-[25px] bg-[#FFFFFF] flex items-center justify-center rounded-full ;
   }
   .btn-cancel{
     margin-top: 10px;

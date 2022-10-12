@@ -7,10 +7,10 @@
     import Button from '@/components/Common/Button/Button.vue';
     import DocsResult from '@/pages/make-offer/doc-offer/ResultMakeOffer.vue';
     import Radio from '@/components/Common/Radio/Radio.vue';
-import { reactive, ref } from "vue";
+    import { reactive, ref } from "vue";
 
 
-
+    let signature = ref('');
     let title = "Voir l'aperçu du document";
     let titleContent = "Faire une offre";
 
@@ -185,9 +185,14 @@ import { reactive, ref } from "vue";
         },
     ];
 
-    const handleChange = (e: Event) => {
-    console.log(e);
+    const handleChangeRadio = (e: Event) => {
+    console.log((e.target as HTMLInputElement).name);
     console.log("Value", (e.target as HTMLInputElement).value);
+
+    dataParams = {
+            ...dataParams,
+            ...{[(e.target as HTMLInputElement).name] : (e.target as HTMLInputElement).value}
+        };
 }
 
     const handleInput = (e: Object) => {
@@ -225,6 +230,13 @@ import { reactive, ref } from "vue";
                 break;
         }
         
+    }
+
+    const saveSignature = (imgSignature: string) => {
+        signature.value = imgSignature ;
+    }
+    const deleteSignature = (imgSignature: string) => {
+        signature.value = imgSignature ;
     }
 
 </script>
@@ -282,7 +294,7 @@ import { reactive, ref } from "vue";
                                 class="radioElementClass"
                                 :radioDefaultCheck="element.dataRadio[0].value"
                                 :name="element.checkGroup"
-                                @get-radio-input="handleChange($event)"
+                                @get-radio-input="handleChangeRadio($event)"
                                 />
                             </div>
                         </div>
@@ -307,7 +319,7 @@ import { reactive, ref } from "vue";
                                 :class="` ${ element.hasAdd || element.hasInputFull ? 'basis-full' : '' }`"
                                 :placeholder="data.placeholder"
                                 :id="data.id"
-                                @onInput="handleInput($event)"
+                                @input="handleInput($event)"
                                 /> 
                                 <span>{{ data.unitMesure }}</span>
                                 <div class="offer__icon-add" v-if="element.hasAdd"
@@ -322,12 +334,12 @@ import { reactive, ref } from "vue";
 
             <!-- This is the signature -->
             <div class="offer__signature">
-                <Singature title="Signature" width="100%" height="120px" />
+                <Singature title="Signature" width="100%" height="120px" @signature="saveSignature" @supp="deleteSignature" />
             </div>
             <hr>
     
             <div class="offer__btn-valid">
-                <Button type="primary" class="btn-valid-content" width="100%">
+                <Button class="btn-valid-content" width="100%">
                     Valider
                 </Button>
             </div>
@@ -338,6 +350,7 @@ import { reactive, ref } from "vue";
                 <DocsResult
                 :names="names"
                 :conditions="conditions"
+                :imageSignature="signature"
                  />
             </div>
         </div>
@@ -438,6 +451,16 @@ import { reactive, ref } from "vue";
     &__form-input{
         @apply flex flex-row flex-nowrap items-center justify-start gap-1 sm:flex-1 basis-full ;
         
+        &:deep(){
+            .custom-input__fields {
+                @apply mb-0 w-full flex items-center ;
+
+                label {
+                    @apply mb-0 min-w-fit ;
+                }
+            }
+        }
+        
     }
 
     &__form-input label{
@@ -481,4 +504,6 @@ import { reactive, ref } from "vue";
 .condtion-list{
     @apply my-1.5 ;
 }
+
+
 </style>

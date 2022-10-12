@@ -14,6 +14,12 @@
             default() {
                 return [];
             }
+        },
+        imageSignature: {
+            type: String,
+            default() {
+                return "";
+            }
         }
     });
 
@@ -116,6 +122,13 @@ const dataResutlHead = {
                 <div class="offer__result-footer-signature">
                     <p>Fait à : </p>
                     <p>Nom et signatures</p>
+                    <div class="signature__img"
+                    v-if="imageSignature != ''"
+                    >
+                        <img :src="`${imageSignature}`"
+                        alt="img signature"
+                        >
+                    </div>
                 </div>
 
                 <div class="offer__result-footer-date">
@@ -148,6 +161,13 @@ const dataResutlHead = {
 
   }  
 
+  .signature{
+    &__img{
+      &:deep(img){
+        @apply w-36 h-32;
+    }
+    }
+  }
   .name-list .condition-list{
     @apply my-1.5 ;
 }
