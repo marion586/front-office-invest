@@ -75,7 +75,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            @apply bg-[white] rounded-[8px] p-[10px] md:p-[24px] sm:w-[100%] lg:w-[893px] mt-[10px] md:mt-[0px] md:h-[calc(100vh_-_100px)];
+            @apply bg-[white] rounded-[8px] p-[10px] md:p-[24px] sm:w-[100%] lg:w-[893px] mt-[10px] md:mt-[0px] md:h-[calc(100vh_-_100px)] overflow-y-auto;
         }
         &__btn-foot {
             @apply flex gap-[15px];

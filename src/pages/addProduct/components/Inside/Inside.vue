@@ -58,7 +58,7 @@ function getRoomNumber(value : any): void{
             color: var(--color-primary);
       }
       &__details-container{
-            @apply flex  gap-[24px];
+            @apply flex  gap-[24px] flex-wrap;
       }
       &__input{
             @apply flex md:flex-1 flex-col;
@@ -68,7 +68,7 @@ function getRoomNumber(value : any): void{
       }
 
       &__room-description{
-            @apply flex gap-[24px];
+            @apply flex gap-[24px] flex-wrap;
       }
 }
 </style> 
