@@ -1,31 +1,37 @@
 <template>
-    <Loader v-if="loadCards" />
-    <div v-else class="subscription">
-        <div class="subscription__header">
-            <div @click="goBack" class="subscription__header__back">
-                <ArrowBack color="light" /><span> Retour</span>
+    <transition name="fade-step" mode="in-out">
+        <Loader v-if="loadCards" />
+        <div v-else class="subscription">
+            <div class="subscription__header">
+                <div @click="goBack" class="subscription__header__back">
+                    <ArrowBack color="light" /><span> Retour</span>
+                </div>
+                <div class="subscription__header__content">
+                    <Title
+                        type="h2"
+                        label="Choisir l'abonnement"
+                        weight="600"
+                    />
+                    <paragraphe
+                        >Lorem ipsum dolor sit amet consectetur, adipisicing
+                        elit. Non quibusdam ad aut veritatis. Hic repellat
+                        expedita libero quae praese</paragraphe
+                    >
+                </div>
             </div>
-            <div class="subscription__header__content">
-                <Title type="h2" label="Choisir l'abonnement" weight="600" />
-                <paragraphe
-                    >Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Non quibusdam ad aut veritatis. Hic repellat expedita libero
-                    quae praese</paragraphe
-                >
+            <div class="subscription__core">
+                <CardItem
+                    v-for="(card, index) in cardList"
+                    :key="index"
+                    @on-choose-card="hanldeChooseCard"
+                    :subscription-cards="card"
+                />
             </div>
         </div>
-        <div class="subscription__core">
-            <CardItem
-                v-for="(card, index) in cardList"
-                :key="index"
-                @on-choose-card="hanldeChooseCard"
-                :subscription-cards="card"
-            />
-        </div>
-    </div>
+    </transition>
 </template>
 <script lang="ts" setup>
-    import { onMounted, reactive, ref } from 'vue';
+    import { onMounted, reactive, ref, onBeforeMount } from 'vue';
     import { Router, useRouter } from 'vue-router';
     import { Store, useStore } from 'vuex';
     import Paragraphe from '../../../../components/Common/Paragraphe/Paragraphe.vue';
@@ -39,7 +45,7 @@
     let cardList = reactive<Array<ISubscriptionCards>>([]);
     const loadCards = ref<boolean>(false);
 
-    onMounted(() => {
+    onBeforeMount(() => {
         initCard();
     });
 
@@ -82,7 +88,17 @@
         emit('on-choose-card', params);
     }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+    .fade-step-enter-active,
+    .fade-step-leave-active {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .fade-step-enter-from,
+    .fade-step-leave-to {
+        opacity: 0;
+        // transform: scale(0);
+    }
     // this styles if for test pupose
     .subscription {
         // position: relative;

@@ -40,3 +40,23 @@ props {
  label,
  weight
 }
+
+## 6. Radio:
+props {
+    radioDefaultCheck: String,
+    disabled: Boolean,
+    element: Array <any>,
+    name: String,
+    align: String,
+    classLabelRadio: String,
+    defaultClass: String,
+}
+
+## 7. Signature electronic:
+props{
+    hasTitle: Boolean,
+    title: String,
+    sizePen: Number,
+    width: String,
+    height: String,
+}
