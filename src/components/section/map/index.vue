@@ -9,14 +9,14 @@
 const props = defineProps({
     mapCenterCoordinate : {
         type : [Array,Object],
-        default : ()=>[]
-    },
+        default : ()=>({"lat":50.84535101789271,"lng":4.352409839630127})
+            },
     needMarkerLayer : {
         type : Boolean,
         default : false,
     },
     markersCoordinates : {
-        type : Array,
+        type : [Array,Object],
         default : ()=>[]
     },
     getFeatures : {
@@ -30,12 +30,12 @@ const emit = defineEmits(["touched"]);
 onMounted(() => {
     const map = new Map("map");
     if (props.needMarkerLayer) {
-    map.fitBound([props.markersCoordinates[0].lat,props.markersCoordinates[0].lng]);
-            props.markersCoordinates.forEach((marker)=>{
-                map.addMarker(marker,()=>{
-                    emit('touched', marker);
-                });
-            })
+        map.fitBound(props.mapCenterCoordinate);
+        props.markersCoordinates.forEach((marker)=>{
+            map.addMarker(marker,()=>{
+                emit('touched', marker);
+            });
+        })
     }
     map.addDrawControl();
     map.addPrintControl();

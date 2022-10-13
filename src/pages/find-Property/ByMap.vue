@@ -4,6 +4,9 @@
         <div class="container-wrapper">
             <Map 
                 class="map-container"
+                :markersCoordinates="data.PlaceCoordinates"
+                :needMarkerLayer="true"
+                :mapCenterCoordinate="data.PlaceCoordinates[0]"
             />
             <div class="map-actions">
                     <Button
@@ -44,10 +47,11 @@ import Button from "@/components/Common/Button/Button.vue";
 //reactive states
 const text = reactive   ({
     title : "recherche de bien",
+
 });
 const data = reactive({
     isMapReady: false,
-    PlaceCoordinates : [],
+    PlaceCoordinates : [{"lat":50.84535101789271,"lng":4.352409839630127},{"lat":50.84548921460665,"lng":4.351868033081701}],
 })
 
 const toggleMitable = ()=>{

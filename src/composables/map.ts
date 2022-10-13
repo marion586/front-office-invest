@@ -41,7 +41,7 @@ export default class Map {
     init(){
 
         L.tileLayer(
-            'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             {
                 maxZoom: 50,
             }
@@ -174,6 +174,12 @@ export default class Map {
             //     selectedFeature = e.target;
             //     e.target.editing.enable();
             // });
+
+            /*
+                {pays : ""
+                commune : "" 
+                region : ""}
+            */
     }
 
 
