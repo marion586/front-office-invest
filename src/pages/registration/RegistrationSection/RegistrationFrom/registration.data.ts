@@ -14,14 +14,14 @@ const formParams: Array<IUserField> = [
         required: true,
         value: '',
     },
-    {
-        id: 'agencyNumber',
-        name: 'agencyNumber',
-        label: "Numero de l'entreprise",
-        placeholder: "Nom de l'entreprise",
-        required: true,
-        value: '',
-    },
+    // {
+    //     id: 'agencyNumber',
+    //     name: 'agencyNumber',
+    //     label: "Numero de l'entreprise",
+    //     placeholder: "Nom de l'entreprise",
+    //     required: true,
+    //     value: '',
+    // },
     {
         id: 'agencyTva',
         name: 'agencyTva',
@@ -29,15 +29,6 @@ const formParams: Array<IUserField> = [
         placeholder: "TVA de l'entreprise",
         required: true,
         value: '',
-    },
-    {
-        id: 'firstname',
-        name: 'firstname',
-        label: 'Prénom',
-        placeholder: 'Prénom',
-        required: true,
-        value: '',
-        errorMsg: 'Le prenom est obligatoire',
     },
     {
         id: 'name',
@@ -49,10 +40,20 @@ const formParams: Array<IUserField> = [
         errorMsg: 'Le nom est obligatoire',
     },
     {
+        id: 'firstname',
+        name: 'firstname',
+        label: 'Prénom',
+        placeholder: 'Prénom',
+        required: true,
+        value: '',
+        errorMsg: 'Le prenom est obligatoire',
+    },
+
+    {
         id: 'gm_address',
         name: 'address',
-        label: 'Addrèsse',
-        placeholder: 'Lieu ou addrèsse personnel',
+        label: 'Adresse',
+        placeholder: 'Lieu ou adresse personnel',
         required: true,
         value: '',
     },
@@ -60,7 +61,7 @@ const formParams: Array<IUserField> = [
         id: 'email',
         name: 'email',
         label: 'Email',
-        placeholder: 'Addrèsse éléctronique',
+        placeholder: 'Adresse éléctronique',
         required: true,
         value: '',
     },
@@ -70,16 +71,17 @@ const formParams: Array<IUserField> = [
         label: 'Tel',
         placeholder: 'Numero de téléphone',
         required: true,
+        type: 'number',
         value: '',
     },
-    {
-        id: 'tva',
-        name: 'tva',
-        label: 'TVA',
-        placeholder: 'TVA personnel',
-        required: true,
-        value: '',
-    },
+    // {
+    //     id: 'tva',
+    //     name: 'tva',
+    //     label: 'TVA',
+    //     placeholder: 'TVA personnel',
+    //     required: true,
+    //     value: '',
+    // },
 
     {
         id: 'password',
@@ -93,7 +95,7 @@ const formParams: Array<IUserField> = [
     {
         id: 'confirmPassword',
         name: 'confirmPassword',
-        label: 'Confimer',
+        label: 'Confimer le mot de passe',
         placeholder: 'Confirmer votre mot de passe',
         required: true,
         type: 'password',
@@ -105,13 +107,13 @@ const errorFields: IErrorRegistrationFields = {
     name: 'Le nom est obligatoire',
     firstname: 'Le prénom est obligation',
     agencyName: "Le nom de l'entreprise est obligation",
-    agencyNumber: "Le numbero de l'entreprise est obligation",
+    approvals: 'Vous devez ajouter un/des service(s)',
     // agencyAddress: "L'addrèsse est obligation",
     agencyTva: 'Le TVA est obligation',
     address: "L'addrèsse est obligation",
     email: "L'email est obligation",
     telephone: 'Le numero de téléphone est obligation',
-    tva: 'Le TVA est obligation',
+    // tva: 'Le TVA est obligation',
     password: 'Le mot de passe est obligation',
     confirmPassword: 'Ce champ est obligation',
     typeRole: 'Vous devez choisir au moin 1 type',
@@ -121,7 +123,7 @@ const errorFields: IErrorRegistrationFields = {
 export const particularUserForm: Array<IUserField> = [
     ...formParams
         .filter((field) => field.name !== 'agencyName')
-        .filter((field) => field.name !== 'agencyNumber')
+        // .filter((field) => field.name !== 'approvals')
         // .filter((field) => field.name !== 'agencyAddress')
         .filter((field) => field.name !== 'agencyTva'),
 ];
@@ -133,15 +135,15 @@ export const professionnalUserFormWithAgencies: Array<IUserField> = [
     ...formParams
         .filter((field) => field.name !== 'tva')
         .filter((field) => field.name !== 'agencyName')
-        .filter((field) => field.name !== 'agencyNumber')
+        // .filter((field) => field.name !== 'approvals')
         .filter((field) => field.name !== 'agencyTva'),
 ];
 
 // ERROR
 const {
     agencyName,
-    agencyNumber,
-    agencyAddress,
+    // agencyNumber,
+    approvals,
     agencyTva,
     typeRole,
     ...restPart
@@ -159,7 +161,7 @@ function filterProWithAgency(fields: Object) {
     let obj: any;
     Object.keys(fields)
         .filter((item) => item !== 'agencyName')
-        .filter((item) => item !== 'agencyNumber')
+        // .filter((item) => item !== 'approvals')
         .filter((item) => item !== 'agencyTva')
         .forEach((key) => {
             obj = { ...obj, [key]: (fields as any)[key] };

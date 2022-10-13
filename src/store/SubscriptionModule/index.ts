@@ -32,23 +32,3 @@ export const getters: Object = {
 export const state: ISubscriptionState = {
     card: null,
 };
-
-/**
- * FUNCTIONS
- */
-async function getSubscriptionCard(type: string) {
-    try {
-        const { data } = await SubscriptionServices.getSubscriptionCard({
-            for: type,
-        });
-        /**
-         * Fetch and sort data
-         */
-        const cardList: Array<Object> = data.sort(
-            (a: ISubscriptionCards, b: ISubscriptionCards) =>
-                a.price > b.price ? 1 : -1
-        );
-    } catch (error) {
-        console.log(error);
-    }
-}

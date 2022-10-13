@@ -1,4 +1,9 @@
-import { routeGuard, requiresAuthGuard, logoutGuard } from './guard';
+import {
+    routeGuard,
+    requiresAuthGuard,
+    logoutGuard,
+    requiresRegistrationGuard,
+} from './guard';
 import { RouteRecordRaw } from 'vue-router';
 
 const routes = <Array<RouteRecordRaw>>[
@@ -27,16 +32,22 @@ const routes = <Array<RouteRecordRaw>>[
         path: '/abonnement',
         component: () =>
             import('@/pages/registration/SubscriptionSection/Subscription.vue'),
+        beforeEnter: [requiresRegistrationGuard],
+        meta: { shouldRegisterAnUser: true },
     },
     {
         name: 'authValidation',
         path: '/success/:token',
         component: () => import('@/pages/login/Validation.vue'),
+        beforeEnter: [requiresRegistrationGuard],
+        meta: { shouldRegisterAnUser: true },
     },
     {
         name: 'authSubscriptionConfirmation',
         path: '/confirmation',
         component: () => import('@/pages/registration/Confirmation.vue'),
+        beforeEnter: [requiresRegistrationGuard],
+        meta: { shouldRegisterAnUser: true },
     },
     {
         path: '/styleguide',

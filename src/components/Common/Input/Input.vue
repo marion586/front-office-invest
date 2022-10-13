@@ -6,6 +6,7 @@
             >{{ label }}</label
         >
         <a-input
+            @keyup="hanldeKeyup"
             :disabled="disabled"
             :id="id"
             style=""
@@ -15,7 +16,9 @@
             @input="handleInput"
             @change="handleChange"
             :value="value"
-        />
+            :addon-before="addonBefore"
+        >
+        </a-input>
         <transition mode="in-out" name="fade-error">
             <p v-if="hasError?.status">
                 <small class="custom-input__fields--error">{{
@@ -34,16 +37,16 @@
         borderColor: string | number;
         placeholderColor: string | number;
     }
+    interface IHasErrorProps {
+        status: boolean;
+        errorMsg: string;
+    }
+
     const initialErrorState: IHasError = {
         borderColor: 'var(--color-stroke-gray)',
         placeholderColor: '#c7c7c7',
     };
     const errorTheme = ref<IHasError>({ ...initialErrorState });
-
-    interface IHasErrorProps {
-        status: boolean;
-        errorMsg: string;
-    }
     const props = defineProps({
         id: {
             type: String,
@@ -80,6 +83,7 @@
             type: [Number, String],
         },
         disabled: Boolean,
+        addonBefore: String,
     });
 
     watch(
@@ -94,12 +98,12 @@
                 errorTheme.value = { ...initialErrorState };
             }
         }
-        // { immediate: true }
     );
 
     const emit = defineEmits<{
         (event: 'input', value: object): void;
         (event: 'change'): void;
+        (event: 'keyup', value: object): void;
     }>();
 
     const handleInput = (event: Event) => {
@@ -114,6 +118,13 @@
     const handleChange = () => {
         emit('change');
     };
+
+    function hanldeKeyup(e: Event) {
+        const value: string = (e.target as HTMLInputElement).value;
+        if (props.inputType === 'number' && Number.isNaN(value)) {
+            e.preventDefault();
+        }
+    }
 </script>
 
 <style lang="scss" scoped>
