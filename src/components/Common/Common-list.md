@@ -53,9 +53,10 @@ event {
   }
 }
 
-## 7. Input Date
+## 7. Input Date:
 event : {
   handleChange
+}
 ## 8. Radio:
 props {
     radioDefaultCheck: String,
@@ -74,4 +75,17 @@ props{
     sizePen: Number,
     width: String,
     height: String,
+}
+
+## 10. Textarea:
+props{
+  label : string,
+  nameInput : string,
+  maxLength ?: number,
+  showCount ?: boolean,
+  required ?: boolean 
+}
+
+event{
+  onChange
 }

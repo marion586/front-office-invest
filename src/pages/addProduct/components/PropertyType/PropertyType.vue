@@ -19,11 +19,6 @@
     function handleChangeDate(date :string){
         console.log("date : ", date);
     }
-    function handleChange(value){
-        console.log("zaza", value);
-        
-    }
-
 </script>
 
 <template>
@@ -32,8 +27,6 @@
         <TextArea 
             label="zaza"
             name-input="zaza"
-            @on-change="handleChange"
-            :required="true"
         />
 
         <div class="info__body">

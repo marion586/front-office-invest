@@ -51,6 +51,8 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .textarea{
+      @apply flex flex-col gap-[10px];
+      
       &:deep(){
             .textarea:hover{
                   border: solid var(--color-primary) 1px;
@@ -73,7 +75,7 @@ const props = defineProps({
       
       &__label{
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--color-gray-icon);
             display: block;
       }
