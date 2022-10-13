@@ -36,6 +36,7 @@
             required: true,
         },
     });
+    const emit = defineEmits(['touched']);
     const data: any = reactive({
         isMapReady: false,
         PlaceCoordinates: [],
@@ -71,8 +72,8 @@
             },
         ],
     });
-    const testEvent = () => {
-        console.log('click mapData');
+    const testEvent = (n: any) => {
+        emit('touched', n);
     };
 
     onMounted(async () => {

@@ -30,6 +30,7 @@
                     <ProductInfo
                         @on-show-cart="showCart"
                         :DataCard="singleData"
+                        @touched="testEvent"
                     />
                 </div>
             </div>
