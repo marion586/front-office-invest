@@ -2,7 +2,7 @@
     <div>
         <button
             :disabled="disabled"
-            @click="!disabled && $emit('on-click')"
+            @click="!disabled ? $emit('on-click') : () => {}"
             :class="`button__${typeButton} ${disabled ? '--disabled' : ''}`"
             :type="htmlType"
         >

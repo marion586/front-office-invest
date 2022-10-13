@@ -34,13 +34,11 @@
         }, 1000);
     });
     watchEffect(() => {
-        console.log(window.screen);
         window.addEventListener('resize', () => {
             fakeLoadAvatar.value = true;
             setTimeout(() => {
                 fakeLoadAvatar.value = false;
             }, 1000);
-            console.log('object');
         });
         window.removeEventListener('resize', () => {});
     });
@@ -48,10 +46,6 @@
         () => store.getters['UserModule/getUserDetails'],
         function (user) {
             isLoggedIn.value = !!user;
-            console.log(
-                isLoggedIn.value,
-                store.getters['UserModule/getUserDetails']
-            );
         },
         { immediate: true, deep: true }
     );

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import emailValidation from './validation/email_validation';
+import emailValidation from './email_validation';
 
 const invalidEmail = <string>'invalid-email';
 const validEmail = <string>'valid-email@test.com';

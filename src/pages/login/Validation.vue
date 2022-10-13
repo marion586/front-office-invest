@@ -70,7 +70,8 @@
         }
     }
     function onRedirect() {
-        router.push({ name: errorMsg ? 'home' : 'authLogin' });
+        router.push({ name: errorMsg.value ? 'home' : 'authLogin' });
+        // router.push('/connexion');
     }
 </script>
 <style lang="scss" scoped>
