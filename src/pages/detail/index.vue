@@ -3,13 +3,18 @@
     <div class="detail">
         <div>
             <transition name="fade">
-                <component :is="activeView" />
+                <component :is="activeView" @return="closeLiveVideo" />
             </transition>
             <transition name="fade">
-                <DetailedInfo v-if="showInfo" @hideInfo="hide" />
+                    <DetailedInfo v-if="showInfo" @hideInfo="hide" />
             </transition>
+            <transition name="fade">
+                <RelateDocument v-if="showDoc" @return="returnToMain"/>
+            </transition>
+
             <div class="flex flex-col detail__txtDetail">
                 <ButtonDetail
+                    width="500px"
                     class="detail__btnList"
                     @clickChangeView="changeView"
                 />
@@ -31,9 +36,7 @@
     </div>
 </template>
 <script setup lang="ts">
-    // @changeViewDetailedInfo="showDetailedInfo"
-
-    import { computed, shallowRef, ref } from '@vue/runtime-core';
+    import { computed, shallowRef, ref, onMounted } from '@vue/runtime-core';
     import BreadCrumb from '@/components/Display/BreadCrumb/BreadCrumb.vue';
     import ButtonDetail from '@/pages/detail/components/buttonDetail/ButtonDetail.vue';
     import Button from '@/components/Common/Button/Button.vue';
@@ -41,9 +44,8 @@
     import ProductCards from '@/pages/product-list/CardProducts/CardProducts.vue';
     import LiveVideo from '@/pages/detail/components/liveVideo/LiveVideo.vue';
     import DetailedInfo from '@/pages/detail/components/detailedInfo/DetailedInfo.vue';
-
-    // @click="showDetailedInfo"
-    //
+    import RelateDocument from '@/pages/detail/components/RelateDocument/RelateDocument.vue';
+    import { Store, useStore } from 'vuex';
 
     const breadcrumbs = computed(() => {
         return [
@@ -64,42 +66,8 @@
         MainDetail,
         LiveVideo,
         DetailedInfo,
+        RelateDocument,
     };
-    const dataCard = ref([
-        {
-            image: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-            type: 'Maison',
-            price: 200000,
-            roomCount: 1,
-            bedroomCount: 1,
-            surface: 400,
-            interested: 1,
-            offerSentCount: 1,
-            adress: 'Hoedenmakerstraat 38, 1000 Brussel, Belgium',
-        },
-        {
-            image: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-            type: 'Maison',
-            price: 200000,
-            roomCount: 1,
-            bedroomCount: 1,
-            surface: 400,
-            interested: 1,
-            offerSentCount: 1,
-            adress: 'Hoedenmakerstraat 38, 1000 Brussel, Belgium',
-        },
-        {
-            image: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-            type: 'Maison',
-            price: 200000,
-            roomCount: 1,
-            bedroomCount: 1,
-            surface: 400,
-            interested: 1,
-            offerSentCount: 1,
-            adress: 'Hoedenmakerstraat 38, 1000 Brussel, Belgium',
-        },
-    ]);
 
     //dynamic component data
     const activeView = shallowRef<string>(viewList['MainDetail']);
@@ -107,41 +75,65 @@
     const screenType = ref<string | number>(screen.width);
     //detailedInfo
     let showInfo = ref<boolean>(false);
+    //relateDocument
+    let showDoc = ref<boolean>(false);
     //property list
     let showProductCard = ref<boolean>(false);
+    //data card
+    const store: Store<any> = useStore();
+    let dataCard = ref<any>([]);
+    // onMounted(async () => {
+    //     await store.dispatch('ProductsListModule/setData');
+    //     const data = computed(
+    //         () => store.getters['ProductsListModule/getProductsListData']
+    //     );
+    //     dataCard.value = [...data.value];
+    // });
 
     function changeView(view: any) {
+        // showInfo.value = false;
         console.log('view:', view);
-        console.log('activeView:', activeView.value);
+        // console.log('activeView:', activeView.value);
         switch (view) {
             case 'LiveVideo':
+                console.log('show live video', showInfo.value);
                 showInfo.value = false;
                 activeView.value = viewList['LiveVideo'];
                 break;
             case 'DetailedInfo':
                 showInfo.value = !showInfo.value;
+                console.log('show info:', showInfo.value);
+                break;
+            case 'RelateDocument':
+                showDoc.value = !showDoc.value;
             default:
+                showInfo.value = false;
                 activeView.value = viewList['MainDetail'];
                 break;
         }
     }
+    //close detailedInfo
     function hide(): void {
-        console.log("last")
+        console.log('last');
         showInfo.value = false;
     }
-    // function showDetailedInfo(component?: string): void {
-    //     console.log('component:', component);
-    //     if (component === 'DetailedInfo') {
-    //         //reset view to default
-    //         changeView('MainDetail');
-    //         showInfo.value = !showInfo.value;
-    //     }
-    // }
-
+    function closeLiveVideo(): void {
+        activeView.value = viewList['MainDetail'];
+    }
+    //close relateDoc
+    function returnToMain(): void {
+        showDoc.value = false;
+    }
+    function showDetail(): void {
+        showInfo.value = !showInfo.value;
+    }
+    //close|open list card
     function showProduct(): void {
         showProductCard.value = !showProductCard.value;
     }
-    // console.log('BtnList:', btnList);
+    function showRelateDoc(): void {
+        showDoc.value = !showDoc.value;
+    }
 </script>
 
 <style lang="scss" scoped>
@@ -165,7 +157,15 @@
             justify-content: center;
             @apply lg:flex lg:flex-row;
         }
+        .button {
+            @apply w-full;
+        }
         &__btnOffer {
+            &:deep() {
+                .button__primary {
+                    width: 100%;
+                }
+            }
             @apply rounded text-sm font-semibold w-full;
             @media (min-width: 1024px) {
                 width: 367px;

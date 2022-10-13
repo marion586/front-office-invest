@@ -32,6 +32,7 @@ const btnList: BtnList[] = [
         id: 3,
         label: 'Document relatifs',
         icon: FileIcon,
+        case: "RelateDocument"
     },
     {
         id: 4,

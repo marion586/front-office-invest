@@ -6,9 +6,12 @@
             :isIcon="item.icon"
             class="btnDetail__btn"
             @on-click="
-                eventBtnDetail(item.case)
-            "
+                clickChangeView(item.case);
+                "
         >
+        <!-- changeViewDetailedInfo(item.case);
+        changeViewRelateDoc(item.case); -->
+        <!-- changeViewLocation(item.case); -->
             {{ item.label }}</ButtonMenu
         >
     </div>
@@ -20,19 +23,22 @@
 
     const emit = defineEmits<{
         (e: 'clickChangeView', value: any): void;
-        (e: 'changeViewDetailedInfo', value: any): void;
+        (e: 'showDetailedInfo',value: any): void;
+        (e: 'showRelateDoc', value: any): void;
+        (e: 'changeViewLocation', value: any): void;
     }>();
-
-    function eventBtnDetail(view: any): void {
+    function clickChangeView(view: any): void {
         emit('clickChangeView', view);
-        emit('changeViewDetailedInfo', view);
     }
-    // function clickChangeView(view: any): void {
-    //     emit('clickChangeView', view);
-    // }
-    // function changeViewDetailedInfo(component: any): void {
-    //     emit('changeViewDetailedInfo', component);
-    // }
+    function changeViewDetailedInfo(component:any): void {
+        emit('showDetailedInfo',component);
+    }
+    function changeViewRelateDoc(component: any): void {
+        emit('showRelateDoc', component);
+    }
+    function changeViewLocation(component: any): void {
+        emit('changeViewLocation', component);
+    }
 </script>
 
 <style scoped lang="scss">

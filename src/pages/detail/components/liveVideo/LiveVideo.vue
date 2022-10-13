@@ -34,17 +34,17 @@
         &__headVideo {
             @apply flex flex-row justify-between items-center mb-[10px];
         }
-        &__title{
-            @apply font-semibold text-sm
+        &__title {
+            @apply font-semibold text-sm;
         }
         &__play {
             margin-left: 1.25rem;
             margin-right: 1.25rem;
         }
-        &__iframe{
+        &__iframe {
             @apply w-full rounded h-[223px];
             //responsive
-            @apply lg:h-[440px]
+            @apply lg:h-[440px];
         }
     }
 </style>
