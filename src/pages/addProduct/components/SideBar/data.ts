@@ -7,6 +7,8 @@ import PropertyType from '@/pages/addProduct/components/PropertyType/PropertyTyp
 import General from "@/pages/addProduct/components/General/General.vue";
 import Inside from '@/pages/addProduct/components/Inside/Inside.vue';
 import Energy from '@/pages/addProduct/components/Energy/Energy.vue';
+import Description from '@/pages/addProduct/components/Description/Description.vue';
+import Documents from '@/pages/addProduct/components/Documents/Documents.vue';
 
 interface SubMenu{
       id : number,
@@ -76,12 +78,13 @@ export const data : Menu[] = [
             id : 7,
             label : "Description de l'annonce",
             icon : DefaultMenu,
-            component : PropertyType,
+            component : Description,
       },
       {
             id : 8,
             label : "Documents relatifs aux biens",
             icon : DefaultMenu,
-            component : PropertyType,
+            component : Documents,
+            
       }
 ]

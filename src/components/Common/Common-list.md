@@ -56,4 +56,22 @@ event {
 ## 7. Input Date
 event : {
   handleChange
+## 8. Radio:
+props {
+    radioDefaultCheck: String,
+    disabled: Boolean,
+    element: Array <any>,
+    name: String,
+    align: String,
+    classLabelRadio: String,
+    defaultClass: String,
+}
+
+## 9. Signature electronic:
+props{
+    hasTitle: Boolean,
+    title: String,
+    sizePen: Number,
+    width: String,
+    height: String,
 }

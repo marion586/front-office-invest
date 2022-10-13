@@ -91,6 +91,11 @@ const routes = <Array<RouteRecordRaw>>[
         path: '/:path(.*)*',
         component: () => import('@/pages/error/404.vue'),
     },
+    {
+        name: 'make-offer',
+        path: '/faire-une-offre',
+        component: () => import('@/pages/make-offer/MakeOffer.vue'),
+    },
 ];
 
 export default routes;

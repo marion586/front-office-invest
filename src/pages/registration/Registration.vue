@@ -49,7 +49,7 @@
                 <Title type="h3" label="Inscription" :weight="700" />
             </div>
             <template v-if="usertype === ''">
-                <transition appear name="fade" mode="in-out">
+                <transition appear name="fade-step" mode="in-out">
                     <UserType @on-click-choices="handleChoices" />
                 </transition>
             </template>

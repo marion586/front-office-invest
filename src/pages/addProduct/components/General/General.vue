@@ -1,9 +1,11 @@
 <script lang="ts" setup>
+import Paragraphe from "@/components/Common/Paragraphe/Paragraphe.vue";
+
 </script>
 
 <template>
       <div class="">
-            <h3>Information detaillé</h3>
+            <Paragraphe>Information detaillé</Paragraphe>
       </div>
 </template>
 

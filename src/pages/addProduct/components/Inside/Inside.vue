@@ -2,6 +2,7 @@
 import { menuList, details, room } from "@/pages/addProduct/components/Inside/data";
 import Input from "@/components/Common/Input/Input.vue";
 import { ref } from "vue";
+import Paragraphe from "@/components/Common/Paragraphe/Paragraphe.vue";
 
 const roomNumber = ref<number>(0);
 
@@ -14,7 +15,7 @@ function getRoomNumber(value : any): void{
 <template>
       <div class="">
             <div class="" v-for="item in menuList" :key="item.id">
-                  <p class="inside__title">{{item.title}}</p>
+                  <Paragraphe class="inside__title">{{item.title}}</Paragraphe>
                   <div class="" v-for="subItem in item.item" :key="item.id">
                         <Input 
                               :label="subItem.label"
@@ -26,7 +27,7 @@ function getRoomNumber(value : any): void{
             </div>
             <div class="">
                   <div class="" v-for="(item, idItem) in roomNumber" :key="idItem">
-                        <p class="inside__title">Chambre {{item}}</p>
+                        <Paragraphe class="inside__title">Chambre {{item}}</Paragraphe>
                         <hr class="inside__divider">
                         <div class="inside__room-description">
                               <div class="" v-for="roomItem in room">

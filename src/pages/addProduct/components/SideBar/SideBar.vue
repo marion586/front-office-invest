@@ -3,6 +3,7 @@ import ASteps from "ant-design-vue/lib/steps/index";
 import { reactive, ref, watch } from "vue";
 import { data } from "@/pages/addProduct/components/SideBar/data";
 import ArrowMenu from '@/components/Icon/ArrowMenu.vue';
+import Paragraphe from "@/components/Common/Paragraphe/Paragraphe.vue";
 
 let props = defineProps({
       currentItem : {
@@ -54,7 +55,7 @@ function changeComponent(data : Array<any>, first : any){
             <div class="" v-for="(item, idItem) in menuList" :key="idItem">
                   <div class="steps__phone-steps" v-if="item.id === current">
                         <div class="steps__icon"> {{idItem + 1}} </div>
-                        <p>{{item.label}}</p>
+                        <Paragraphe>{{item.label}}</Paragraphe>
                   </div>
             </div>
 

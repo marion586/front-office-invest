@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { inputItem } from "@/pages/addProduct/components/Photos/data";
 import Input from "@/components/Common/Input/Input.vue";
+import Paragraphe from "@/components/Common/Paragraphe/Paragraphe.vue";
 
 </script>
 
@@ -13,9 +14,9 @@ import Input from "@/components/Common/Input/Input.vue";
                         :name-input="item.name"
                   />
                   <div class="" v-if="item.type === 'file'">
-                        <p class="photos__title"> {{item.label}} </p>
+                        <Paragraphe class="photos__title"> {{item.label}} </Paragraphe>
                         <div class="my-2">
-                              <p v-for="subTitle in item.subtitle" :key="subTitle.id" class="photos__subtitle">{{subTitle.text}}</p>
+                              <Paragraphe v-for="subTitle in item.subtitle" :key="subTitle.id" class="photos__subtitle">{{subTitle.text}}</Paragraphe>
                         </div>
                         <div class="photos__file">
                               +

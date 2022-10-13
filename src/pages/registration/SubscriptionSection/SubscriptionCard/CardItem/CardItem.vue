@@ -15,7 +15,7 @@
                         : undefined
                 "
                 @click="handleChooseCard"
-                type="secondary"
+                type-button="secondary"
                 ><LoadingButton size="sm" v-if="loadingRegistration" />
                 <span v-else>Bénéficier</span></Button
             >

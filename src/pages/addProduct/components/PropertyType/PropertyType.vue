@@ -7,6 +7,7 @@
     import SelectInput from '@/components/Common/Select/Select.vue';
     import Switch from '@/components/Common/Switch/Switch.vue';
     import InputDate from '@/components/Common/InputDate/InputDate.vue';
+    import TextArea from '@/components/Common/TextArea/TextArea.vue';
 
     const element = ref<Array<any>>(data);
     const emit = defineEmits(['onNext', 'onNext']);
@@ -18,11 +19,23 @@
     function handleChangeDate(date :string){
         console.log("date : ", date);
     }
+    function handleChange(value){
+        console.log("zaza", value);
+        
+    }
 
 </script>
 
 <template>
     <div class="info__container">
+
+        <TextArea 
+            label="zaza"
+            name-input="zaza"
+            @on-change="handleChange"
+            :required="true"
+        />
+
         <div class="info__body">
             <div class="info__input-container">
                 <div class="info__input-item" :class="[item.subOptions ? 'info__have-subsection' :'']" v-for="item in element" :key="item.id">

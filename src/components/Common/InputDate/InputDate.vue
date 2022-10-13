@@ -12,7 +12,7 @@ const props = defineProps({
       }
 })
 
-function changeDate(date){
+function changeDate(date : any){
       emit('handleChange', date.$d);
 }
 

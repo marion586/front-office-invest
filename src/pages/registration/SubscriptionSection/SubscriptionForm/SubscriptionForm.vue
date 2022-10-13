@@ -1,5 +1,5 @@
 <template>
-    <div class="subscription-card">
+    <div class="subscription-card md:container">
         <div class="subscription-card__title">
             <p class="flex items-center flex-row gap-[10px]">
                 <span @click="$emit('goback')" class="go-back"
@@ -45,13 +45,18 @@
                     </div>
                 </div>
                 <div class="subscription-card__content__form__button">
+                    <small
+                        class="subscription-card__content__form__error"
+                        v-if="errorMsg"
+                        >{{ errorMsg }}</small
+                    >
                     <Button
                         @click="processPayement"
                         :disabled="!isAllCardFieldsValid || loadPayement"
                         html-type="submit"
-                        type="primary"
+                        type-button="primary"
                         ><LoadingButton size="sm" v-if="loadPayement" />
-                        <span v-else>Valide</span></Button
+                        <span v-else>Valider</span></Button
                     >
                 </div>
             </CardWrapper>
@@ -122,6 +127,8 @@
         cardExpElement: false,
         cardCVCElement: false,
     });
+
+    const errorMsg = ref<string>();
 
     const isAllCardFieldsValid = ref<boolean>(false);
 
@@ -252,6 +259,7 @@
                 /**
                  * add token to stripe value
                  */
+                console.log(token);
                 stripeValue = {
                     ...stripeValue,
                     id: token.id,
@@ -274,6 +282,10 @@
                 if (code === 200) {
                     loadPayement.value = false;
                     router.push('/confirmation');
+                } else if (code === 208) {
+                    loadPayement.value = false;
+                    errorMsg.value =
+                        "L'utilisateur que vous essayez de creer existe dejà!";
                 }
             }
         } catch (error) {
@@ -336,6 +348,10 @@
                         @apply flex-nowrap;
                     }
                 }
+                &__error {
+                    color: salmon;
+                    font-size: 16px;
+                }
                 &__button {
                     text-align: center;
                     margin-top: 40px;
@@ -345,6 +361,7 @@
                     &:deep() {
                         button {
                             width: 100%;
+                            margin-top: 20px;
                             @screen sm {
                                 width: 300px;
                             }

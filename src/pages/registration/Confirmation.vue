@@ -2,8 +2,7 @@
     <div class="confirm-subscription">
         <div class="confirm-subscription__content">
             <div class="flex items-center justify-center flex-col gap-[20px]">
-                <!-- TODO change this with Info icon -->
-                <Check size="lg" />
+                <Info size="lg" />
                 <Title
                     label="Information de validation"
                     type="h1"
@@ -19,8 +18,8 @@
 </template>
 <script lang="ts" setup>
     import Title from '@/components/Common/Title/Title.vue';
-    import Check from '../../components/Icon/Check.vue';
     import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
+    import Info from '@/components/Icon/Info.vue';
 </script>
 <style lang="scss" scoped>
     .confirm-subscription {
