@@ -1,10 +1,11 @@
-var googleMapID = 'google-map-script';
 
-export const useGoogleMapAPI = function () {
+var googleMapID = "google-map-script";
+var autocomplete_result;
+export const  useGoogleMapAPI = function(){
     const API_KEY = import.meta.env.VITE_GOOLE_MAPS_API_KEY;
     const CALLBACK_NAME = 'gmapsCallback';
-    // This promise handles the initialization
-    // status of the google maps script.
+        // This promise handles the initialization
+        // status of the google maps script.
 
     // We inject a new script tag into
     // the `<head>` of our HTML to load
@@ -48,26 +49,60 @@ export const removeScript = () => {
  * @param {Array} fields - list on fields de return
  * @param {Object} options - autocomple optionss
  */
-export const autocomplet = (input) => {
-    if (!window.google) {
-        const result = useGoogleMapAPI();
-        result.then((google) => {
-            console.log('nandalo');
-            const auto = new google.maps.places.Autocomplete(input);
-            input.addEventListener('place_changed', (e) => {
-                const res = auto.getPlace();
-                console.log(res);
-            });
-        });
-    } else {
-        const auto = new window.google.maps.places.Autocomplete(input);
-        console.log('yes nandalo', auto);
-        input.addEventListener('place_changed', (e) => {
-            const res = auto.getPlace();
-            console.log(res);
-        });
-    }
-};
+
+const setAutoCompleteResult =(res)=>{
+    autocomplete_result = res;
+}
+export const getAutoCompleteResult = ()=>{
+    return autocomplete_result;
+}
+
+// export const autocomplet = (input ) => {
+//     let auto;
+//     const options = {
+//         fields : ["address_components","geometry","formatted_address"]
+//     }
+//     if (!window.google) {
+//         const result = useGoogleMapAPI();
+//         result.then((google) => {
+//             const p = new Promise((resolve, reject)=>{
+//                 console.log('nandalo', google);
+//                 auto = new google.maps.places.Autocomplete(input,options);
+//                 setTimeout(()=>{
+//                     console.log("zao no misy : ",auto)
+//                 if (auto) {
+//                     console.log("OKKKKK",auto)
+//                     resolve(auto)
+//                 } else {
+//                     reject("l'autocompletion n'est pas charger")
+//                 }
+//                 },1000)
+//             })
+//             return p;
+//         });
+//     } else {
+//         const p = new Promise((resolve, reject)=>{
+//             auto = new window.google.maps.places.Autocomplete(input, options);
+//             console.log('yes nandalo', auto); 
+//             console.log("zao no misy : ",auto)
+//             if (auto) {
+//                 resolve(auto)
+//             } else {
+//                 reject("l'autocompletion n'est pas charger")
+//             }
+//         })
+//         return p;       
+//     }
+//     // const p = new Promise((resolve, reject)=>{
+//     //     console.log("zao no misy : ",auto)
+//     //     if (auto) {
+//     //         resolve(auto)
+//     //     } else {
+//     //         reject("l'autocompletion n'est pas charger")
+//     //     }
+//     // })
+//     // return p;
+// };
 
 /**
  * converte address to geographical coordinates (lat long)

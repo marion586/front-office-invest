@@ -9,14 +9,14 @@
 const props = defineProps({
     mapCenterCoordinate : {
         type : [Array,Object],
-        default : ()=>[]
-    },
+        default : ()=>({"lat":50.84535101789271,"lng":4.352409839630127})
+            },
     needMarkerLayer : {
         type : Boolean,
         default : false,
     },
     markersCoordinates : {
-        type : Array,
+        type : [Array,Object],
         default : ()=>[]
     },
     getFeatures : {
@@ -24,21 +24,25 @@ const props = defineProps({
         default : ()=> {}
     }
 })
+
+const emit = defineEmits(["touched"]);
+
 onMounted(() => {
     const map = new Map("map");
-    map.fitBound([props.markersCoordinates[0].lat,props.markersCoordinates[0].lng]);
     if (props.needMarkerLayer) {
-            props.markersCoordinates.forEach((marker)=>{
-                map.addMarker(marker);
-            })
+        map.fitBound(props.mapCenterCoordinate);
+        props.markersCoordinates.forEach((marker)=>{
+            map.addMarker(marker,()=>{
+                emit('touched', marker);
+            });
+        })
     }
-    map.addMarker([51.505, -0.09]);
     map.addDrawControl();
     map.addPrintControl();
     map.DrawingLayerListener();
     })
     const getFeatures = ()=> props.getFeatures(map.layers);
-    
+    //marker1.onClick()
 </script>
 <template>
         <div
@@ -48,6 +52,6 @@ onMounted(() => {
 </template>
 <style lang="scss" scoped>
 .fix-z-index{
-    z-index: -10;
+    z-index: -100;
 }
 </style>

@@ -3,7 +3,6 @@ import L, { Control, FeatureGroup, LatLng, LatLngBoundsExpression, LatLngExpress
 import 'leaflet-easyprint';
 import '@geoman-io/leaflet-geoman-free';
 import "leaflet-draw";
-
 interface layerType{
     type : string,
     latlng : any[] | LatLngExpression,
@@ -63,8 +62,9 @@ export default class Map {
      * 
      * @param latLong cooordonéé du marqueur à placer sur la carte
      */
-    addMarker(latLong : LatLngLiteral){
-        L.marker(latLong).addTo(this.map);
+    addMarker(latLong : LatLngLiteral,eventHandler=()=>{}){
+        const marker = L.marker(latLong).addTo(this.map);
+        marker.on('click',eventHandler)
     }
     
     createPolygon(coordinates : LatLngExpression[]){
@@ -174,6 +174,12 @@ export default class Map {
             //     selectedFeature = e.target;
             //     e.target.editing.enable();
             // });
+
+            /*
+                {pays : ""
+                commune : "" 
+                region : ""}
+            */
     }
 
 
