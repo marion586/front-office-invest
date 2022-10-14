@@ -99,6 +99,9 @@ export default class Map {
     getFeatures(){
         return this.layers;
     }
+    getCurrentFeaturesCoordinates(layer : layerType | layerType[]){
+        return this.layers[this.layers.length -1];
+    };
     getPolygonFeatures(){
         return  this.layers.filter(e =>(e.type  === layerType.polygon))
     }
@@ -121,6 +124,7 @@ export default class Map {
                     let p = new L.Polygon(layer._latlngs[0]);
                     this.featureGroup.addLayer(p);
                     this.featureGroup.addTo(this.map);
+
                     this.layers.push({
                         type : layerType.polygon,
                         latlng : (p.getLatLngs() as [][])[0],

@@ -7,11 +7,13 @@
                 :markersCoordinates="data.PlaceCoordinates"
                 :needMarkerLayer="true"
                 :mapCenterCoordinate="data.PlaceCoordinates[0]"
+                @touched="handleBtn"
             />
             <div class="map-actions">
                     <Button
-                        type="secondary"
-                        class="map-actions-reset"
+                        theme="light"
+                        type="primary"
+                        class="map-actions-btn"
                         @onClick="handleBtn"
                     >
                         <template #default>
@@ -19,7 +21,7 @@
                         </template>
                     </Button>
                     <Button
-                    class="map-actions-search"
+                    class="map-actions-btn"
                         type="primary"
                         @onClick="handleBtn"
                     >
@@ -60,24 +62,8 @@ const toggleMitable = ()=>{
 
 //lifecycle
  onMounted( () =>{
-    // const proomise = geocode("Bruxelles Belgique");
-    // proomise.then(result =>{
-    //     console.log(result)
-    //     data.isMapReady = true,
-    //     data.PlaceCoordinates.push(result.coordinates);
-    //     });
-    
-    // const input = document.getElementById("propertyLocation");
-    // console.log("input : ", input);
-    // autocomplet(input);
+   
 
-    // console.log(window.google);
-
-})
-
-onUnmounted(()=>{
-    // console.log("component is unmounted");
-    // removeScript();    
 })
 
 const handleBtn = ()=>{
@@ -106,14 +92,14 @@ const getFeatures = (features)=>features
                 z-index: 10;
                 display: flex;
                 align-items: center;
-            
+            &-btn{
+                @apply w-fit my-1;
+            }
             &-reset{
-                @apply w-1/2 bg-white my-1;
+                @apply w-1/2 my-1;
             }
             &-search{
                 @apply w-1/2 my-1;
-                background-color: var(--color-primary);
-                color : var(--color-gray)
 
             }
         

@@ -4,9 +4,8 @@ import Input from "@/components/Common/Input/Input.vue"
 import SearchIcon from "@/components/Icon/Search.vue";
 import Title from "@/components/Common/Title/Title.vue";
 import P from "@/components/Common/Paragraphe/Paragraphe.vue";
-
-import {ref,reactive, onMounted, onBeforeMount, onUnmounted} from "vue";
-
+import {useStore} from "vuex";
+import {ref,reactive, onMounted, onUnmounted} from "vue";
 
 const title = ref("Recherche");
 const section = ref("| A partir d'une ville");
@@ -17,6 +16,8 @@ const input = ref({
 const data = reactive({
     result : ""
 })
+
+const $store = useStore();
 
 onMounted(()=>{
     let  auto;
@@ -31,6 +32,10 @@ onMounted(()=>{
             auto.addListener('place_changed', (e) => {
                 const res = auto.getPlace();
                 data.result = res
+                const parsed_address = parseAddressComponent(data.result.address_components);
+                logics(parsed_address);
+                console.log("[DBG] result : ",parsed_address  )
+
             }); 
         })
     }else{
@@ -38,14 +43,51 @@ onMounted(()=>{
             auto.addListener('place_changed', (e) => {
                 const res = auto.getPlace();
                 data.result = res
+                const parsed_address = parseAddressComponent(data.result.address_components);
+                logics(parsed_address);
+                console.log("[DBG] result : ",parsed_address  )
             });
     }
+
+const logics = (payload)=>{
+
+    const res = $store.dispatch("FindPropertyModule/findPropertiesByCity",payload);
+    console.log(res)
+}
         
 })
-
 onUnmounted(()=>{
     removeScript();
 })
+
+const parseAddressComponent = (adressComponent ) =>{
+    const result = {
+        "postalCode" : null,
+        "country" : null,
+        "municipalityName" : null,
+        "streetNumber" : null,
+        "streetName" : null
+    }
+
+    adressComponent.forEach( elt => {
+        if(elt.types.includes("country")){
+            result.country = elt.long_name
+        }else if(elt.types.includes("street_number")){
+            result.streetNumber = elt.long_name
+        }else if(elt.types.includes("route")){
+            result.streetName = elt.long_name
+        }else if(elt.types.includes("locality")){
+            result.municipalityName = elt.long_name
+        }else if(elt.types.includes("postal_code")){
+            result.postalCde = elt.long_name
+        }
+    });
+
+    return result; 
+}
+
+
+
 </script>
 
 <template>

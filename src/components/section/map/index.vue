@@ -33,8 +33,10 @@ onMounted(() => {
         map.fitBound(props.mapCenterCoordinate);
         props.markersCoordinates.forEach((marker)=>{
             map.addMarker(marker,()=>{
+                console.log('marker clicked')
                 emit('touched', marker);
             });
+            map.fitBound(marker);
         })
     }
     map.addDrawControl();
