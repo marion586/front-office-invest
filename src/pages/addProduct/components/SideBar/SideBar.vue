@@ -3,6 +3,7 @@ import ASteps from "ant-design-vue/lib/steps/index";
 import { reactive, ref, watch } from "vue";
 import { data } from "@/pages/addProduct/components/SideBar/data";
 import ArrowMenu from '@/components/Icon/ArrowMenu.vue';
+import Paragraphe from "@/components/Common/Paragraphe/Paragraphe.vue";
 
 let props = defineProps({
       currentItem : {
@@ -33,14 +34,14 @@ function changeComponent(data : Array<any>, first : any){
       data.forEach((item : any) => {
             if(!item.subMenu){
                   if(item.id === first){
-                  emit('component', item.component);
+                  emit('component', item.component, item.label);
                   console.log("item\n", item.component);
                   
                   }  
             }else{
                   item.subMenu.forEach((subItem: any) => {
                         if(subItem.id === first){
-                              emit('component', subItem.component);
+                              emit('component', subItem.component, subItem.label);
                         }
                         
                   });
@@ -54,7 +55,7 @@ function changeComponent(data : Array<any>, first : any){
             <div class="" v-for="(item, idItem) in menuList" :key="idItem">
                   <div class="steps__phone-steps" v-if="item.id === current">
                         <div class="steps__icon"> {{idItem + 1}} </div>
-                        <p>{{item.label}}</p>
+                        <Paragraphe>{{item.label}}</Paragraphe>
                   </div>
             </div>
 
@@ -63,7 +64,7 @@ function changeComponent(data : Array<any>, first : any){
                   size="small"
                   class="hidden md:flex"
             >
-                  <a-step v-for="item in menuList">
+                  <a-step v-for="item in menuList" :class="[item.subItem && item.id === current ? '' : '']">
                         <template #title>
                               {{item.label}}
                         </template>

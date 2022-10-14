@@ -8,9 +8,11 @@
 
     let activeComp = shallowRef<Array<object>>([PropertyType]);
     const current = ref<number>(0);
+    const title = ref<string>("Type d'annonce")
 
-    function changeComponent(comp: object) {
+    function changeComponent(comp: object, label : string) {
         activeComp.value = [comp];
+        title.value = label;
     }
 
     function next() {
@@ -18,7 +20,9 @@
     }
 
     function prev() {
-        current.value--;
+        if(current.value > 0){
+            current.value--;
+        }
     }
 </script>
 
@@ -27,11 +31,17 @@
         <div class="add__container">
             <SideBar :currentItem="current" @component="changeComponent" />
             <div class="add__content">
-                <component
-                    :is="activeComp[activeComp.length - 1]"
-                    @onNext="next"
-                    @onPrev="prev"
-                />
+                <div class="">
+                    <div class="add__header">
+                        <p class="add__title">{{title}}</p>
+                        <hr class="add__divider" />
+                    </div>
+                    <component
+                        :is="activeComp[activeComp.length - 1]"
+                        @onNext="next"
+                        @onPrev="prev"
+                    />
+                </div>
                 <div class="add__footer">
                     <p>(*) champ obligatoire</p>
                     <div class="add__btn-foot">
@@ -65,7 +75,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            @apply bg-[white] rounded-[8px] p-[10px] md:p-[24px] sm:w-[100%] lg:w-[893px] mt-[10px] md:mt-[0px] md:h-[calc(100vh_-_100px)];
+            @apply bg-[white] rounded-[8px] p-[10px] md:p-[24px] sm:w-[100%] lg:w-[893px] mt-[10px] md:mt-[0px] md:h-[calc(100vh_-_100px)] overflow-y-auto;
         }
         &__btn-foot {
             @apply flex gap-[15px];
@@ -73,6 +83,15 @@
         &__footer {
             border-top: 1px solid var(--color-gray);
             @apply pt-[15px] mt-[15px] flex justify-between items-center;
+        }
+        &__header{
+
+        }
+        &__title {
+            font-weight: 600;
+        }
+        &__divider {
+            @apply my-[18px];
         }
     }
 </style>
