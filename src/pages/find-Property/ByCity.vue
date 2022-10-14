@@ -128,8 +128,6 @@ const parseAddressComponent = (adressComponent ) =>{
             &-input{
                 @apply w-full pb-3;
             }
-            
-            
         }
         .find{
             &-input{

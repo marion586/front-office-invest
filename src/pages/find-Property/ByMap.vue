@@ -7,7 +7,9 @@
                 :markersCoordinates="data.PlaceCoordinates"
                 :needMarkerLayer="true"
                 :mapCenterCoordinate="data.PlaceCoordinates[0]"
+                :needPolygonLayer="true"
                 @touched="handleBtn"
+                :polygonCoordinates="data.polygon"
             />
             <div class="map-actions">
                     <Button
@@ -53,6 +55,12 @@ const text = reactive   ({
 });
 const data = reactive({
     isMapReady: false,
+    polygon : [
+        { lat: 50.84665167605899, lng: 4.350414276123048 },
+        { lat: 50.84440259845273, lng: 4.349427223205567 },
+        { lat: 50.84429420643197, lng: 4.354748725891114 },
+        { lat: 50.84684135234525, lng: 4.3580961227417 }
+    ],
     PlaceCoordinates : [{"lat":50.84535101789271,"lng":4.352409839630127},{"lat":50.84548921460665,"lng":4.351868033081701}],
 })
 

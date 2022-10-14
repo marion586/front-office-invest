@@ -17,7 +17,6 @@ const data = reactive({
     result : ""
 })
 
-
 const $store = useStore();
 
 onMounted(()=>{
@@ -63,8 +62,8 @@ onUnmounted(()=>{
 
 const parseAddressComponent = (adressComponent ) =>{
     const result = {
-        "perAgency" : true,
-        "postalCde" : null,
+        "per_agency" : true,
+        "postalCode" : null,
         "country" : null,
         "municipalityName" : null,
         "streetNumber" : null,

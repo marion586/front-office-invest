@@ -3,6 +3,7 @@ import L, { Control, FeatureGroup, LatLng, LatLngBoundsExpression, LatLngExpress
 import 'leaflet-easyprint';
 import '@geoman-io/leaflet-geoman-free';
 import "leaflet-draw";
+import { A } from 'vitest/dist/global-fe52f84b';
 interface layerType{
     type : string,
     latlng : any[] | LatLngExpression,
@@ -65,10 +66,13 @@ export default class Map {
     addMarker(latLong : LatLngLiteral,eventHandler=()=>{}){
         const marker = L.marker(latLong).addTo(this.map);
         marker.on('click',eventHandler)
+        return marker;
     }
     
-    createPolygon(coordinates : LatLngExpression[]){
-        return L.polygon(coordinates).addTo(this.map)
+    createPolygon(coordinates : LatLngExpression[], eventHandler=()=>{} ){
+        const polygon =  L.polygon(coordinates).addTo(this.map);
+        polygon.on('click', eventHandler);
+        return polygon;
     }
     
     addPrintControl(){
@@ -112,7 +116,10 @@ export default class Map {
      * ######## ALL ABOUT DRAWING LAYERS ##########
      * listenning drawing event and add to drawn layer data 
      */
-    DrawingLayerListener(){
+    DrawingLayerListener(
+                        polygonGetter = (feat : {})=>{},
+                        markerGetter = (feat : {} )=>{}
+                        ){
         
         let selectedFeature : any = null;
         this.map.on("draw:created",(e : any)=>{
@@ -124,24 +131,26 @@ export default class Map {
                     let p = new L.Polygon(layer._latlngs[0]);
                     this.featureGroup.addLayer(p);
                     this.featureGroup.addTo(this.map);
-
-                    this.layers.push({
+                    const feat = {
                         type : layerType.polygon,
                         latlng : (p.getLatLngs() as [][])[0],
                         layerID : this.featureGroup.getLayerId(p) 
-                    })
+                    }
+                    this.layers.push(feat);
+                    polygonGetter(feat);
 
                 }else if(e.layerType === layerType.marker){
                     //handle marker layers after creation
                     let  m = new L.Marker(layer._latlng)
                     this.featureGroup.addLayer(m);
                     this.featureGroup.addTo(this.map);
-
-                    this.layers.push({
+                    const feat = {
                         type : layerType.marker,
                         latlng : m.getLatLng(),
                         layerID : this.featureGroup.getLayerId(m)
-                    })
+                    }
+                    this.layers.push(feat);
+                    markerGetter(feat)
                 }
 
                 this.featureGroup.eachLayer(layer=>{
@@ -168,22 +177,7 @@ export default class Map {
                 console.log(e)
                 console.log("layers : ",this.layers);
             });
-            // this.map.on("click", (e)=>{
-            //     selectedFeature = e.target;
-            //     console.log(e)
-            //     if(selectedFeature){
-            //         selectedFeature.editing.disable();
-            //         // and Here I'll add the code to store my edited polygon in the DB or whatever I want to do with it
-            //     }
-            //     selectedFeature = e.target;
-            //     e.target.editing.enable();
-            // });
-
-            /*
-                {pays : ""
-                commune : "" 
-                region : ""}
-            */
+            
     }
 
 
