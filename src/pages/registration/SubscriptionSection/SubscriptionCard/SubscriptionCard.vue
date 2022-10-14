@@ -51,6 +51,7 @@
 
     const emit = defineEmits<{
         (e: 'on-choose-card', v: ISubscriptionCards | undefined): void;
+        (e: 'on-get-next-card', v: ISubscriptionCards | null): void;
     }>();
 
     async function getSubscriptionCard(usertype: string) {
@@ -76,8 +77,9 @@
     async function initCard() {
         const registerUserStore = store.getters['UserModule/getRegisteredUser'];
         const usertype: string =
-            registerUserStore.type === 'professionnal' ? 'pro' : 'part';
+            registerUserStore.type === 'professional' ? 'pro' : 'part';
         getSubscriptionCard(usertype);
+        console.log(usertype);
     }
 
     function goBack() {
@@ -86,6 +88,21 @@
 
     function hanldeChooseCard(params: ISubscriptionCards | undefined) {
         emit('on-choose-card', params);
+        getNextCard(params as ISubscriptionCards);
+    }
+
+    function getNextCard(params: ISubscriptionCards) {
+        const cardListLen: number = cardList.length;
+        let nextCard: ISubscriptionCards | null = null;
+        const indexofCurrentCard: number = cardList.indexOf(params);
+        const isLastCard: boolean = indexofCurrentCard === cardListLen - 1;
+
+        if (!isLastCard) {
+            const indexofNextCard: number = indexofCurrentCard + 1;
+            nextCard = cardList[indexofNextCard];
+        }
+
+        emit('on-get-next-card', nextCard);
     }
 </script>
 <style lang="scss" scoped>

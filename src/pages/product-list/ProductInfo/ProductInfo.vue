@@ -4,9 +4,10 @@
             <Filter @on-show-cart="$emit('on-show-cart')" :isMap="true" />
             <Map
                 class="my-map"
-                :mapCenterCoordinate="data.PlaceCoordinates"
+                :mapCenterCoordinate="mapData[0]"
                 :needMarkerLayer="true"
                 :markersCoordinates="mapData"
+                @touched="testEvent"
             />
         </div>
         <div class="product-info__left">
@@ -35,6 +36,7 @@
             required: true,
         },
     });
+    const emit = defineEmits(['touched']);
     const data: any = reactive({
         isMapReady: false,
         PlaceCoordinates: [],
@@ -70,6 +72,9 @@
             },
         ],
     });
+    const testEvent = (n: any) => {
+        emit('touched', n);
+    };
 
     onMounted(async () => {
         const proomise = geocode('Bruxelles Belgique');
@@ -97,6 +102,7 @@
                 height: 80vh;
                 width: 100%;
                 border-radius: 8px;
+                z-index: 9;
             }
         }
     }

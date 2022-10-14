@@ -46,7 +46,7 @@
                         </label>
                     </figure>
                 </div>
-                <Title type="h3" label="Inscription" :weight="700" />
+                <Title type="h3" label="Créer un compte" :weight="700" />
             </div>
             <template v-if="usertype === ''">
                 <transition appear name="fade-step" mode="in-out">

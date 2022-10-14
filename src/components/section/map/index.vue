@@ -22,22 +22,29 @@ const props = defineProps({
     getFeatures : {
         type  : Function,
         default : ()=> {}
+    },
+    needPolygonLayer : {
+        type : Boolean,
+        default : false
     }
 })
 
-const emit = defineEmits(["touched"]);
+    const emit = defineEmits(['touched']);
 
 onMounted(() => {
     const map = new Map("map");
     if (props.needMarkerLayer) {
         map.fitBound(props.mapCenterCoordinate);
+
         props.markersCoordinates.forEach((marker)=>{
             map.addMarker(marker,()=>{
-                console.log('marker clicked')
                 emit('touched', marker);
             });
             map.fitBound(marker);
         })
+    }
+    if(props.needPolygonLayer){
+
     }
     map.addDrawControl();
     map.addPrintControl();

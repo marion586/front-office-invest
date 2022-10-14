@@ -20,7 +20,7 @@
             <Button
                 v-if="filterObject.isListCards"
                 @on-click="showCart"
-                type="secondary"
+                typeButton="secondary"
             >
                 <div>
                     <Cart color="#fff" />
@@ -33,7 +33,7 @@
                     (filterObject.isShowCart || filterObject.isShowInfo) &&
                     !isMap
                 "
-                type="secondary"
+                typeButton="secondary"
             >
                 <div @click="showCard">
                     <ListBullet color="#fff" />

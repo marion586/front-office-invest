@@ -16,6 +16,7 @@ interface IErrorRegistrationFields {
     agencyNumber?: string;
     agencyAddress?: string;
     agencyTva?: string;
+    approvals?: string;
     address: string;
     email: string;
     telephone: string;
@@ -23,4 +24,10 @@ interface IErrorRegistrationFields {
     password: string;
     confirmPassword: string;
     typeRole?: any;
+}
+
+interface IAgenciesServices {
+    roadWorks: string;
+    status: boolean;
+    id: number;
 }

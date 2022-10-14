@@ -15,21 +15,22 @@
             >
                 <CardProducts :DataCard="dataCard" />
             </div>
-            <div @click="showInfo">
-                <Map
-                    v-if="isShowCart"
-                    class="my-map"
-                    :mapCenterCoordinate="data.PlaceCoordinates"
-                    :needMarkerLayer="true"
-                    :markersCoordinates="mapData"
-                />
-            </div>
+
+            <Map
+                v-if="isShowCart"
+                class="my-map"
+                :mapCenterCoordinate="mapData[0]"
+                :needMarkerLayer="true"
+                :markersCoordinates="mapData"
+                @touched="testEvent"
+            />
 
             <div v-if="isShowInfo" class="list__container-information">
                 <div>
                     <ProductInfo
                         @on-show-cart="showCart"
-                        :DataCard="dataCard[0]"
+                        :DataCard="singleData"
+                        @touched="testEvent"
                     />
                 </div>
             </div>
@@ -43,7 +44,6 @@
     import Filter from './Filter/Filter.vue';
     import ProductInfo from './ProductInfo/ProductInfo.vue';
     import Map from '@/components/section/map/index.vue';
-    import { geocode } from '@/composables/google-maps-api';
     import { Store, useStore } from 'vuex';
     import Loader from '@/components/Common/Loader/Loader.vue';
 
@@ -52,6 +52,7 @@
     let isShowCart = ref<boolean>(false);
     let isListCards = ref<boolean>(true);
     let isShowInfo = ref<boolean>(false);
+    let singleData = reactive<any>({});
     const showCard = () => {
         isShowCart.value = false;
         isListCards.value = true;
@@ -68,7 +69,15 @@
         isShowInfo.value = true;
         isShowCart.value = false;
         isListCards.value = false;
-        console.log('info');
+    };
+    const testEvent = (marker: any) => {
+        console.log(marker);
+        const d = dataCard.value.find(
+            (item: any) =>
+                item.latitude == marker.lat && item.longitude == marker.lng
+        );
+        Object.assign(singleData, d);
+        showInfo();
     };
 
     let filterObject = ref<object>({ isShowCart, isListCards, isShowInfo });
@@ -115,13 +124,6 @@
     );
 
     onMounted(async () => {
-        const proomise = geocode('Bruxelles Belgique');
-        proomise.then((result: any) => {
-            return (
-                (data.isMapReady = true),
-                data.PlaceCoordinates.push(result.coordinates)
-            );
-        });
         await store.dispatch('ProductsListModule/setData');
         const data = computed(
             () => store.getters['ProductsListModule/getProductsListData']
@@ -163,6 +165,7 @@
             height: 80vh;
             width: 100%;
             border-radius: 8px;
+            z-index: 9;
         }
     }
 </style>

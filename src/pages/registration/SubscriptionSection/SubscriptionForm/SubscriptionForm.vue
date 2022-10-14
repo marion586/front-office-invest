@@ -51,7 +51,7 @@
                         >{{ errorMsg }}</small
                     >
                     <Button
-                        @click="processPayement"
+                        @click="isAllCardFieldsValid ? processPayement() : null"
                         :disabled="!isAllCardFieldsValid || loadPayement"
                         html-type="submit"
                         type-button="primary"
@@ -60,7 +60,7 @@
                     >
                 </div>
             </CardWrapper>
-            <CardWrapper>
+            <CardWrapper class="flex w-full flex-col justify-between">
                 <div class="subscription-card__content__card">
                     <Title
                         class="subscription-card__content__card__title"
@@ -88,6 +88,29 @@
                                 <CheckList /> <span>{{ sevice.name }}</span>
                             </li>
                         </ul>
+                    </div>
+                </div>
+                <div
+                    v-if="nextCard"
+                    class="subscription-card__content__card__suggestion"
+                >
+                    <Title
+                        weight="400"
+                        label="Vous pouvez aussi soliciter de notre pack:"
+                        type="h3"
+                    />
+                    <div class="flex justify-center w-full">
+                        <div
+                            class="subscription-card__content__card__suggestion__item"
+                        >
+                            <span class="name">{{
+                                nextCard.name.toUpperCase()
+                            }}</span>
+                            <span class="sep"></span>
+                            <span class="price"
+                                >{{ nextCard.price.toFixed(2) }} €</span
+                            >
+                        </div>
                     </div>
                 </div>
             </CardWrapper>
@@ -142,6 +165,9 @@
     const props = defineProps({
         subscriptionCards: {
             type: Object as PropType<ISubscriptionCards | undefined | {}>,
+        },
+        nextCard: {
+            type: Object as PropType<ISubscriptionCards | null>,
         },
     });
     onMounted(() => {
@@ -291,7 +317,12 @@
         } catch (error) {
             // TODO handle error
             loadPayement.value = false;
-            console.log(error);
+            if (error) {
+                console.log(error);
+            } else {
+                router.push('/confirmation');
+            }
+            // if (re)
         }
     }
 </script>
@@ -356,7 +387,7 @@
                     text-align: center;
                     margin-top: 40px;
                     @screen md {
-                        padding-bottom: 40px;
+                        margin-bottom: 40px;
                     }
                     &:deep() {
                         button {
@@ -370,7 +401,6 @@
                 }
             }
             &__card {
-                // @apply flex gap-[40px] flex-col;
                 &__services,
                 &__desc,
                 &__price {
@@ -408,6 +438,44 @@
                         h2 {
                             color: #fff;
                             text-align: center;
+                        }
+                    }
+                }
+                &__suggestion {
+                    @screen sm {
+                        margin-bottom: 40px;
+                    }
+                    background-image: url('@/static/images/bg-suggestion-card.png');
+                    background-position: center center;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    padding: 24px;
+                    border-radius: 8px;
+                    @apply flex flex-col justify-center gap-[24px];
+                    &:deep() {
+                        h3 {
+                            color: #fff;
+                            text-align: center;
+                        }
+                    }
+                    &__item {
+                        background-color: #fff;
+                        border-radius: 8px;
+                        color: var(--color-secondary);
+                        @apply text-center flex-wrap p-[14px] flex flex-row justify-center items-center gap-[10px];
+                        font-weight: 600;
+                        width: fit-content;
+                        .name {
+                            font-size: 14px;
+                        }
+                        .sep {
+                            border-left: 1px solid var(--color-secondary);
+                            background-color: red;
+                            // padding: 10px;
+                            height: 25px;
+                        }
+                        .price {
+                            font-size: 24px;
                         }
                     }
                 }
