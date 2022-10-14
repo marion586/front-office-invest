@@ -1,5 +1,5 @@
 <template>
-    <button class="button-menu" @click="$emit('click')">
+    <button class="button-menu" @click="$emit('on-click')">
         <div class="button-menu__wrap-icon">
             <component :is="isIcon" class="button-menu__icon"></component>
         </div>

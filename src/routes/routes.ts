@@ -105,19 +105,26 @@ const routes = <Array<RouteRecordRaw>>[
             {
                 path: '/Detail/A',
                 component: () =>
-                    import('@/pages/detail/component/ComponentA.vue'),
+                    import('@/pages/detail/components/ComponentA.vue'),
             },
             {
                 path: '/Detail/B',
                 component: () =>
-                    import('@/pages/detail/component/ComponentB.vue'),
+                    import('@/pages/detail/components/ComponentB.vue'),
             },
+           
         ],
     },
     {
         name: 'product-list',
         path: '/liste-produit',
         component: () => import('@/pages/product-list/List.vue'),
+    },
+    {
+        name: "cadastre",
+        path: '/detail/cadastre',
+        component: () =>
+            import('@/pages/detail/components/Location/Location.vue'),
     },
     {
         name: 'add',
