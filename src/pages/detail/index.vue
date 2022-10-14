@@ -3,7 +3,11 @@
     <div class="detail">
         <div class="w-full">
             <transition name="fade">
-                <component v-if="!showDoc" :is="activeView" @return="closeLiveVideo" />
+                <component
+                    v-if="!showDoc"
+                    :is="activeView"
+                    @return="closeLiveVideo"
+                />
             </transition>
             <transition name="fade">
                 <DetailedInfo v-if="showInfo" @hideInfo="hide" />
@@ -25,7 +29,9 @@
                     @gotoMap="locationFn"
                 />
                 <div class="detail__btnContainer">
-                    <Button class="detail__btnOffer" @click="gotoOffer">Faire un offre</Button>
+                    <Button class="detail__btnOffer" @click="gotoOffer"
+                        >Faire un offre</Button
+                    >
                     <Button
                         theme="light"
                         v-if="screenType < 1024"
@@ -36,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="detail__productList">
             <ProductCards v-if="showProductCard" :DataCard="dataCard" />
         </div>
         <router-view />
@@ -64,16 +70,16 @@
     const breadcrumbs = computed(() => {
         return [
             {
-                label: 'Immo',
+                label: 'Acquérir un bien',
             },
             {
-                label: 'A',
-                url: '/Detail/A',
+                label: 'Détails du bien',
+                url: '/detail',
             },
-            {
-                label: 'B',
-                url: '/Detail/B',
-            },
+            // {
+            //     label: 'B',
+            //     url: '/Detail/B',
+            // },
         ];
     });
     const viewList: string[] | any = {
@@ -98,7 +104,57 @@
     let showProductCard = ref<boolean>(false);
     //data card
     const store: Store<any> = useStore();
-    let dataCard = ref<any>([]);
+    let dataCard:any = [
+        {
+            id: 22,
+            title: 'Titre react native',
+            details: 'details react native',
+            address: 'Rue de la Violette 22, 1000 Bruxelles, Belgique',
+            latitude: 50.84535101789271,
+            longitude: 4.352409839630127,
+            roomcount: 0,
+            prices: '200',
+            propertyType: {
+                id: 13,
+                name: 'Bureau',
+                status: true,
+                isSell: false,
+                isLocation: true,
+            },
+            reference: 'IMM150922180915',
+            operationType: 'Location',
+            status: 1,
+            propertyImages: [
+                {
+                    id: 38,
+                    path: 'http://immo-back.loc/uploads/imgsproperty/index6310958ec39ed.jpeg',
+                },
+                {
+                    id: 44,
+                    path: 'http://immo-back.loc/uploads/imgsproperty/k-P1000189620cbb9c294fa.jpeg',
+                },
+                {
+                    id: 95,
+                    path: 'http://immo-back.loc/uploads/imgsproperty/k-P1000189620cbb9c294fa.jpeg',
+                },
+            ],
+            user: {
+                id: 2,
+                email: 'honkahonka@yopmail.com',
+                name: 'Honka',
+                firstname: 'honka',
+            },
+            bedroomcount: 3,
+            bathroomcount: 3,
+            surface: 1001,
+            register: null,
+            advanced: null,
+            chambercaracteristics: [],
+            certnumber: '125',
+            primaryenergy: 5,
+            annualenergy: '5',
+        },
+    ];
     // onMounted(async () => {
     //     await store.dispatch('ProductsListModule/setData');
     //     const data = computed(
@@ -118,8 +174,8 @@
                 break;
         }
     }
-    function gotoOffer():void{
-        router.push("/faire-une-offre")
+    function gotoOffer(): void {
+        router.push('/faire-une-offre');
     }
 
     function changeView(view: any) {
@@ -206,6 +262,10 @@
             @media (min-width: 1024px) {
                 width: 367px;
             }
+        }
+        &__productList{
+            margin-left: 10px;
+            margin-right: 10px; 
         }
 
         //responsive

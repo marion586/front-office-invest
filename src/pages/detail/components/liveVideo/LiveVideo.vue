@@ -5,11 +5,19 @@
             <CloseIcon @click="changeView" />
         </div>
         <div class="video__play">
-            <iframe
+            <!-- <iframe
                 class="video__iframe"
                 height="360"
                 src="https://www.youtube.com/embed/Zc-EKDhqwWg?list=RDZc-EKDhqwWg"
                 title="Mila Revolution official Video Maddy Roots"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+            ></iframe> -->
+            <iframe
+                class="video__iframe"
+                height="360"
+                src="https://www.youtube.com/embed/3d2XD_4Z8KA"
+                title="Visite immobilière EN DRONE FPV !"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
             ></iframe>

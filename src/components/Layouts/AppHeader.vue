@@ -229,7 +229,7 @@
                 </div>
             </div>
         </header>
-        <router-link  to="/detail">detail</router-link>
+        <!-- <router-link  to="/detail">detail</router-link> -->
         <!-- <router-link to="/">HOME</router-link> |
         <router-link to="/about">ABOUT</router-link> |
         <router-link v-if="!isLoggedIn" to="/connexion">CONNEXION</router-link> |
