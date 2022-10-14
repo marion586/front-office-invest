@@ -7,7 +7,6 @@ import LocationIcon from '@/components/Icon/Location.vue';
 import RelocationIcon from '@/components/Icon/Relocation.vue';
 import FinanceIcon from '@/components/Icon/Finance.vue';
 
-
 interface BtnList {
     id: number;
     label: string;
@@ -32,7 +31,7 @@ const btnList: BtnList[] = [
         id: 3,
         label: 'Document relatifs',
         icon: FileIcon,
-        case: "RelateDocument"
+        case: 'RelateDocument',
     },
     {
         id: 4,
@@ -48,6 +47,7 @@ const btnList: BtnList[] = [
         id: 6,
         label: 'Localisation',
         icon: LocationIcon,
+        case: 'location',
     },
     {
         id: 7,

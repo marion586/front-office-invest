@@ -4,7 +4,7 @@
             <span class="document__titleDoc">Document relatif au bien</span>
             <CloseIcon @click="changeView" />
         </div>
-        <div class="flex flex-row flex-wrap">
+        <div class="document__docList">
             <div
                 v-for="(item, index) in docList"
                 :key="index"
@@ -55,12 +55,17 @@
 
 <style lang="scss" scoped>
     .document {
-        @apply bg-white rounded p-2 mr-2 ml-2;
+        @apply bg-white rounded p-2 mx-[10px];
         //responsive
         @apply lg:block lg:p-0;
 
         &__headDoc {
             @apply flex flex-row justify-between items-center mb-[10px];
+        }
+        &__docList{
+            @apply flex flex-row flex-wrap gap-[10px];
+            //responsive
+            @apply lg:mx-5;
         }
         &__titleDoc {
             @apply font-semibold text-sm;

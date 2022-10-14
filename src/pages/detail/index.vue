@@ -1,26 +1,33 @@
 <template>
     <BreadCrumb class="relative mb-2" :items="breadcrumbs" />
     <div class="detail">
-        <div>
+        <div class="w-full">
             <transition name="fade">
-                <component :is="activeView" @return="closeLiveVideo" />
+                <component v-if="!showDoc" :is="activeView" @return="closeLiveVideo" />
             </transition>
             <transition name="fade">
-                    <DetailedInfo v-if="showInfo" @hideInfo="hide" />
+                <DetailedInfo v-if="showInfo" @hideInfo="hide" />
             </transition>
             <transition name="fade">
-                <RelateDocument v-if="showDoc" @return="returnToMain"/>
+                <RelateDocument v-if="showDoc" @return="returnToMain" />
             </transition>
 
             <div class="flex flex-col detail__txtDetail">
                 <ButtonDetail
+                    v-if="!showLocationBtn"
                     width="500px"
                     class="detail__btnList"
                     @clickChangeView="changeView"
                 />
+                <ButtonLocation
+                    v-if="showLocationBtn"
+                    @return="showLocationBtn = false"
+                    @gotoMap="locationFn"
+                />
                 <div class="detail__btnContainer">
-                    <Button class="detail__btnOffer">Faire un offre</Button>
+                    <Button class="detail__btnOffer" @click="gotoOffer">Faire un offre</Button>
                     <Button
+                        theme="light"
                         v-if="screenType < 1024"
                         class="detail__btnOffer"
                         @click="showProduct"
@@ -45,7 +52,14 @@
     import LiveVideo from '@/pages/detail/components/liveVideo/LiveVideo.vue';
     import DetailedInfo from '@/pages/detail/components/detailedInfo/DetailedInfo.vue';
     import RelateDocument from '@/pages/detail/components/RelateDocument/RelateDocument.vue';
+    import ButtonLocation from '@/pages/detail/components/Location/ButtonLocation.vue';
+    import { useRoute, useRouter } from 'vue-router';
+
     import { Store, useStore } from 'vuex';
+
+    // route
+    const route = useRoute();
+    const router = useRouter();
 
     const breadcrumbs = computed(() => {
         return [
@@ -67,6 +81,7 @@
         LiveVideo,
         DetailedInfo,
         RelateDocument,
+        ButtonLocation,
     };
 
     //dynamic component data
@@ -77,6 +92,8 @@
     let showInfo = ref<boolean>(false);
     //relateDocument
     let showDoc = ref<boolean>(false);
+    //location
+    let showLocationBtn = ref<boolean>(false);
     //property list
     let showProductCard = ref<boolean>(false);
     //data card
@@ -89,6 +106,21 @@
     //     );
     //     dataCard.value = [...data.value];
     // });
+    function locationFn(item: any) {
+        console.log('url', item);
+        switch (item.case) {
+            case 'parcelleCadastrale':
+                console.log(item.url);
+                router.push('/detail/cadastre');
+                break;
+
+            default:
+                break;
+        }
+    }
+    function gotoOffer():void{
+        router.push("/faire-une-offre")
+    }
 
     function changeView(view: any) {
         // showInfo.value = false;
@@ -106,6 +138,10 @@
                 break;
             case 'RelateDocument':
                 showDoc.value = !showDoc.value;
+                break;
+            case 'location':
+                showLocationBtn.value = !showLocationBtn.value;
+                break;
             default:
                 showInfo.value = false;
                 activeView.value = viewList['MainDetail'];

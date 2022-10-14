@@ -7,6 +7,7 @@ interface BtnLocalisation {
     label: string;
     icon?: any;
     case: string;
+    url?: string;
 }
 
 const btnLocalisation: BtnLocalisation[] = [
@@ -15,6 +16,7 @@ const btnLocalisation: BtnLocalisation[] = [
         label: 'Parcelle cadastrale',
         icon: CadastreIcon,
         case: 'parcelleCadastrale',
+        url: '/detail/cadastre',
     },
     {
         id: 2,
