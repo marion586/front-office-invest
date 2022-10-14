@@ -4,6 +4,11 @@ import Adress from '@/pages/addProduct/components/Address/Address.vue';
 import Photos from '@/pages/addProduct/components/Photos/Photos.vue';
 import Price from '@/pages/addProduct/components/Price/Price.vue';
 import PropertyType from '@/pages/addProduct/components/PropertyType/PropertyType.vue';
+import General from "@/pages/addProduct/components/General/General.vue";
+import Inside from '@/pages/addProduct/components/Inside/Inside.vue';
+import Energy from '@/pages/addProduct/components/Energy/Energy.vue';
+import Description from '@/pages/addProduct/components/Description/Description.vue';
+import Documents from '@/pages/addProduct/components/Documents/Documents.vue';
 
 interface SubMenu{
       id : number,
@@ -14,12 +19,12 @@ interface SubMenu{
 interface Menu {
       id : number,
       label : string,
-      icon : string,
+      icon : Object,
       subMenu ?: SubMenu[],
       component ?: object
 }
 
-export const data : Array<Object> = [
+export const data : Menu[] = [
       {
             id : 0,
             label : "Information de base",
@@ -27,18 +32,18 @@ export const data : Array<Object> = [
             subMenu : [
                   {
                         id : 0,
-                        label : "Type de bien",
+                        label : "Type d'annonce",
                         component : PropertyType
                   },
                   {
                         id : 1,
                         label : "Adresse",
-                        component : Adress
+                        component : Adress,
                   },
                   {
                         id : 2,
-                        label : "Photos",
-                        component : Photos
+                        label : "Photo et vidéo",
+                        component : Photos,
                   },
                   {
                         id : 3,
@@ -55,14 +60,17 @@ export const data : Array<Object> = [
                   {
                         id : 4,
                         label : "Générale",
+                        component : General,
                   },
                   {
                         id : 5,
-                        label : "intérieur",
+                        label : "Intérieur",
+                        component : Inside,
                   },
                   {
                         id : 6,
                         label : "Caractéristique énergetique",
+                        component : Energy,
                   },
             ]
       },
@@ -70,12 +78,13 @@ export const data : Array<Object> = [
             id : 7,
             label : "Description de l'annonce",
             icon : DefaultMenu,
-            component : PropertyType,
+            component : Description,
       },
       {
             id : 8,
             label : "Documents relatifs aux biens",
             icon : DefaultMenu,
-            component : PropertyType,
+            component : Documents,
+            
       }
 ]

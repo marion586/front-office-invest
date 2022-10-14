@@ -41,7 +41,23 @@ props {
  weight
 }
 
-## 6. Radio:
+## 6. Switch:
+props{
+  checkedName : string,
+  uncheckedName : string
+}
+
+event {
+  switchValue : {
+    params : value
+  }
+}
+
+## 7. Input Date:
+event : {
+  handleChange
+}
+## 8. Radio:
 props {
     radioDefaultCheck: String,
     disabled: Boolean,
@@ -52,11 +68,24 @@ props {
     defaultClass: String,
 }
 
-## 7. Signature electronic:
+## 9. Signature electronic:
 props{
     hasTitle: Boolean,
     title: String,
     sizePen: Number,
     width: String,
     height: String,
+}
+
+## 10. Textarea:
+props{
+  label : string,
+  nameInput : string,
+  maxLength ?: number,
+  showCount ?: boolean,
+  required ?: boolean 
+}
+
+event{
+  onChange
 }
