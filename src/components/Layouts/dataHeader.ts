@@ -25,105 +25,35 @@ export const dataMenu: Menu[] = [
         icon: Home,
     },
     {
-        label: 'Immobilier',
-        view: 'all',
-        path: '#',
-        icon: Immobilier,
-        submenu: [
-            {
-                label: 'Vendre un bien',
-                path: '/ajouter',
-            },
-            {
-                label: 'Acquérir un bien',
-                path: '/',
-            },
-            {
-                label: 'Mettre un bien en location',
-                path: '/',
-            },
-            {
-                label: 'Louer un bien',
-                path: '/',
-            },
-            {
-                label: 'ImmoGo',
-                path: '/',
-            },
-        ],
-    },
-    {
-        label: 'Finance',
-        view: 'all',
-        path: '#',
-        icon: Finance,
-        submenu: [
-            {
-                label: 'Vendre un bien',
-                path: '/',
-            },
-            {
-                label: 'Acquérir un bien',
-                path: '/',
-            },
-            {
-                label: 'Mettre un bien en location',
-                path: '/',
-            },
-            {
-                label: 'Louer un bien',
-                path: '/',
-            },
-            {
-                label: 'ImmoGo',
-                path: '/',
-            },
-        ],
-    },
-    {
-        label: 'Travaux',
+        label: 'Projets',
         path: '#',
         view: 'all',
         icon: Setting,
         submenu: [
             {
-                label: 'Vendre un bien',
+                label: 'Mes Projet',
                 path: '/',
             },
             {
-                label: 'Acquérir un bien',
+                label: 'Mes Projets Postulés',
                 path: '/',
             },
             {
-                label: 'Mettre un bien en location',
-                path: '/',
-            },
-            {
-                label: 'Louer un bien',
-                path: '/',
-            },
-            {
-                label: 'ImmoGo',
+                label: 'Listes des Projets',
                 path: '/',
             },
         ],
     },
     {
-        label: 'Transport',
+        label: 'Facture',
         path: '/',
         view: 'all',
         icon: Transport,
     },
     {
-        label: 'Art’home',
+        label: 'Investisseurs',
         path: '/',
         view: 'all',
         icon: ArtHome,
-    },
-    {
-        label: 'Recherche',
-        view: 'mobile',
-        path: '/recherche-bien',
-        icon: Search,
     },
 ];

@@ -6,15 +6,13 @@ import {
     setSessionPersistStore,
 } from '@/utils/persist_store';
 
+import userModule from '@/services/userService';
 interface IUser {
-    name?: string;
+    firstName?: string;
+    lastName: String;
     email: string;
-    logo?: string;
-    adress: string;
-    nameEntreprise?: string;
-    numberEntreprise?: string;
-    password: string;
-    confirmPassword: string;
+    image?: string;
+    typeUser: String;
 }
 interface IUserState {
     user: Object | null;

@@ -75,6 +75,7 @@ export default class Map {
         return polygon;
     }
     
+    
     addPrintControl(){
         const printPlugin= (L as any).easyPrint({
             hidden: false,

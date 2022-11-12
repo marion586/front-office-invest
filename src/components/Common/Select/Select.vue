@@ -123,7 +123,8 @@
             label {
                 font-size: 14px;
                 font-weight: 500;
-                color: var(--color-gray-icon);
+                color: black;
+                font-weight: bold;
                 margin-bottom: 10px;
                 display: block;
             }

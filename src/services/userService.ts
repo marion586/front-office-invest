@@ -2,11 +2,11 @@ import { Http } from './http';
 
 export default class UserService {
     static async login(params: Object) {
-        return await Http.post('/login_check', params);
+        return await Http.post('/auth/connection', params);
     }
 
     static async signup(params: Object) {
-        return await Http.post('/auth/signup', params);
+        return await Http.post('/auth/inscription', params);
     }
 
     static async validate(params: Object) {

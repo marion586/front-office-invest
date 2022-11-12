@@ -151,7 +151,7 @@
                 </div>
             </div>
             <div class="header__desc">
-                <Paragraphe type="bold"> IMMO </Paragraphe>
+                <Paragraphe type="bold"> INVEST </Paragraphe>
                 <div class="header__content-menu">
                     <a-menu mode="horizontal">
                         <template v-for="(d, index) in dataMenu">
@@ -246,6 +246,7 @@
         position: relative;
         z-index: 9;
         box-shadow: 0 0 3px var(--color-primary);
+
         &__menu {
             cursor: pointer;
             @apply flex flex-col justify-center gap-[4px];
@@ -334,6 +335,12 @@
         }
         &__content-menu {
             @apply flex gap-[35px];
+
+            &:deep() {
+                .ant-menu {
+                    gap: 60px !important;
+                }
+            }
         }
         &__avatar {
             width: 35px;

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-    import AppHeader from '@/components/Layouts/AppHeader.vue';
     import { ref } from 'vue';
     import Loader from './components/Common/Loader/Loader.vue';
     import router from '@/routes';
-
+    import AppHeader from './components/Layouts/AppHeader.vue';
     const isLoading = ref<boolean>(false);
 
     router.beforeEach(() => {
@@ -16,8 +15,10 @@
 </script>
 
 <template>
-    <AppHeader />
-    <Loader v-if="isLoading" />
-    <router-view></router-view>
+    <div>
+        <AppHeader />
+        <Loader v-if="isLoading" />
+        <router-view></router-view>
+    </div>
 </template>
 <style></style>

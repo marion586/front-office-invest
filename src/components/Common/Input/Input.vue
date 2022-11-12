@@ -101,7 +101,7 @@
     );
 
     const emit = defineEmits<{
-        (event: 'input', value: object): void;
+        (event: 'on-input', value: object): void;
         (event: 'change'): void;
         (event: 'keyup', value: object): void;
     }>();
@@ -112,7 +112,8 @@
                 event.target as HTMLInputElement
             ).value,
         };
-        emit('input', value);
+
+        emit('on-input', value);
     };
 
     const handleChange = () => {
@@ -153,7 +154,8 @@
         label {
             font-size: 14px;
             font-weight: 500;
-            color: var(--color-gray-icon);
+            color: black;
+            font-weight: bold;
             margin-bottom: 10px;
             display: block;
         }
