@@ -1,52 +1,42 @@
 <template>
     <div class="card max-w-xl">
-        <HeadProduct
-            :Text="DataCard.title"
-            :label="`${DataCard.user.name} ${DataCard.user.firstname}`"
-        />
+        <HeadProduct :Text="DataCard.title" :label="`${DataCard.user.name} `" />
         <figure class="card__image">
             <img
-                :src="
-                    DataCard.propertyImages[0].path
-                        ? DataCard.propertyImages[0].path
-                        : ' '
-                "
+                :src="DataCard.image ? DataCard.image : ' '"
                 alt=" card product"
             />
         </figure>
         <div class="card__type">
-            <Title
-                type="h4"
-                :label="DataCard.propertyType.name"
-                weight="bold"
-            />
-            <span> {{ DataCard.prices }} £</span>
+            <Title type="h4" :label="DataCard.title" />
+            <span>Amount: {{ DataCard.amount }} £</span>
+
+            <span>Amount-min : {{ DataCard.amountMin }} £</span>
+        </div>
+        <div class="card__type">
+            <Title type="h4" :label="DataCard.categorie" weight="bold" />
+            <span>Amount: {{ DataCard.description }} £</span>
+        </div>
+
+        <div class="card__action">
+            <span> {{ DataCard.status }}</span>
         </div>
 
         <div class="card__value">
             <div class="card__value--item">
                 <Room />
-                <span>{{ DataCard.roomcount }}</span>
+                <span>Edit</span>
             </div>
             <div class="card__value--item">
                 <Bath />
-                <span>{{ DataCard.bedroomcount }}</span>
+                <span>Supprimer</span>
             </div>
             <div class="card__value--item">
                 <Surface />
-                <span>{{ DataCard.surface }} m2</span>
+                <span>Details</span>
             </div>
         </div>
-        <div class="card__action">
-            <span> (0) Vue(s)</span>
-            <span> (0) Sauvegardé(s)</span>
-        </div>
-        <div class="card__adress">
-            <Map />
-            <span>{{ DataCard.address }} </span>
-        </div>
-
-        <Button v-if="info" width="100%" type="primary"> Information </Button>
+        <Button width="100%" type="primary"> Posuler </Button>
     </div>
 </template>
 
@@ -59,7 +49,7 @@
     import Map from '@/components/Icon/Map.vue';
     import Surface from '@/components/Icon/Surface.vue';
     import Button from '@/components/Common/Button/Button.vue';
-    import CardType from '@/components/Display/productCard/CardType';
+    import CardType from './CardType';
     defineProps({
         DataCard: {
             type: Object as PropType<CardType>,

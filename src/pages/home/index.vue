@@ -1,9 +1,9 @@
-<template>
-    <div>home</div>
-</template>
-
-<script>
-    export default {};
+<script lang="ts" setup>
+    import ProjectContainer from './ProjectList/index.vue';
 </script>
 
-<style scoped></style>
+<template>
+    <div>
+        <ProjectContainer />
+    </div>
+</template>
