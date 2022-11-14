@@ -56,8 +56,6 @@
             required: true,
         },
     });
-
-    const info = inject('isInfo');
 </script>
 
 <style lang="scss" scoped>

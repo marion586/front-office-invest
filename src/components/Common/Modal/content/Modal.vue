@@ -27,6 +27,7 @@
 </template>
 
 <script>
+    import AModal from 'ant-design-vue/lib/modal/Modal';
     export default {
         props: [
             'isShowModal',
