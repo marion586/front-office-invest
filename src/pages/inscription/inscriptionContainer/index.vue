@@ -11,7 +11,6 @@
     import { useStore } from 'vuex';
     import Aspin from 'ant-design-vue/lib/spin';
     import { useRouter } from 'vue-router';
-    import { alertProps } from 'ant-design-vue/lib/alert';
     const store = useStore();
     const router = useRouter();
     const onload = ref(false);

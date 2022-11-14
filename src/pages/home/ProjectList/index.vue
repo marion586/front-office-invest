@@ -11,11 +11,21 @@
     const store = useStore();
     const userData = computed(() => store.getters['UserModule/setUserDetails']);
     const onload = ref(false);
-    console.log(userData.value);
     const dataCard = ref<any>([]);
 
     const showModal = ref(false);
     const urlImgData = ref('');
+
+    let selectData = ref([
+        {
+            value: 'sport',
+            label: 'sport',
+        },
+        {
+            value: 'maison',
+            label: 'maison',
+        },
+    ]);
 
     const addData = ref({
         name: null,
@@ -61,6 +71,7 @@
             dataCard.value.push(d);
         });
     }
+
     onMounted(() => {
         getProducts();
     });
@@ -93,6 +104,15 @@
                             name="file"
                             inputType="file"
                             @onInput="handleAddFile"
+                        />
+
+                        <Select
+                            v-if="d.type === 'select'"
+                            :name="d.name"
+                            placeholder="select"
+                            :options="d.options"
+                            :label="d.label"
+                            @change-select="handleSelect"
                         />
                         <div class="button-section">
                             <Button typeButton="secondary">
