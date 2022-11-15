@@ -19,12 +19,8 @@
                 "src/*"
             ]
         },
-        "types": [
-            "vite/client",
-            "leaflet",
-            "geojson"
-        ]
-        },
+        "types": ["vite/client", "leaflet", "geojson"]
+    },
     "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
     // "references": [{ "path": "./tsconfig.node.json" }]
 }

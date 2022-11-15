@@ -1,40 +1,35 @@
 <script lang="ts" setup>
     import projectService from '@/services/projectService';
+    import categorieService from '@/services/categorieService';
     import ProjectCard from '@/components/Display/ProjectCard/ProjectCard.vue';
     import Button from '@/components/Common/Button/Button.vue';
     import Modal from '@/components/Common/Modal/content/Modal.vue';
     import Input from '@/components/Common/Input/Input.vue';
+    import Select from '@/components/Common/Select/Select.vue';
+    import TextArea from '@/components/Common/TextArea/TextArea.vue';
+    import { data } from './data';
 
     import { computed, onMounted, ref } from 'vue';
     import { useStore } from 'vuex';
 
     const store = useStore();
-    const userData = computed(() => store.getters['UserModule/setUserDetails']);
+    const userData = computed(() => store.getters['UserModule/getUserDetails']);
     const onload = ref(false);
     const dataCard = ref<any>([]);
 
     const showModal = ref(false);
     const urlImgData = ref('');
 
-    let selectData = ref([
-        {
-            value: 'sport',
-            label: 'sport',
-        },
-        {
-            value: 'maison',
-            label: 'maison',
-        },
-    ]);
+    let selectData = ref<any>([]);
 
     const addData = ref({
-        name: null,
         title: null,
         amountMin: null,
         amount: null,
         content: null,
         description: null,
         categorie: null,
+        image: null,
         user: userData.value,
     });
 
@@ -42,18 +37,17 @@
         addData.value = { ...addData.value, [e.target.name]: e.target.value };
     }
 
-    async function handleAddFile(e: any) {
-        if (e.target.files) {
-            console.log(e);
-            const file = e.target.files[0];
+    async function handleAddFile(event: any) {
+        let name = event.target.name;
+        if (event.target.files) {
+            const file = event.target.files[0];
             const reader = new FileReader();
             reader.onload = (e: any) => {
                 if (e.target.result) {
                     urlImgData.value = e.target.result;
-                    console.log(urlImgData.value, 'value');
                     addData.value = {
                         ...addData.value,
-                        [e.target.name]: urlImgData.value,
+                        [name]: urlImgData.value,
                     };
                 }
             };
@@ -71,9 +65,39 @@
             dataCard.value.push(d);
         });
     }
+    async function getCategorie() {
+        const { data } = await categorieService.getCategorie();
+        data.forEach((d: any) => {
+            const obj = {
+                value: d.name,
+                label: d.name,
+            };
+
+            selectData.value.push(obj);
+        });
+    }
+    function handleSelect(e: any) {
+        let key = Object.keys(e)[0];
+        addData.value = { ...addData.value, [key]: e[key] };
+    }
+
+    function handleTextArea(e: any) {
+        console.log(e);
+        addData.value = { ...addData.value, [e.target.name]: e.target.value };
+    }
+
+    async function addProject() {
+        onload.value = true;
+
+        const d = await projectService.addProject(addData.value);
+        dataCard.value.push(addData.value);
+        showModal.value = false;
+        onload.value = false;
+    }
 
     onMounted(() => {
         getProducts();
+        getCategorie();
     });
 </script>
 
@@ -89,29 +113,39 @@
                     modalWidth="700px"
                 >
                     <template #content>
-                        <Input
-                            placeholder="categorie Name"
-                            label="Nom du categorie:"
-                            name="name"
-                            inputType="number"
-                            @onInput="handleInput"
-                        />
+                        <template v-for="(d, index) in data" :key="index">
+                            <Input
+                                v-if="d.elementType === 'inputFile'"
+                                :placeholder="d.hint"
+                                :label="d.label"
+                                :nameInput="d.name"
+                                :inputType="d.type"
+                                @onInput="handleAddFile"
+                            />
+                            <Input
+                                v-if="d.elementType === 'input'"
+                                :placeholder="d.hint"
+                                :label="d.label"
+                                :nameInput="d.name"
+                                :inputType="d.type"
+                                @onInput="handleInput"
+                            />
 
-                        <Input
-                            class="input-file"
-                            placeholder="categorie Name"
-                            label="Image"
-                            name="file"
-                            inputType="file"
-                            @onInput="handleAddFile"
-                        />
+                            <TextArea
+                                v-if="d.elementType === 'textarea'"
+                                :label="d.label"
+                                :required="true"
+                                :nameInput="d.name"
+                                :show-count="true"
+                                @on-input="handleTextArea"
+                            />
+                        </template>
 
                         <Select
-                            v-if="d.type === 'select'"
-                            :name="d.name"
+                            name="categorie"
                             placeholder="select"
-                            :options="d.options"
-                            :label="d.label"
+                            :options="selectData"
+                            label="catégorie"
                             @change-select="handleSelect"
                         />
                         <div class="button-section">
@@ -119,7 +153,10 @@
                                 <span>Annuler</span>
                             </Button>
 
-                            <Button typeButton="secondary">
+                            <Button
+                                typeButton="secondary"
+                                @on-click="addProject"
+                            >
                                 <a-spin v-if="onload" /><span>Valider</span>
                             </Button>
                         </div>
@@ -147,6 +184,10 @@
         }
         &__list {
             @apply grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3   gap-[24px];
+        }
+
+        .button-section {
+            @apply flex justify-end gap-[12px];
         }
     }
 </style>

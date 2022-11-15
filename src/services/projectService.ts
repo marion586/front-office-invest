@@ -4,4 +4,8 @@ export default class projectService {
     static async getProject() {
         return await Http.get('/project');
     }
+
+    static async addProject(params: Object) {
+        return await Http.post('/project/add', params);
+    }
 }

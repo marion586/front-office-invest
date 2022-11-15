@@ -107,13 +107,7 @@
     }>();
 
     const handleInput = (event: Event) => {
-        const value = {
-            [(event.target as HTMLInputElement).name]: (
-                event.target as HTMLInputElement
-            ).value,
-        };
-
-        emit('on-input', value);
+        emit('on-input', event);
     };
 
     const handleChange = () => {

@@ -3,14 +3,14 @@
     import { ref, watch } from 'vue';
 
     const value = ref<string>('');
-    const emit = defineEmits(['onChange']);
 
-    watch(
-        () => value.value,
-        (first) => {
-            emit('onChange', first);
-        }
-    );
+    const emit = defineEmits<{
+        (event: 'on-input', value: object): void;
+    }>();
+
+    const handleInput = (event: Event) => {
+        emit('on-input', event);
+    };
 
     const props = defineProps({
         label: {
@@ -47,6 +47,7 @@
             :show-count="props.showCount"
             v-model:value="value"
             :required="required"
+            @input="handleInput"
         />
     </div>
 </template>

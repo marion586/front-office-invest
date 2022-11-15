@@ -3,7 +3,9 @@ export default interface DataProps {
     user: {
         id: any;
         email: string;
-        name: string;
+        firstName: string;
+        lastName: string;
+        image: string;
     };
     title: string;
     categorie: string;

@@ -1,7 +1,7 @@
 <template>
     <div class="container-head">
         <div class="container-head__left">
-            <avatar src="https://joeschmoe.io/api/v1/random" :size="40" />
+            <avatar :src="image" :size="40" />
             <div class="container-head__left--profile">
                 <Title
                     type="h4"
@@ -35,6 +35,10 @@
             required: true,
         },
         Text: {
+            type: String,
+            required: true,
+        },
+        image: {
             type: String,
             required: true,
         },

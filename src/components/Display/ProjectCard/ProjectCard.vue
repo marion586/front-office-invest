@@ -1,6 +1,10 @@
 <template>
     <div class="card max-w-xl">
-        <HeadProduct :Text="DataCard.title" :label="`${DataCard.user.name} `" />
+        <HeadProduct
+            :image="DataCard.user.image"
+            :Text="DataCard.user.email"
+            :label="`${DataCard.user.firstName} ${DataCard.user.lastName} `"
+        />
         <figure class="card__image">
             <img
                 :src="DataCard.image ? DataCard.image : ' '"
@@ -8,14 +12,23 @@
             />
         </figure>
         <div class="card__type">
-            <Title type="h4" :label="DataCard.title" />
-            <span>Amount: {{ DataCard.amount }} £</span>
-
-            <span>Amount-min : {{ DataCard.amountMin }} £</span>
+            <Title type="h3" :label="DataCard.title" weight="bold" />
+            <Title type="h4" :label="DataCard.categorie" weight="bold" />
         </div>
         <div class="card__type">
-            <Title type="h4" :label="DataCard.categorie" weight="bold" />
-            <span>Amount: {{ DataCard.description }} £</span>
+            <Title type="h4" label="Mountant Totale:" />
+            <span>{{ DataCard.amount }} £</span>
+        </div>
+        <div class="card__type">
+            <Title type="h4" label="Mountant Minimale:" />
+            <span>{{ DataCard.amountMin }} £</span>
+        </div>
+
+        <div class="card__type">
+            <Title type="h4" label="Description:" />
+            <p class="card__type--description text-clip overflow-hidden">
+                {{ DataCard.description }}
+            </p>
         </div>
 
         <div class="card__action">
@@ -76,13 +89,15 @@
                 border-radius: 8px;
                 width: 100%;
                 height: 100%;
+                object-fit: cover;
             }
         }
 
         &__type {
             display: flex;
             justify-content: space-between;
-            span {
+            span,
+            p {
                 color: var(--color-alert-str-rose);
                 background: rgba(255, 130, 130, 0.15);
                 border-radius: 15px;
@@ -92,6 +107,10 @@
                 font-weight: 600;
                 font-size: 14px;
                 line-height: 17px;
+            }
+            &--description {
+                text-align: end;
+                width: min-content;
             }
         }
         &__value {
