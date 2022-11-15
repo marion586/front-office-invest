@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
     interface Props {
-        isIcon?: Object;
+        isIcon?: string;
         width?: string;
     }
 
