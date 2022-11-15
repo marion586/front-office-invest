@@ -39,4 +39,8 @@
         font-size: 16px;
         font-weight: v-bind(weight);
     }
+    h5 {
+        font-size: 14px;
+        font-weight: v-bind(weight);
+    }
 </style>

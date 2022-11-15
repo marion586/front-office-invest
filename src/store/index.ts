@@ -4,7 +4,7 @@ import * as UserModule from './UserModule';
 import * as ProductsListModule from './ProductListModule';
 import * as SubscriptionModule from './SubscriptionModule';
 import * as FindPropertyModule from './findProperty/index';
-
+import * as ProjectModule from './ProjectListModule';
 // Create a new store instance.
 const store = createStore<Object>(<StoreOptions<any>>{
     modules: {
@@ -26,12 +26,16 @@ const store = createStore<Object>(<StoreOptions<any>>{
             ...SubscriptionModule,
             persist: true,
         },
-        FindPropertyModule : <Object>{
+        FindPropertyModule: <Object>{
             namespaced: true,
             ...FindPropertyModule,
             persist: true,
-        }
-
+        },
+        ProjectModule: <Object>{
+            namespaced: true,
+            ...ProjectModule,
+            persist: true,
+        },
     },
 });
 

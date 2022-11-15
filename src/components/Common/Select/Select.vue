@@ -98,7 +98,7 @@
 <style lang="scss" scoped>
     .custom-select {
         &__wrapper {
-            @apply mb-[18px];
+            /* @apply mb-[18px]; */
             .fade-error-enter-active {
                 transition: all 0.3s ease-in;
             }

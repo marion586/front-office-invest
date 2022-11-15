@@ -7,6 +7,7 @@
     import Input from '@/components/Common/Input/Input.vue';
     import Select from '@/components/Common/Select/Select.vue';
     import TextArea from '@/components/Common/TextArea/TextArea.vue';
+    import Loader from '@/components/Common/Loader/Loader.vue';
     import { data } from './data';
 
     import { computed, onMounted, ref } from 'vue';
@@ -21,6 +22,7 @@
     const urlImgData = ref('');
 
     let selectData = ref<any>([]);
+    let filterData = ref<any>([]);
 
     const addData = ref({
         title: null,
@@ -58,12 +60,15 @@
         showModal.value = !showModal.value;
         console.log(showModal.value);
     }
-    async function getProducts() {
-        const { data } = await projectService.getProject();
-        console.log('data', data);
-        data.forEach((d: object) => {
+    async function getProjectsList() {
+        onload.value = true;
+        await store.dispatch('ProjectModule/initializeData');
+        const data = computed(() => store.getters['ProjectModule/getData']);
+        console.log(data.value, 'value');
+        data.value.forEach((d: object) => {
             dataCard.value.push(d);
         });
+        onload.value = false;
     }
     async function getCategorie() {
         const { data } = await categorieService.getCategorie();
@@ -88,16 +93,31 @@
 
     async function addProject() {
         onload.value = true;
-
-        const d = await projectService.addProject(addData.value);
+        await store.dispatch('ProjectModule/setData');
         dataCard.value.push(addData.value);
         showModal.value = false;
         onload.value = false;
     }
 
+    function categorieFilter(e: any) {
+        console.log(e);
+    }
+    function setFilterData() {
+        console.log(selectData.value, 'selectData');
+        selectData.value.forEach((a: any) => {
+            console.log(a);
+            filterData.value.push(a);
+        });
+        filterData.value.push({
+            value: 'Tous',
+            label: 'Tous',
+        });
+    }
+
     onMounted(() => {
-        getProducts();
+        getProjectsList();
         getCategorie();
+        setFilterData();
     });
 </script>
 
@@ -105,6 +125,13 @@
     <div class="project container">
         <div class="project__btn">
             <Button @on-click="handleShowModal"> Nouveau Projet </Button>
+            <Select
+                name="categorie"
+                placeholder="select"
+                :options="filterData"
+                label="Filtrer Par catégorie"
+                @change-select="categorieFilter"
+            />
             <div id="myModal">
                 <Modal
                     :isShowModal="showModal"
@@ -165,12 +192,16 @@
             </div>
         </div>
 
-        <div class="project__list">
+        <Loader v-if="onload" />
+        <div v-else class="project__list">
             <ProjectCard
                 v-for="data in dataCard"
                 :key="data._id"
                 :DataCard="data"
             />
+        </div>
+        <div v-if="dataCard.length == 0" class="project__empty">
+            <a-empty description="Donnée vide" />
         </div>
     </div>
 </template>
@@ -180,10 +211,13 @@
         @apply flex flex-col gap-[24px] items-center mt-[20px];
 
         &__btn {
-            @apply flex justify-end p-[30px] w-full border-[1px] border-[#ccc] rounded-md;
+            @apply flex justify-end p-[30px] gap-[20px] items-end w-full border-[1px] border-[#ccc] rounded-md;
         }
         &__list {
-            @apply grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3   gap-[24px];
+            @apply grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full  gap-[24px];
+        }
+        &__empty {
+            @apply h-[50vh] flex items-center justify-center;
         }
 
         .button-section {
