@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-    import projectService from '@/services/projectService';
     import categorieService from '@/services/categorieService';
     import ProjectCard from '@/components/Display/ProjectCard/ProjectCard.vue';
     import Button from '@/components/Common/Button/Button.vue';
@@ -8,11 +7,14 @@
     import Select from '@/components/Common/Select/Select.vue';
     import TextArea from '@/components/Common/TextArea/TextArea.vue';
     import Loader from '@/components/Common/Loader/Loader.vue';
+    import { useRouter } from 'vue-router';
     import { data } from './data';
 
     import { computed, onMounted, ref } from 'vue';
     import { useStore } from 'vuex';
 
+    const router = useRouter();
+    let dataStore = computed(() => store.getters['ProjectModule/getData']);
     const store = useStore();
     const userData = computed(() => store.getters['UserModule/getUserDetails']);
     const onload = ref(false);
@@ -23,7 +25,16 @@
 
     let selectData = ref<any>([]);
     let filterData = ref<any>([]);
-
+    let amountFilter = ref([
+        {
+            value: 'Mont asc',
+            label: 'Mont asc',
+        },
+        {
+            value: 'Mont dsc',
+            label: 'Mont dsc',
+        },
+    ]);
     const addData = ref({
         title: null,
         amountMin: null,
@@ -63,9 +74,7 @@
     async function getProjectsList() {
         onload.value = true;
         await store.dispatch('ProjectModule/initializeData');
-        const data = computed(() => store.getters['ProjectModule/getData']);
-        console.log(data.value, 'value');
-        data.value.forEach((d: object) => {
+        dataStore.value.forEach((d: object) => {
             dataCard.value.push(d);
         });
         onload.value = false;
@@ -79,6 +88,11 @@
             };
 
             selectData.value.push(obj);
+            filterData.value.push(obj);
+        });
+        filterData.value.push({
+            value: 'Tous',
+            label: 'Tous',
         });
     }
     function handleSelect(e: any) {
@@ -93,7 +107,7 @@
 
     async function addProject() {
         onload.value = true;
-        await store.dispatch('ProjectModule/setData');
+        await store.dispatch('ProjectModule/setData', addData.value);
         dataCard.value.push(addData.value);
         showModal.value = false;
         onload.value = false;
@@ -101,23 +115,48 @@
 
     function categorieFilter(e: any) {
         console.log(e);
+        if (e['filter'] !== 'Tous') {
+            dataCard.value = dataStore.value.filter(
+                (item: any) => e['filter'] === item.categorie
+            );
+        } else {
+            dataCard.value = dataStore.value.map((item: any) => item);
+        }
+
+        console.log(dataCard.value);
     }
-    function setFilterData() {
-        console.log(selectData.value, 'selectData');
-        selectData.value.forEach((a: any) => {
-            console.log(a);
-            filterData.value.push(a);
-        });
-        filterData.value.push({
-            value: 'Tous',
-            label: 'Tous',
-        });
+    function handleSearch(e: any) {
+        if (e.target.value === '') {
+            dataCard.value = dataStore.value.map((item: any) => item);
+        } else {
+            dataCard.value = dataCard.value.filter((item: any) =>
+                item.title.toLowerCase().includes(e.target.value.toLowerCase())
+            );
+        }
+    }
+    function filterAmount(e: any) {
+        console.log(e);
+        if (e.trier === 'Mont asc') {
+            dataCard.value = dataCard.value.sort(
+                (a: any, b: any) => a.amount - b.amount
+            );
+        } else {
+            dataCard.value = dataCard.value.sort(
+                (a: any, b: any) => b.amount - a.amount
+            );
+        }
+    }
+
+    async function showDetails(id: any) {
+        let Details = dataStore.value.find((item: any) => item._id === id);
+        console.log(Details);
+        await store.dispatch('ProjectModule/setDetails', Details);
+        router.push(`/Details/${id}`);
     }
 
     onMounted(() => {
         getProjectsList();
         getCategorie();
-        setFilterData();
     });
 </script>
 
@@ -125,12 +164,25 @@
     <div class="project container">
         <div class="project__btn">
             <Button @on-click="handleShowModal"> Nouveau Projet </Button>
+            <Input
+                placeholder="Rechercher"
+                nameInput="search"
+                inputType="text"
+                @onInput="handleSearch"
+            />
             <Select
-                name="categorie"
+                name="filter"
                 placeholder="select"
                 :options="filterData"
-                label="Filtrer Par catégorie"
+                label="Filtrer Catégorie:"
                 @change-select="categorieFilter"
+            />
+            <Select
+                name="trier"
+                placeholder="select"
+                :options="amountFilter"
+                label="Trier Montant:"
+                @change-select="filterAmount"
             />
             <div id="myModal">
                 <Modal
@@ -140,52 +192,54 @@
                     modalWidth="700px"
                 >
                     <template #content>
-                        <template v-for="(d, index) in data" :key="index">
-                            <Input
-                                v-if="d.elementType === 'inputFile'"
-                                :placeholder="d.hint"
-                                :label="d.label"
-                                :nameInput="d.name"
-                                :inputType="d.type"
-                                @onInput="handleAddFile"
-                            />
-                            <Input
-                                v-if="d.elementType === 'input'"
-                                :placeholder="d.hint"
-                                :label="d.label"
-                                :nameInput="d.name"
-                                :inputType="d.type"
-                                @onInput="handleInput"
-                            />
+                        <div class="content">
+                            <template v-for="(d, index) in data" :key="index">
+                                <Input
+                                    v-if="d.elementType === 'inputFile'"
+                                    :placeholder="d.hint"
+                                    :label="d.label"
+                                    :nameInput="d.name"
+                                    :inputType="d.type"
+                                    @onInput="handleAddFile"
+                                />
+                                <Input
+                                    v-if="d.elementType === 'input'"
+                                    :placeholder="d.hint"
+                                    :label="d.label"
+                                    :nameInput="d.name"
+                                    :inputType="d.type"
+                                    @onInput="handleInput"
+                                />
 
-                            <TextArea
-                                v-if="d.elementType === 'textarea'"
-                                :label="d.label"
-                                :required="true"
-                                :nameInput="d.name"
-                                :show-count="true"
-                                @on-input="handleTextArea"
+                                <TextArea
+                                    v-if="d.elementType === 'textarea'"
+                                    :label="d.label"
+                                    :required="true"
+                                    :nameInput="d.name"
+                                    :show-count="true"
+                                    @on-input-area="handleTextArea"
+                                />
+                            </template>
+
+                            <Select
+                                name="categorie"
+                                placeholder="select"
+                                :options="selectData"
+                                label="catégorie"
+                                @change-select="handleSelect"
                             />
-                        </template>
+                            <div class="button-section">
+                                <Button typeButton="secondary">
+                                    <span>Annuler</span>
+                                </Button>
 
-                        <Select
-                            name="categorie"
-                            placeholder="select"
-                            :options="selectData"
-                            label="catégorie"
-                            @change-select="handleSelect"
-                        />
-                        <div class="button-section">
-                            <Button typeButton="secondary">
-                                <span>Annuler</span>
-                            </Button>
-
-                            <Button
-                                typeButton="secondary"
-                                @on-click="addProject"
-                            >
-                                <a-spin v-if="onload" /><span>Valider</span>
-                            </Button>
+                                <Button
+                                    typeButton="secondary"
+                                    @on-click="addProject"
+                                >
+                                    <a-spin v-if="onload" /><span>Valider</span>
+                                </Button>
+                            </div>
                         </div>
                     </template>
                 </Modal>
@@ -196,6 +250,7 @@
         <div v-else class="project__list">
             <ProjectCard
                 v-for="data in dataCard"
+                @showDetails="showDetails"
                 :key="data._id"
                 :DataCard="data"
             />
@@ -211,7 +266,8 @@
         @apply flex flex-col gap-[24px] items-center mt-[20px];
 
         &__btn {
-            @apply flex justify-end p-[30px] gap-[20px] items-end w-full border-[1px] border-[#ccc] rounded-md;
+            @apply flex justify-end p-[20px] gap-[20px] items-end w-full  rounded-md;
+            background-color: #fff;
         }
         &__list {
             @apply grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full  gap-[24px];
@@ -219,7 +275,9 @@
         &__empty {
             @apply h-[50vh] flex items-center justify-center;
         }
-
+        .content {
+            @apply flex flex-col gap-[10px];
+        }
         .button-section {
             @apply flex justify-end gap-[12px];
         }

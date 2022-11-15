@@ -5,11 +5,11 @@
     const value = ref<string>('');
 
     const emit = defineEmits<{
-        (event: 'on-input', value: object): void;
+        (event: 'on-input-area', value: object): void;
     }>();
 
     const handleInput = (event: Event) => {
-        emit('on-input', event);
+        emit('on-input-area', event);
     };
 
     const props = defineProps({

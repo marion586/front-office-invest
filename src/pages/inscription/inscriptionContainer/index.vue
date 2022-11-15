@@ -54,26 +54,17 @@
         reader.readAsDataURL(file);
     }
     function handleSelect(e: any) {
-        signUpData.value.typeUser = e.typeUser;
+        signUpData.value = {
+            ...signUpData.value,
+            typeUser: e.typeUser,
+        };
+        console.log(signUpData.value);
     }
     function handleInput(e: any) {
-        Object.keys(e).forEach((key) => {
-            switch (key) {
-                case 'firstName':
-                    signUpData.value.firstName = e.firstName;
-                    break;
-                case 'lastName':
-                    signUpData.value.lastName = e.lastName;
-                    break;
-                case 'email':
-                    signUpData.value.email = e.email;
-                    break;
-                case 'password':
-                    signUpData.value.password = e.password;
-                    break;
-            }
-        });
-        console.log(signUpData.value);
+        signUpData.value = {
+            ...signUpData.value,
+            [e.target.name]: e.target.value,
+        };
     }
     async function handleClick() {
         try {
@@ -105,7 +96,6 @@
             signUpData.value.email !== '' &&
             signUpData.value.password !== ''
     );
-    console.log(isDisabled.value);
 </script>
 
 <template>

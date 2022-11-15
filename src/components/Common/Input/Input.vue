@@ -153,12 +153,12 @@
             margin-bottom: 10px;
             display: block;
         }
-        @apply mb-[18px];
+
         &:deep() {
             .ant-input {
                 border: 1px solid v-bind('errorTheme.placeholderColor');
                 font-size: 14px;
-                height: 38px;
+                height: 33px;
                 border-radius: 4px;
                 &::placeholder {
                     font-size: 14px;

@@ -121,7 +121,7 @@
                 @apply flex justify-end;
             }
             label {
-                font-size: 14px;
+                font-size: 12px;
                 font-weight: 500;
                 color: black;
                 font-weight: bold;
@@ -138,7 +138,7 @@
                     }
                     border: 1px solid v-bind('errorTheme.placeholderColor');
                     font-size: 14px;
-                    height: 38px;
+                    height: 33px;
                     border-radius: 4px;
                     @apply flex items-center;
                     &:hover {

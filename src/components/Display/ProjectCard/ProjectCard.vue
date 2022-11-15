@@ -1,3 +1,41 @@
+<script lang="ts" setup>
+    import HeadProduct from '@/components/Display/HeadProduct/HeadProduct.vue';
+    import { ref, PropType, inject, watch, onMounted } from 'vue';
+    import Title from '@/components/Common/Title/Title.vue';
+    import Room from '@/components/Icon/Room.vue';
+    import Bath from '@/components/Icon/Bath.vue';
+    import Surface from '@/components/Icon/Surface.vue';
+    import Button from '@/components/Common/Button/Button.vue';
+    import CardType from './CardType';
+
+    const props = defineProps({
+        DataCard: {
+            type: Object as PropType<CardType>,
+            required: true,
+        },
+    });
+
+    let status = ref('');
+
+    function setStatus() {
+        switch (props.DataCard.status) {
+            case 'En attente':
+                status.value = 'pending';
+                break;
+            case 'En cours':
+                status.value = 'progress';
+                break;
+            case 'Fini':
+                status.value = 'Finished';
+                break;
+        }
+    }
+
+    onMounted(() => {
+        setStatus();
+    });
+</script>
+
 <template>
     <div class="card max-w-xl">
         <HeadProduct
@@ -5,7 +43,7 @@
             :Text="DataCard.user.email"
             :label="`${DataCard.user.firstName} ${DataCard.user.lastName} `"
         />
-        <figure class="card__image">
+        <figure class="card__image" @click="$emit('showDetails', DataCard._id)">
             <img
                 :src="DataCard.image ? DataCard.image : ' '"
                 alt=" card product"
@@ -53,42 +91,6 @@
         <Button width="100%" type="primary"> Posuler </Button>
     </div>
 </template>
-
-<script setup lang="ts">
-    import HeadProduct from '@/components/Display/HeadProduct/HeadProduct.vue';
-    import { ref, PropType, inject, watch, onMounted } from 'vue';
-    import Title from '@/components/Common/Title/Title.vue';
-    import Room from '@/components/Icon/Room.vue';
-    import Bath from '@/components/Icon/Bath.vue';
-    import Surface from '@/components/Icon/Surface.vue';
-    import Button from '@/components/Common/Button/Button.vue';
-    import CardType from './CardType';
-    const props = defineProps({
-        DataCard: {
-            type: Object as PropType<CardType>,
-            required: true,
-        },
-    });
-
-    let status = ref('');
-
-    function setStatus() {
-        switch (props.DataCard.status) {
-            case 'En attente':
-                status.value = 'pending';
-                break;
-            case 'En cours':
-                status.value = 'progress';
-                break;
-            case 'Fini':
-                status.value = 'Finished';
-                break;
-        }
-    }
-    onMounted(() => {
-        setStatus();
-    });
-</script>
 
 <style lang="scss" scoped>
     .card {
