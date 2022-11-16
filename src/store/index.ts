@@ -6,6 +6,7 @@ import * as SubscriptionModule from './SubscriptionModule';
 import * as FindPropertyModule from './findProperty/index';
 import * as ProjectModule from './ProjectListModule';
 import * as StripeModule from './stripeModule';
+import * as AccountMenuSelectedModule from './AccountMenuSelectedModule';
 // Create a new store instance.
 const store = createStore<Object>(<StoreOptions<any>>{
     modules: {
@@ -42,6 +43,11 @@ const store = createStore<Object>(<StoreOptions<any>>{
             namespaced: true,
             ...StripeModule,
             persist: true,
+        },
+        AccountMenuSelectedModule: <Object>{
+            namespaced: true,
+            ...AccountMenuSelectedModule,
+            persit: true,
         },
     },
 });

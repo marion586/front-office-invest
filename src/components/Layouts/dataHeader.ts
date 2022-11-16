@@ -17,6 +17,47 @@ interface Menu {
     }>;
 }
 
+// export const dataMenu: Menu[] = [
+//     {
+//         label: 'Accueil',
+//         view: 'all',
+//         path: '/',
+//         icon: Home,
+//     },
+//     {
+//         label: 'Projets',
+//         path: '#',
+//         view: 'all',
+//         icon: Setting,
+//         submenu: [
+//             {
+//                 label: 'MesProjet',
+//                 path: '/',
+//             },
+//             {
+//                 label: 'Mes Projets Postulés',
+//                 path: '/',
+//             },
+//             {
+//                 label: 'Listes des Projets',
+//                 path: '/',
+//             },
+//         ],
+//     },
+//     {
+//         label: 'Facture',
+//         path: '/',
+//         view: 'all',
+//         icon: Transport,
+//     },
+//     {
+//         label: 'Investisseurs',
+//         path: '/',
+//         view: 'all',
+//         icon: ArtHome,
+//     },
+// ];
+
 export const dataMenu: Menu[] = [
     {
         label: 'Accueil',
@@ -26,33 +67,18 @@ export const dataMenu: Menu[] = [
     },
     {
         label: 'Projets',
-        path: '#',
+        path: '/',
         view: 'all',
-        icon: Setting,
-        submenu: [
-            {
-                label: 'Mes Projet',
-                path: '/',
-            },
-            {
-                label: 'Mes Projets Postulés',
-                path: '/',
-            },
-            {
-                label: 'Listes des Projets',
-                path: '/',
-            },
-        ],
     },
     {
         label: 'Facture',
-        path: '/',
+        path: '/facture',
         view: 'all',
         icon: Transport,
     },
     {
         label: 'Investisseurs',
-        path: '/',
+        path: '/invstor',
         view: 'all',
         icon: ArtHome,
     },

@@ -23,16 +23,21 @@
     });
 
     function handleInput(e: any) {
-        Object.keys(e).forEach((key) => {
-            switch (key) {
-                case 'email':
-                    signUpData.value.email = e.email;
-                    break;
-                case 'password':
-                    signUpData.value.password = e.password;
-                    break;
-            }
-        });
+        // Object.keys(e).forEach((key) => {
+        //     switch (key) {
+        //         case 'email':
+        //             signUpData.value.email = e.email;
+        //             break;
+        //         case 'password':
+        //             signUpData.value.password = e.password;
+        //             break;
+        //     }
+        // });
+
+        signUpData.value = {
+            ...signUpData.value,
+            [e.target.name]: e.target.value,
+        };
     }
     async function handleClick() {
         try {

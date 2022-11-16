@@ -12,6 +12,9 @@
 
     const router = useRouter();
 
+    const isBordered = inject('isBordered');
+    const border = ref(isBordered ? '1px solid #ccc' : 'none');
+
     const store = useStore();
 
     const props = defineProps({
@@ -137,6 +140,7 @@
         background: #ffffff;
         border-radius: 8px;
         width: auto;
+        border: v-bind(border);
         &__image {
             width: auto;
             height: 160px;

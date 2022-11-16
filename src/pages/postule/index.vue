@@ -13,10 +13,10 @@
 
     const store = useStore();
     const onload = ref(false);
+    const isSpin = ref(false);
     const postulePlan = ref<any>({});
 
     async function initData() {
-        onload.value = true;
         try {
             await store.dispatch('StripeModule/initializeData');
             const dataStripe = await computed(
@@ -26,14 +26,15 @@
         } catch (error: any) {
             alert(error.message);
         }
-        onload.value = false;
     }
 
     async function createSession(id: any) {
+        isSpin.value = true;
         const data: any = await stripeService.getSession({
             priceId: id,
         });
         window.location.href = data.url;
+        isSpin.value = false;
     }
     onMounted(async () => {
         await initData();
@@ -70,8 +71,8 @@
                     />
 
                     <Button @on-click="createSession(postulePlan.id)"
-                        >Acheter</Button
-                    >
+                        ><a-spin v-if="isSpin" /> <span> Acheter</span>
+                    </Button>
                 </div>
             </div>
         </div>

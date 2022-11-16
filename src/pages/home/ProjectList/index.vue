@@ -10,15 +10,18 @@
     import { useRouter } from 'vue-router';
     import { data } from './data';
 
-    import { computed, onMounted, ref } from 'vue';
+    import { computed, inject, onMounted, ref } from 'vue';
     import { useStore } from 'vuex';
 
+    const isBordered = inject('isBordered');
+    const border = ref(isBordered ? '1px solid #ccc' : 'none');
     defineProps({
         isPublic: {
             type: Boolean,
             default: true,
         },
     });
+
     const router = useRouter();
     let dataStore = computed(() => store.getters['ProjectModule/getData']);
     const store = useStore();
@@ -255,7 +258,10 @@
         </div>
 
         <Loader v-if="onload" />
-        <div v-else class="project__list">
+        <div
+            v-else
+            :class="isPublic ? 'project__list-public' : 'project__list'"
+        >
             <ProjectCard
                 v-for="data in dataCard"
                 @showDetails="showDetails"
@@ -277,9 +283,13 @@
         &__btn {
             @apply flex justify-end p-[20px] gap-[20px] items-end w-full  rounded-md;
             background-color: #fff;
+            border: v-bind(border);
         }
         &__list {
             @apply grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full  gap-[24px];
+        }
+        &__list-public {
+            @apply grid sm:grid-cols-1 lg:grid-cols-2 w-full  gap-[24px];
         }
         &__empty {
             @apply h-[50vh] flex items-center justify-center;

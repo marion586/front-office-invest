@@ -1,6 +1,5 @@
 <script setup lang="ts">
-    import store from '@/store';
-    import { ref, watch, onMounted, watchEffect } from 'vue';
+    import { ref, watch, onMounted, watchEffect, computed } from 'vue';
     import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
 
     /* icon */
@@ -20,18 +19,28 @@
         MenuItemGroup as AMenuItemGroup,
         MenuItem as AMenuItem,
     } from 'ant-design-vue';
+    import { useStore } from 'vuex';
+
+    const activeUser = ref<any>({});
 
     const isLoggedIn = ref<boolean>(false);
     const isMenu = ref<boolean>(false);
     const fakeLoadAvatar = ref<boolean>(true);
+    const store = useStore();
 
     const handleShowMenu = () => {
         isMenu.value = !isMenu.value;
     };
-    onMounted(() => {
+    onMounted(async () => {
         setTimeout(() => {
             fakeLoadAvatar.value = false;
         }, 1000);
+
+        let userStore = await computed(
+            () => store.getters['UserModule/getUserDetails']
+        );
+        activeUser.value = { ...userStore.value };
+        console.log(activeUser.value);
     });
     watchEffect(() => {
         window.addEventListener('resize', () => {
@@ -195,14 +204,17 @@
                         </a-menu-item>
                         <a-sub-menu key="sub-100">
                             <template #title>
-                                <figure
-                                    v-if="!fakeLoadAvatar"
-                                    class="header__avatar"
-                                >
-                                    <User />
-                                    <!-- <img src="" alt="" /> -->
-                                </figure>
-                                <span v-else>...</span>
+                                <router-link to="/my-account">
+                                    <figure
+                                        v-if="!fakeLoadAvatar"
+                                        class="header__avatar"
+                                    >
+                                        <img :src="activeUser.image" />
+                                        <!-- <img src="" alt="" /> -->
+                                    </figure>
+
+                                    <span v-else><User /></span>
+                                </router-link>
                                 <ArrowBottom />
                             </template>
                             <a-menu-item-group v-if="!isLoggedIn">
@@ -347,7 +359,12 @@
             height: 35px;
             border-radius: 50%;
             background-color: var(--color-stroke-gray);
+            overflow: hidden;
             @apply flex justify-center items-center;
+            img {
+                width: 100%;
+                height: 100%;
+            }
         }
         &__content-menu-mobile {
             position: fixed;
