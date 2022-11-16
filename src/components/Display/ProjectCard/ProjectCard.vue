@@ -7,7 +7,9 @@
     import Surface from '@/components/Icon/Surface.vue';
     import Button from '@/components/Common/Button/Button.vue';
     import CardType from './CardType';
+    import { useRouter } from 'vue-router';
 
+    const router = useRouter();
     const props = defineProps({
         DataCard: {
             type: Object as PropType<CardType>,
@@ -88,7 +90,9 @@
                 <span>Supprimer</span>
             </div>
         </div>
-        <Button width="100%" type="primary"> Posuler </Button>
+        <Button width="100%" type="primary" @click="router.push('/postule')">
+            Posuler
+        </Button>
     </div>
 </template>
 

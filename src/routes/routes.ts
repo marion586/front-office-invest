@@ -28,6 +28,11 @@ const routes = <Array<RouteRecordRaw>>[
         path: '/details/:id',
         component: () => import('@/pages/Details/index.vue'),
     },
+    {
+        name: 'postule',
+        path: '/postule',
+        component: () => import('@/pages/postule/index.vue'),
+    },
 ];
 
 export default routes;

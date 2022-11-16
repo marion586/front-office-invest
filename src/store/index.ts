@@ -5,6 +5,7 @@ import * as ProductsListModule from './ProductListModule';
 import * as SubscriptionModule from './SubscriptionModule';
 import * as FindPropertyModule from './findProperty/index';
 import * as ProjectModule from './ProjectListModule';
+import * as StripeModule from './stripeModule';
 // Create a new store instance.
 const store = createStore<Object>(<StoreOptions<any>>{
     modules: {
@@ -34,6 +35,12 @@ const store = createStore<Object>(<StoreOptions<any>>{
         ProjectModule: <Object>{
             namespaced: true,
             ...ProjectModule,
+            persist: true,
+        },
+
+        StripeModule: <Object>{
+            namespaced: true,
+            ...StripeModule,
             persist: true,
         },
     },
