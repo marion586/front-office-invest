@@ -8,8 +8,12 @@
     import Button from '@/components/Common/Button/Button.vue';
     import CardType from './CardType';
     import { useRouter } from 'vue-router';
+    import { useStore } from 'vuex';
 
     const router = useRouter();
+
+    const store = useStore();
+
     const props = defineProps({
         DataCard: {
             type: Object as PropType<CardType>,
@@ -31,6 +35,11 @@
                 status.value = 'Finished';
                 break;
         }
+    }
+
+    async function postulate(data: any) {
+        await store.dispatch('StripeModule/initializeProjectData', data);
+        router.push('/postule');
     }
 
     onMounted(() => {
@@ -90,7 +99,7 @@
                 <span>Supprimer</span>
             </div>
         </div>
-        <Button width="100%" type="primary" @click="router.push('/postule')">
+        <Button width="100%" type="primary" @click="postulate(DataCard)">
             Posuler
         </Button>
     </div>

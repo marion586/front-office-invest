@@ -40,4 +40,19 @@ export class Http {
             throw error.response;
         }
     }
+
+    static async patch(
+        url: string,
+        data: AxiosRequestConfig<any>
+    ): Promise<any> {
+        try {
+            const { data: any, status } = await axios.patch(url, data);
+            if (status === 200) {
+                return { data, status };
+            }
+        } catch (e) {
+            const error = e as AxiosError;
+            throw error.response;
+        }
+    }
 }

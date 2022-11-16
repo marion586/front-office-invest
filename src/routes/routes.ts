@@ -33,6 +33,11 @@ const routes = <Array<RouteRecordRaw>>[
         path: '/postule',
         component: () => import('@/pages/postule/index.vue'),
     },
+    {
+        name: 'postuleSucess',
+        path: '/postule-success',
+        component: () => import('@/pages/postuleSucces/index.vue'),
+    },
 ];
 
 export default routes;

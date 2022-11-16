@@ -6,22 +6,43 @@
     import Button from '@/components/Common/Button/Button.vue';
     import BackButton from '@/components/Common/BackButton/BackButton.vue';
     import { useRouter } from 'vue-router';
+    import Loader from '@/components/Common/Loader/Loader.vue';
 
+    import stripeService from '@/services/stripeService';
     const router = useRouter();
 
     const store = useStore();
-    store.dispatch('StripeModule/initializeData');
-    const dataStripe = computed(() => store.getters['StripeModule/getData']);
-    const postulePlan = ref(dataStripe.value[0]);
+    const onload = ref(false);
+    const postulePlan = ref<any>({});
 
-    console.log(postulePlan.value);
-    onMounted(() => {});
+    async function initData() {
+        onload.value = true;
+        try {
+            await store.dispatch('StripeModule/initializeData');
+            const dataStripe = await computed(
+                () => store.getters['StripeModule/getData']
+            );
+            postulePlan.value = { ...dataStripe.value[0] };
+        } catch (error: any) {
+            alert(error.message);
+        }
+        onload.value = false;
+    }
 
-    console.log(dataStripe.value);
+    async function createSession(id: any) {
+        const data: any = await stripeService.getSession({
+            priceId: id,
+        });
+        window.location.href = data.url;
+    }
+    onMounted(async () => {
+        await initData();
+    });
 </script>
 
 <template>
-    <div class="container">
+    <Loader v-if="onload" />
+    <div v-else class="container">
         <Title type="h2" label="Droit de postulation" weight="bold" />
 
         <Paragraphe>
@@ -48,7 +69,9 @@
                         weight="bold"
                     />
 
-                    <Button @on-click="">by now</Button>
+                    <Button @on-click="createSession(postulePlan.id)"
+                        >by now</Button
+                    >
                 </div>
             </div>
         </div>
