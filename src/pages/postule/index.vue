@@ -70,7 +70,7 @@
                     />
 
                     <Button @on-click="createSession(postulePlan.id)"
-                        >by now</Button
+                        >Acheter</Button
                     >
                 </div>
             </div>

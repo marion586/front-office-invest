@@ -13,6 +13,12 @@
     import { computed, onMounted, ref } from 'vue';
     import { useStore } from 'vuex';
 
+    defineProps({
+        isPublic: {
+            type: Boolean,
+            default: true,
+        },
+    });
     const router = useRouter();
     let dataStore = computed(() => store.getters['ProjectModule/getData']);
     const store = useStore();
@@ -163,7 +169,9 @@
 <template>
     <div class="project container">
         <div class="project__btn">
-            <Button @on-click="handleShowModal"> Nouveau Projet </Button>
+            <Button @on-click="handleShowModal" v-if="isPublic">
+                Nouveau Projet
+            </Button>
             <Input
                 placeholder="Rechercher"
                 nameInput="search"
@@ -253,6 +261,7 @@
                 @showDetails="showDetails"
                 :key="data._id"
                 :DataCard="data"
+                :isPublic="isPublic"
             />
         </div>
         <div v-if="dataCard.length == 0" class="project__empty">

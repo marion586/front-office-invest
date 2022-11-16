@@ -4,6 +4,6 @@
 
 <template>
     <div>
-        <ProjectContainer />
+        <ProjectContainer :isPublic="false" />
     </div>
 </template>

@@ -19,6 +19,11 @@
             type: Object as PropType<CardType>,
             required: true,
         },
+
+        isPublic: {
+            type: Boolean,
+            default: true,
+        },
     });
 
     let status = ref('');
@@ -89,7 +94,7 @@
             </div>
         </div>
 
-        <div class="card__value">
+        <div class="card__value" v-if="isPublic">
             <div class="card__value--item">
                 <Room />
                 <span>Edit</span>
@@ -99,9 +104,25 @@
                 <span>Supprimer</span>
             </div>
         </div>
-        <Button width="100%" type="primary" @click="postulate(DataCard)">
-            Posuler
-        </Button>
+        <template v-if="isPublic">
+            <Button
+                v-if="DataCard.isPotuled"
+                :disabled="true"
+                width="100%"
+                type="primary"
+                @click="postulate(DataCard)"
+            >
+                Postulée
+            </Button>
+            <Button
+                v-else
+                width="100%"
+                type="primary"
+                @click="postulate(DataCard)"
+            >
+                Postuler
+            </Button>
+        </template>
     </div>
 </template>
 
@@ -143,6 +164,7 @@
                     font-weight: 600;
                     font-size: 12px;
                     line-height: 17px;
+                    width: fit-content;
                 }
                 &--description {
                     text-align: end;
