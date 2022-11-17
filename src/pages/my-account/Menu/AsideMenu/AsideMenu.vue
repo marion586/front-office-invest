@@ -9,11 +9,11 @@
                     </div>
                     <figure class="account__profil__photo__content">
                         <div class="img-container">
-                            <!-- <img
-                                v-if="logo"
-                                :src="userLoggedIn.logo"
+                            <img
+                                v-if="userData.image"
+                                :src="userData.image"
                                 alt="photo-de-profil"
-                            /> -->
+                            />
                             <div class="img-container__empty-logo">
                                 <User size="lg" />
                             </div>
@@ -22,21 +22,24 @@
                             <Photo />
                         </label>
                     </figure>
-                    <Title type="h2" label="getFullName" />
-                    <Paragraphe> email </Paragraphe>
+                    <Title
+                        type="h2"
+                        :label="userData.firstName + userData.lastName"
+                    />
+                    <Paragraphe> {{ userData.email }} </Paragraphe>
                 </div>
 
                 <!-- profil details -->
 
                 <div class="account__profil__details">
                     <div class="account__profil__details__row">
-                        <Title label="Adresse" type="h2" />
-                        <Paragraphe>user</Paragraphe>
+                        <Title label="Role user" type="h5" weight="bold" />
+                        <Paragraphe>{{ userData.typeUser }}</Paragraphe>
                     </div>
                     <hr />
                     <div class="account__profil__details__row">
-                        <Title label="Numéro de téléphone" type="h2" />
-                        <Paragraphe>user</Paragraphe>
+                        <Title label="Addresse" type="h5" weight="bold" />
+                        <Paragraphe>Tana </Paragraphe>
                     </div>
                     <!-- <hr /> -->
                 </div>
@@ -89,13 +92,12 @@
 <script lang="ts" setup>
     import Title from '@/components/Common/Title/Title.vue';
     import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
-    import Button from '@/components/Common/Button/Button.vue';
     import Photo from '@/components/Icon/Photo.vue';
     import { MENU_LIST } from './account.data';
+    import { INVESTOR_MENU_LIST } from './investor.data';
     import { useStore } from 'vuex';
     import { computed, onMounted, ref, shallowRef } from 'vue';
     import User from '@/components/Icon/User.vue';
-    import InfoPlus from '../InfoPlus.vue';
 
     /**styles */
     import '@/assets/style/userprofil.scss';
@@ -112,8 +114,16 @@
 
     const store = useStore();
 
+    const userData: any = computed(
+        () => store.getters['UserModule/getUserDetails']
+    );
+    console.log(userData.value);
     onMounted(() => {
-        menuList.value = MENU_LIST;
+        if (userData.value.typeUser === 'Apporteur') {
+            menuList.value = MENU_LIST;
+        } else {
+            menuList.value = INVESTOR_MENU_LIST;
+        }
     });
 
     function goBackHandler() {

@@ -8,4 +8,7 @@ export default class stripeService {
     static async getSession(params: Object) {
         return await Http.post('/subs/session', params);
     }
+    static async getDetailSession(params: Object) {
+        return await Http.post('/subs/session-details', params);
+    }
 }

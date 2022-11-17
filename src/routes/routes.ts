@@ -39,9 +39,19 @@ const routes = <Array<RouteRecordRaw>>[
         component: () => import('@/pages/postuleSucces/index.vue'),
     },
     {
+        name: 'detailSucess',
+        path: '/details-success',
+        component: () => import('@/pages/detailSucces/index.vue'),
+    },
+    {
         name: 'my-account',
         path: '/my-account',
         component: () => import('@/pages/my-account/index.vue'),
+    },
+    {
+        name: 'detail-paiment',
+        path: '/detail-paiement',
+        component: () => import('@/pages/detailPaiement/index.vue'),
     },
 ];
 

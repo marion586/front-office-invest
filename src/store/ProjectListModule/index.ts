@@ -1,5 +1,22 @@
 import projectService from '@/services/projectService';
 
+import {
+    setPersistStore,
+    getPersistedStore,
+    getSessionPersistedStore,
+    setSessionPersistStore,
+} from '@/utils/persist_store';
+
+const projectPersistDetails: any = getSessionPersistedStore({
+    key: 'project_details',
+    initValue: {},
+});
+
+const projectPersistdata: any = getSessionPersistedStore({
+    key: 'project_data',
+    initValue: [],
+});
+
 const mutationType = <Readonly<any>>Object.freeze({
     GET_DATA: 'GET_DATA',
     SET_DATA: 'SET_DATA',
@@ -20,20 +37,23 @@ export const mutations = {
 
 export const state = {
     projectData: [],
-    projectDetails: {},
+    projectDetails: projectPersistDetails,
 };
 export const actions = {
     async initializeData({ commit }: any) {
         const { data } = await projectService.getProject();
         commit(mutationType.GET_DATA, data);
+        setSessionPersistStore({ key: 'project_data', value: data });
     },
     async setData({ commit }: any, payload: object) {
         const d = await projectService.addProject(payload);
         commit(mutationType.SET_DATA, d.data);
+        setSessionPersistStore({ key: 'project_data', value: d });
     },
     async setDetails({ commit }: any, payload: object) {
         console.log(payload, 'details');
         commit(mutationType.GET_DETAILS, payload);
+        setSessionPersistStore({ key: 'project_details', value: payload });
     },
 };
 export const getters = {

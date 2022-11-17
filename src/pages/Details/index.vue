@@ -8,6 +8,8 @@
     import Paragraphe from '@/components/Common/Paragraphe/Paragraphe.vue';
     import ButtonMenuVue from '@/components/Common/ButtonMenu/ButtonMenu.vue';
     import Finance from '@/components/Icon/Finance.vue';
+
+    import detailPaiementService from '@/services/detailPaiementService';
     import { useRouter } from 'vue-router';
 
     const router = useRouter();
@@ -22,6 +24,7 @@
         let Details = dataStore.value.find((item: any) => item._id === id);
         console.log(Details);
         await store.dispatch('ProjectModule/setDetails', Details);
+
         router.push(`/Details/${id}`);
     }
 </script>

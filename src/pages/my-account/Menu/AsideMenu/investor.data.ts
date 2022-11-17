@@ -17,34 +17,26 @@ import Work from '@/components/Icon/ProfilAccount/Work.vue';
 import Chart from '../Chart/index.vue';
 import Chiffre from '../Chifre/index.vue';
 import Facture from '../Facture/index.vue';
-import Investor from '../Investor/index.vue';
-import project from '../project/project.vue';
+
+import projectInvestit from '../Investisseurs/projetInvestit/index.vue';
+import Apporteur from '../Investisseurs/Apporteur/index.vue';
 
 /**@end menu */
 
-export const MENU_LIST: Array<{
+export const INVESTOR_MENU_LIST: Array<{
     label: string;
     value: any;
     icon: any;
 }> = [
-    // {
-    //     label: 'Mes agences',
-    //     value: AgenciesList,
-    //     icon: BuildingHouse,
-    // },
     {
-        label: 'Mes Projets',
-        value: project,
+        label: 'Mes Projets Investit',
+        value: projectInvestit,
         icon: House,
     },
-    // {
-    //     label: 'Mes factures',
-    //     value: Factures,
-    //     icon: Payement,
-    // },
+
     {
-        label: 'Mes Investisseurs',
-        value: Investor,
+        label: 'Mes Apporteurs',
+        value: Apporteur,
         icon: Ads,
     },
     {
@@ -62,40 +54,4 @@ export const MENU_LIST: Array<{
         value: Chart,
         icon: Payement,
     },
-    // {
-    //     label: 'Mes derniers biens visités',
-    //     value: 'lastVisitedProperties',
-    //     icon: HalfEye,
-    // },
-    // {
-    //     label: 'Mes alertes',
-    //     value: 'alerts',
-    //     icon: Alert,
-    // },
-
-    // {
-    //     label: 'Mes offres de travaux',
-    //     value: 'workOffers',
-    //     icon: Work,
-    // },
-    // {
-    //     label: 'Mes comptabilités',
-    //     value: 'accounts',
-    //     icon: GroupAccount,
-    // },
-    // {
-    //     label: 'Mes rendez-vous',
-    //     value: 'dating',
-    //     icon: PeopleRobbery,
-    // },
-    // {
-    //     label: 'Mes disponibilités',
-    //     value: 'availability',
-    //     icon: Time,
-    // },
-    // {
-    //     label: 'Compromis',
-    //     value: Compromise,
-    //     icon: MoneyBag,
-    // },
 ];

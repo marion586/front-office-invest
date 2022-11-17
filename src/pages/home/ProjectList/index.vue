@@ -6,7 +6,8 @@
     import Input from '@/components/Common/Input/Input.vue';
     import Select from '@/components/Common/Select/Select.vue';
     import TextArea from '@/components/Common/TextArea/TextArea.vue';
-    import Loader from '@/components/Common/Loader/Loader.vue';
+    import detailPaiementService from '@/services/detailPaiementService';
+
     import { useRouter } from 'vue-router';
     import { data } from './data';
 
@@ -15,19 +16,23 @@
 
     const isBordered = inject('isBordered');
     const border = ref(isBordered ? '1px solid #ccc' : 'none');
-    defineProps({
+    const props = defineProps({
         isPublic: {
             type: Boolean,
             default: true,
         },
+        dataProps: {
+            type: Object,
+            required: true,
+        },
     });
 
     const router = useRouter();
-    let dataStore = computed(() => store.getters['ProjectModule/getData']);
+
     const store = useStore();
     const userData = computed(() => store.getters['UserModule/getUserDetails']);
     const onload = ref(false);
-    const dataCard = ref<any>([]);
+    const dataCard = ref<any>(props.dataProps);
 
     const showModal = ref(false);
     const urlImgData = ref('');
@@ -80,14 +85,7 @@
         showModal.value = !showModal.value;
         console.log(showModal.value);
     }
-    async function getProjectsList() {
-        onload.value = true;
-        await store.dispatch('ProjectModule/initializeData');
-        dataStore.value.forEach((d: object) => {
-            dataCard.value.push(d);
-        });
-        onload.value = false;
-    }
+
     async function getCategorie() {
         const { data } = await categorieService.getCategorie();
         data.forEach((d: any) => {
@@ -125,18 +123,18 @@
     function categorieFilter(e: any) {
         console.log(e);
         if (e['filter'] !== 'Tous') {
-            dataCard.value = dataStore.value.filter(
+            dataCard.value = props.dataProps.filter(
                 (item: any) => e['filter'] === item.categorie
             );
         } else {
-            dataCard.value = dataStore.value.map((item: any) => item);
+            dataCard.value = props.dataProps.map((item: any) => item);
         }
 
         console.log(dataCard.value);
     }
     function handleSearch(e: any) {
         if (e.target.value === '') {
-            dataCard.value = dataStore.value.map((item: any) => item);
+            dataCard.value = props.dataProps.map((item: any) => item);
         } else {
             dataCard.value = dataCard.value.filter((item: any) =>
                 item.title.toLowerCase().includes(e.target.value.toLowerCase())
@@ -157,14 +155,35 @@
     }
 
     async function showDetails(id: any) {
-        let Details = dataStore.value.find((item: any) => item._id === id);
-        console.log(Details);
+        let Details = props.dataProps.find((item: any) => item._id === id);
+
         await store.dispatch('ProjectModule/setDetails', Details);
-        router.push(`/Details/${id}`);
+        const { data } = await detailPaiementService.getDetail();
+        if (data.length > 0) {
+            console.log(Details, data, 'user et details');
+            const dataUserPayed = data.find(
+                (item: any) => item.user_id === userData.value._id
+            );
+            console.log(
+                dataUserPayed,
+                'apiede',
+                dataUserPayed.user_id,
+                Details._id === dataUserPayed.project_id
+            );
+            if (
+                dataUserPayed?.user_id === userData.value._id &&
+                Details._id === dataUserPayed?.project_id
+            ) {
+                router.push(`/Details/${id}`);
+            } else {
+                router.push(`/detail-paiement`);
+            }
+        } else {
+            router.push(`/detail-paiement`);
+        }
     }
 
     onMounted(() => {
-        getProjectsList();
         getCategorie();
     });
 </script>
@@ -257,11 +276,7 @@
             </div>
         </div>
 
-        <Loader v-if="onload" />
-        <div
-            v-else
-            :class="isPublic ? 'project__list-public' : 'project__list'"
-        >
+        <div :class="isPublic ? 'project__list-public' : 'project__list'">
             <ProjectCard
                 v-for="data in dataCard"
                 @showDetails="showDetails"
