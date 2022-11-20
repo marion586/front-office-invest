@@ -53,6 +53,11 @@ const routes = <Array<RouteRecordRaw>>[
         path: '/detail-paiement',
         component: () => import('@/pages/detailPaiement/index.vue'),
     },
+    {
+        name: 'investissement',
+        path: '/investissement',
+        component: () => import('@/pages/investissement/index.vue'),
+    },
 ];
 
 export default routes;

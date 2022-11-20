@@ -24,8 +24,18 @@
         let Details = dataStore.value.find((item: any) => item._id === id);
         console.log(Details);
         await store.dispatch('ProjectModule/setDetails', Details);
-
+        const { data } = await detailPaiementService.getDetail();
+        console.log(data, 'details detaat');
         router.push(`/Details/${id}`);
+    }
+
+    async function makeInvest(id: any) {
+        let Details = await computed(
+            () => store.getters['ProjectModule/getDetails']
+        );
+        await store.dispatch('ProjectModule/setInvestProject', Details.value);
+
+        router.push('/investissement');
     }
 </script>
 
@@ -68,7 +78,11 @@
             </div>
 
             <div class="details__btn">
-                <ButtonMenuVue :isIcon="Finance" width="400px">
+                <ButtonMenuVue
+                    :isIcon="Finance"
+                    @on-click="makeInvest"
+                    width="400px"
+                >
                     Investir
                 </ButtonMenuVue>
                 <ButtonMenuVue :isIcon="Finance" width="400px">
@@ -103,6 +117,7 @@
 
             img {
                 @apply w-full h-full rounded-md;
+                object-fit: cover;
             }
         }
         &__header {

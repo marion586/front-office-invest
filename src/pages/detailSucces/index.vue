@@ -36,11 +36,28 @@
 </script>
 
 <template>
-    <div>
-        <Title type="h1" label="Peiment   avec success" />
+    <div class="success">
+        <Title type="h1" label="Project postulée avec success" color="#ccc" />
 
-        <button @click="showDetail">Voir le detail</button>
+        <success />
+
+        <span>
+            <router-link :to="`/Details/${projectData._id}`">
+                Voir le detail
+            </router-link>
+        </span>
     </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+    .success {
+        @apply h-[80vh] flex flex-col justify-center items-center gap-[20px] container mt-[20px] rounded-lg;
+        background-color: #fff;
+        #Capa_1 {
+            width: 41px;
+        }
+        span {
+            color: #ccc;
+        }
+    }
+</style>

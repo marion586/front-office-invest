@@ -42,6 +42,7 @@
     const data = ref<any>({});
 
     async function initData() {
+        onload.value = true;
         try {
             await store.dispatch('StripeModule/initializeData');
             const dataStripe = await computed(
@@ -50,7 +51,11 @@
             data.value = dataStripe.value.find(
                 (item: any) => item.id === props.id
             );
-        } catch (error: any) {}
+            onload.value = false;
+        } catch (error: any) {
+            alert(error.message);
+            onload.value = false;
+        }
     }
 
     async function createSession(id: any) {

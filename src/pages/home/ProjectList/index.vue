@@ -39,6 +39,16 @@
 
     let selectData = ref<any>([]);
     let filterData = ref<any>([]);
+    let filterPostuledData = ref<any>([
+        {
+            value: 'Postulé',
+            label: 'Postulé',
+        },
+        {
+            value: 'Non Postulé',
+            label: 'Non Postulé',
+        },
+    ]);
     let amountFilter = ref([
         {
             value: 'Mont asc',
@@ -154,32 +164,40 @@
         }
     }
 
+    function filterPostuled(e: any) {
+        console.log(e);
+        if (e['postule'] === 'Postulé') {
+            dataCard.value = dataCard.value.filter(
+                (item: any) => item.isPostuled == true
+            );
+        } else {
+            dataCard.value = dataCard.value.filter(
+                (item: any) => item.isPostuled == false
+            );
+        }
+    }
+
     async function showDetails(id: any) {
         let Details = props.dataProps.find((item: any) => item._id === id);
-
         await store.dispatch('ProjectModule/setDetails', Details);
         const { data } = await detailPaiementService.getDetail();
-        if (data.length > 0) {
-            console.log(Details, data, 'user et details');
-            const dataUserPayed = data.find(
-                (item: any) => item.user_id === userData.value._id
-            );
-            console.log(
-                dataUserPayed,
-                'apiede',
-                dataUserPayed.user_id,
-                Details._id === dataUserPayed.project_id
-            );
-            if (
-                dataUserPayed?.user_id === userData.value._id &&
-                Details._id === dataUserPayed?.project_id
-            ) {
-                router.push(`/Details/${id}`);
+        if (userData.value._id === Details.user._id) {
+            router.push(`/Details/${id}`);
+        } else {
+            if (data.length > 0) {
+                const dataUserPayed = data.find(
+                    (item: any) =>
+                        item.user_id === userData.value._id &&
+                        Details._id === item.project_id
+                );
+                if (dataUserPayed) {
+                    router.push(`/Details/${id}`);
+                } else {
+                    router.push(`/detail-paiement`);
+                }
             } else {
                 router.push(`/detail-paiement`);
             }
-        } else {
-            router.push(`/detail-paiement`);
         }
     }
 
@@ -213,6 +231,14 @@
                 :options="amountFilter"
                 label="Trier Montant:"
                 @change-select="filterAmount"
+            />
+            <Select
+                name="postule"
+                placeholder="select"
+                :options="filterPostuledData"
+                label="Filtrer Postule:"
+                @change-select="filterPostuled"
+                v-if="isPublic"
             />
             <div id="myModal">
                 <Modal
