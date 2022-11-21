@@ -50,27 +50,6 @@
                 nameInput="datePayement"
                 inputType="date"
             />
-            <Input
-                label="Recette "
-                @on-input="handleInput"
-                placeholder="Recette actuelle"
-                nameInput="recette"
-                inputType="number"
-            />
-            <Input
-                label="Addresse actuelle"
-                @on-input="handleInput"
-                placeholder="Adresse actuelle"
-                nameInput="address"
-                inputType="number"
-            />
-            <Select
-                name="situation"
-                placeholder="select"
-                :options="options"
-                label="Situation actuelle"
-                @change-select="handleSelect"
-            />
 
             <Signature
                 title="Votre Signature"
@@ -87,14 +66,14 @@
 
 <style lang="scss" scoped>
     .container {
-        @apply flex flex-col gap-[40px];
+        @apply flex flex-col gap-[40px] justify-center h-full;
 
         h3 {
             align-self: center;
         }
 
         &__form {
-            @apply flex flex-col gap-[10px];
+            @apply flex flex-col gap-[20px];
         }
     }
 </style>
