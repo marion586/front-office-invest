@@ -26,6 +26,7 @@
         "moment": "^2.29.4",
         "v-perfect-signature": "^1.1.5",
         "vue": "^3.2.25",
+        "vue-html2pdf": "^1.8.0",
         "vue-router": "^4.0.13",
         "vue-use-stripe": "^0.1.1",
         "vuex": "^4.0.2"

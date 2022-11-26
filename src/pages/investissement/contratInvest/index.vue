@@ -3,7 +3,10 @@
     import Title from '@/components/Common/Title/Title.vue';
     import BackButton from '@/components/Common/BackButton/BackButton.vue';
     import Button from '@/components/Common/Button/Button.vue';
+    import html2pdf from 'html2pdf.js';
     import moment from 'moment';
+    import { ref } from 'vue';
+    const loadSpin = ref(false);
     defineProps({
         dataInvest: {
             type: Object,
@@ -22,14 +25,24 @@
     function returnEmit(): void {
         emit('return');
     }
+    function exportToPDF() {
+        loadSpin.value = true;
+        html2pdf(document.getElementById('element-to-convert'), {
+            margin: 1,
+            filename: 'contrat-investissement.pdf',
+        });
+        setTimeout(function () {
+            loadSpin.value = false;
+        }, 30000);
+    }
     const date = new Date();
 </script>
 
 <template>
-    <div class="invest">
+    <div class="invest" ref="document">
         <BackButton class="invest__back" @return="returnEmit" />
 
-        <div class="mb-3.5">
+        <div class="mb-3.5" id="element-to-convert">
             <Title
                 type="h4"
                 label="Contrat d'investissement"
@@ -100,8 +113,11 @@
                 </div>
             </div>
         </div>
-        <div class="btn">
-            <Button> Export to pdf </Button>
+        <div class="my-btn">
+            <Button class="btn-export" @on-click="exportToPDF">
+                <a-spin v-if="loadSpin"></a-spin>
+                Export to pdf
+            </Button>
             <slot />
         </div>
     </div>
@@ -158,5 +174,14 @@
 
     .paragraphe__normal {
         @apply mb-2 text-justify font-light;
+    }
+
+    .my-btn {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        .btn-export {
+            align-self: end;
+        }
     }
 </style>
