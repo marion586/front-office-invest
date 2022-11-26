@@ -17,7 +17,7 @@ import Work from '@/components/Icon/ProfilAccount/Work.vue';
 import Chart from '../Chart/index.vue';
 import Chiffre from '../Chifre/index.vue';
 import Facture from '../Facture/index.vue';
-
+import Notification from '../Notification/index.vue';
 import projectInvestit from '../Investisseurs/projetInvestit/index.vue';
 import Apporteur from '../Investisseurs/Apporteur/index.vue';
 
@@ -53,5 +53,10 @@ export const INVESTOR_MENU_LIST: Array<{
         label: 'Chart graphique',
         value: Chart,
         icon: Payement,
+    },
+    {
+        label: 'Notification',
+        value: Notification,
+        icon: PeopleRobbery,
     },
 ];

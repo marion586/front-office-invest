@@ -4,15 +4,30 @@
 
 <template>
     <div class="inscription">
-        <inscriptionContainer />
+        <div class="inscription__right">
+            <inscriptionContainer />
+        </div>
+
+        <figure>
+            <img src="@/static/images/bg-auth.png" />
+        </figure>
     </div>
 </template>
 
 <style scoped lang="scss">
     .inscription {
-        background-image: url('@/static/images/bg-auth.png');
+        background-image: url();
         background-size: cover;
-        height: 100vh;
-        @apply flex justify-center items-center;
+        height: calc(100vh - 62px);
+        @apply grid grid-cols-2 items-center;
+        &__right {
+            @apply flex justify-center;
+        }
+        figure {
+            height: 100%;
+            img {
+                height: 100%;
+            }
+        }
     }
 </style>

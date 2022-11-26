@@ -55,4 +55,16 @@ export class Http {
             throw error.response;
         }
     }
+
+    static async delete(url: string): Promise<any> {
+        try {
+            const { data: any, status } = await axios.delete(url);
+            if (status === 200) {
+                return { status };
+            }
+        } catch (e) {
+            const error = e as AxiosError;
+            throw error.response;
+        }
+    }
 }

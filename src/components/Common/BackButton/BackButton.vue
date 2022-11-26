@@ -1,7 +1,7 @@
 <template>
     <button @click="returnEmit" class="backBtn">
         <ArrowBack />
-        <span class="backBtn__txt" data-test="returnTxt">Retour</span>
+        <!-- <span class="backBtn__txt" data-test="returnTxt">Retour</span> -->
     </button>
 </template>
 
@@ -13,14 +13,13 @@
     }>();
 
     function returnEmit(): void {
-        console.log("first")
         emit('return');
     }
 </script>
 
 <style lang="scss" scoped>
     .backBtn {
-        @apply flex flex-row items-center w-[73px] mb-[18px];
+        @apply flex flex-row items-center w-[73px] mb-[5px];
 
         &__txt {
             @apply ml-[8px] font-semibold;

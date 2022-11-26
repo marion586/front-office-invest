@@ -10,6 +10,7 @@
     import { computed, onBeforeMount, onMounted, ref, shallowRef } from 'vue';
     import AsideMenu from './Menu/AsideMenu/AsideMenu.vue';
     import Project from './Menu/project/project.vue';
+    import ProjectInvestit from './Menu/Investisseurs/projetInvestit/index.vue';
     import { useRoute, useRouter } from 'vue-router';
     import ProfilPrototype from './ProfilPrototype/ProfilPrototype.vue';
     import { MENU_LIST } from './Menu/AsideMenu/account.data';
@@ -18,7 +19,9 @@
     const router = useRouter();
 
     const store = useStore();
-
+    const userData: any = computed(
+        () => store.getters['UserModule/getUserDetails']
+    );
     const defMenu = shallowRef<any>(null);
     const defLabel = shallowRef('');
 
@@ -34,8 +37,13 @@
                 }
             });
         } else {
-            defMenu.value = Project;
-            defLabel.value = 'Mes annonces';
+            if (userData.value.typeUser === 'Investisseur') {
+                defMenu.value = ProjectInvestit;
+                defLabel.value = 'Mes projet investit';
+            } else {
+                defMenu.value = Project;
+                defLabel.value = 'Mes Projets';
+            }
         }
     });
 </script>

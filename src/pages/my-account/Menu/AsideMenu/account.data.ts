@@ -19,6 +19,8 @@ import Chiffre from '../Chifre/index.vue';
 import Facture from '../Facture/index.vue';
 import Investor from '../Investor/index.vue';
 import project from '../project/project.vue';
+import Notification from '../Notification/index.vue';
+import Demande from '../Demande/index.vue';
 
 /**@end menu */
 
@@ -61,6 +63,12 @@ export const MENU_LIST: Array<{
         label: 'Chart graphique',
         value: Chart,
         icon: Payement,
+    },
+
+    {
+        label: 'Demande',
+        value: Demande,
+        icon: PeopleRobbery,
     },
     // {
     //     label: 'Mes derniers biens visités',

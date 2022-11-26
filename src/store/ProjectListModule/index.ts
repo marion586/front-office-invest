@@ -1,4 +1,5 @@
 import projectService from '@/services/projectService';
+import investService from '@/services/investService';
 
 import {
     setPersistStore,
@@ -11,7 +12,7 @@ const projectPersistDetails: any = getSessionPersistedStore({
     key: 'project_details',
     initValue: {},
 });
-const projectPersistInvest: any = getSessionPersistedStore({
+const projectPersistInvest: any = getPersistedStore({
     key: 'project_invest',
     initValue: {},
 });
@@ -26,6 +27,7 @@ const mutationType = <Readonly<any>>Object.freeze({
     SET_DATA: 'SET_DATA',
     GET_DETAILS: 'GET_DETAILS',
     GET_INVEST_PROJECT: 'GET_INVEST_PROJECT',
+    GET_SINGLE_INVEST_PROJECT: 'GET_SINGLE_INVEST_PROJECT',
 });
 
 export const mutations = {
@@ -41,12 +43,16 @@ export const mutations = {
     [mutationType.GET_INVEST_PROJECT](state: any, payload: Object) {
         state.projectInvest = payload;
     },
+    [mutationType.GET_SINGLE_INVEST_PROJECT](state: any, payload: Object) {
+        state.singleProjectInvest = payload;
+    },
 };
 
 export const state = {
     projectData: projectPersistdata,
     projectDetails: projectPersistDetails,
     projectInvest: projectPersistInvest,
+    singleProjectInvest: {},
 };
 export const actions = {
     async initializeData({ commit }: any) {
@@ -63,9 +69,14 @@ export const actions = {
         commit(mutationType.GET_DETAILS, payload);
         setSessionPersistStore({ key: 'project_details', value: payload });
     },
-    async setInvestProject({ commit }: any, payload: object) {
-        commit(mutationType.GET_INVEST_PROJECT, payload);
-        setSessionPersistStore({ key: 'project_invest', value: payload });
+    async setSingleProjectInvest({ commit }: any, payload: object) {
+        commit(mutationType.GET_SINGLE_INVEST_PROJECT, payload);
+    },
+    async setInvestProject({ commit }: any) {
+        const { data } = await investService.getInvest();
+
+        commit(mutationType.GET_INVEST_PROJECT, data);
+        setPersistStore({ key: 'project_invest', value: data });
     },
 };
 export const getters = {
@@ -77,5 +88,8 @@ export const getters = {
     },
     getInvestProject(state: any) {
         return state.projectInvest;
+    },
+    getSingleProjectInvest(state: any) {
+        return state.singleProjectInvest;
     },
 };

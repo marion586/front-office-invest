@@ -19,21 +19,41 @@
     let dataStore = computed(() => store.getters['ProjectModule/getData']);
 
     let details = computed(() => store.getters['ProjectModule/getDetails']);
+    const userData = computed(() => store.getters['UserModule/getUserDetails']);
 
     async function showDetails(id: any) {
         let Details = dataStore.value.find((item: any) => item._id === id);
-        console.log(Details);
         await store.dispatch('ProjectModule/setDetails', Details);
         const { data } = await detailPaiementService.getDetail();
-        console.log(data, 'details detaat');
-        router.push(`/Details/${id}`);
+        if (userData.value.id === Details.user.id) {
+            router.push(`/Details/${id}`);
+        } else {
+            if (data.length > 0) {
+                const dataUserPayed = data.find(
+                    (item: any) =>
+                        item.user_id === userData.value.id &&
+                        Details._id === item.project_id
+                );
+
+                if (dataUserPayed) {
+                    router.push(`/Details/${id}`);
+                } else {
+                    router.push(`/detail-paiement`);
+                }
+            } else {
+                router.push(`/detail-paiement`);
+            }
+        }
     }
 
     async function makeInvest(id: any) {
         let Details = await computed(
             () => store.getters['ProjectModule/getDetails']
         );
-        await store.dispatch('ProjectModule/setInvestProject', Details.value);
+        await store.dispatch(
+            'ProjectModule/setSingleProjectInvest',
+            Details.value
+        );
 
         router.push('/investissement');
     }
@@ -85,9 +105,9 @@
                 >
                     Investir
                 </ButtonMenuVue>
-                <ButtonMenuVue :isIcon="Finance" width="400px">
+                <!-- <ButtonMenuVue :isIcon="Finance" width="400px">
                     Postuler
-                </ButtonMenuVue>
+                </ButtonMenuVue> -->
             </div>
         </div>
         <div class="details__list">

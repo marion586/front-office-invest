@@ -181,15 +181,16 @@
         let Details = props.dataProps.find((item: any) => item._id === id);
         await store.dispatch('ProjectModule/setDetails', Details);
         const { data } = await detailPaiementService.getDetail();
-        if (userData.value._id === Details.user._id) {
+        if (userData.value.id === Details.user.id) {
             router.push(`/Details/${id}`);
         } else {
             if (data.length > 0) {
                 const dataUserPayed = data.find(
                     (item: any) =>
-                        item.user_id === userData.value._id &&
+                        item.user_id === userData.value.id &&
                         Details._id === item.project_id
                 );
+
                 if (dataUserPayed) {
                     router.push(`/Details/${id}`);
                 } else {

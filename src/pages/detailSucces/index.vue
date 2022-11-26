@@ -4,6 +4,7 @@
     import { computed, onMounted } from 'vue';
     import { useRouter } from 'vue-router';
     import { useStore } from 'vuex';
+    import success from '@/components/Icon/success.vue';
 
     const store = useStore();
     const router = useRouter();
@@ -18,10 +19,10 @@
     async function setDetails() {
         try {
             let data = await detailPaiementService.createDetail({
-                user_id: userData.value._id,
+                user_id: userData.value.id,
                 project_id: projectData.value._id,
             });
-            console.log(data);
+            console.log(data, 'setting data detail');
         } catch (error: any) {
             throw error.message;
         }
@@ -37,7 +38,7 @@
 
 <template>
     <div class="success">
-        <Title type="h1" label="Project postulée avec success" color="#ccc" />
+        <Title type="h1" label="Detail payée avec success" color="#ccc" />
 
         <success />
 

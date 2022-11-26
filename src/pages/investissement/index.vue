@@ -2,25 +2,88 @@
     import formAdd from './formAdd/index.vue';
     import contratInvest from './contratInvest/index.vue';
     import ProjectCard from '@/components/Display/ProjectCard/ProjectCard.vue';
-    import { computed, provide } from 'vue';
+    import investService from '@/services/investService';
+
+    import { computed, provide, ref } from 'vue';
     import { useStore } from 'vuex';
 
+    import Button from '@/components/common/Button/Button.vue';
+    import { useRouter } from 'vue-router';
+
     const store = useStore();
-    let projetInvestData = computed(
-        () => store.getters['ProjectModule/getInvestProject']
+    const router = useRouter();
+    const onload = ref(false);
+
+    const projetInvestData = computed(
+        () => store.getters['ProjectModule/getSingleProjectInvest']
     );
+    const userData: any = computed(
+        () => store.getters['UserModule/getUserDetails']
+    );
+    const dataResult = ref({
+        project: projetInvestData.value,
+        apport_id: projetInvestData.value.user.id,
+        user: userData.value,
+        DatePayment: '',
+        amount: '',
+        imageSignature: '',
+        name: '',
+        address: '',
+    });
+
+    function handleChange(e: any) {
+        const val =
+            e.target.type === 'number'
+                ? Number(e.target.value)
+                : e.target.value;
+
+        dataResult.value = {
+            ...dataResult.value,
+            [e.target.name]: val,
+        };
+    }
+    function handleSignature(e: any) {
+        dataResult.value = {
+            ...dataResult.value,
+            imageSignature: e,
+        };
+    }
+    async function makeIvest() {
+        try {
+            onload.value = true;
+            let data = await investService.addInvest(dataResult.value);
+            if (data) {
+                router.push('/invest-sent');
+            }
+            onload.value = false;
+        } catch (error: any) {
+            alert(error.message);
+            onload.value = false;
+        }
+    }
     provide('isBordered', true);
 </script>
 
 <template>
     <div class="container">
         <div class="container__left">
-            <formAdd />
+            <formAdd
+                @change-data="handleChange"
+                @save-signature="handleSignature"
+            />
+
+            <Button width="300px" type="primary" @click="makeIvest">
+                <span v-if="onload"> <a-spin /> </span>
+                Demander
+            </Button>
         </div>
 
         <div class="container__right">
             <div class="contrat">
-                <contratInvest />
+                <contratInvest
+                    :dataInvest="projetInvestData"
+                    :DataResult="dataResult"
+                />
             </div>
             <ProjectCard :DataCard="projetInvestData" />
         </div>
@@ -29,13 +92,13 @@
 
 <style lang="scss" scoped>
     .container {
-        @apply grid grid-cols-5 mt-[40px] p-[20px] rounded-md;
+        @apply grid grid-cols-5 mt-[20px] p-[20px] rounded-md;
         background-color: #fff;
         &__left {
-            @apply col-span-2;
+            @apply col-span-2 flex flex-col gap-[40px] items-center;
         }
         &__right {
-            @apply grid grid-cols-5   col-span-3 p-[20px];
+            @apply grid grid-cols-5 gap-[20px] col-span-3 p-[20px];
             border-left: 1px solid #ccc;
             box-shadow: 0px 0 #999, -3px 0 4px -4px;
             .contrat {
