@@ -4,7 +4,6 @@
     import Title from '@/components/Common/Title/Title.vue';
     import Room from '@/components/Icon/Room.vue';
     import Bath from '@/components/Icon/Bath.vue';
-    import Surface from '@/components/Icon/Surface.vue';
     import Button from '@/components/Common/Button/Button.vue';
     import CardType from './CardType';
     import { useRouter } from 'vue-router';
@@ -29,7 +28,7 @@
         },
     });
 
-    let status = ref('');
+    const status = ref('pending');
 
     function setStatus() {
         switch (props.DataCard.status) {
@@ -44,6 +43,16 @@
                 break;
         }
     }
+    watch(
+        () => props.DataCard.status,
+        function (value) {
+            setStatus();
+        },
+        {
+            immediate: true,
+            deep: true,
+        }
+    );
 
     async function postulate(data: any) {
         await store.dispatch('StripeModule/initializeProjectData', data);
@@ -52,6 +61,7 @@
 
     onMounted(() => {
         setStatus();
+        console.log(props.DataCard.status);
     });
 </script>
 

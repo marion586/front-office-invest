@@ -19,7 +19,7 @@ interface IUserState {
     registeredUser: IUser | {};
 }
 
-const userFromStore: any = getPersistedStore({ key: 'user', initValue: null });
+const userFromStore: any = getPersistedStore({ key: 'user', initValue: {} });
 
 const registerdUserFromSession: any = getSessionPersistedStore({
     key: 'registered_user',

@@ -21,6 +21,8 @@
         email: String;
         password: String;
         typeUser: String;
+        tel: String;
+        address: String;
     };
 
     const signUpData = ref<signData>({
@@ -30,6 +32,8 @@
         email: '',
         password: '',
         typeUser: '',
+        tel: '',
+        address: '',
     });
 
     let urlImgData = ref<string>('');
@@ -139,7 +143,7 @@
                 </figure>
             </div>
 
-            <Title type="h3" label="Créer un compte" :weight="700" />
+            <Title type="h4" label="Créer un compte" :weight="700" />
 
             <template v-for="d in data" :key="d.label">
                 <Select
@@ -156,6 +160,7 @@
                     @on-input="handleInput"
                     :placeholder="d.hint"
                     :nameInput="d.name"
+                    :inputType="d.inputType"
                 />
             </template>
 
@@ -192,6 +197,7 @@
             display: flex;
             align-items: center;
             align-self: center;
+            border: 1px solid #ccc;
             justify-content: center;
             img {
                 width: 60px;

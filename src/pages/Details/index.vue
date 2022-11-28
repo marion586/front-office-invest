@@ -25,6 +25,7 @@
         let Details = dataStore.value.find((item: any) => item._id === id);
         await store.dispatch('ProjectModule/setDetails', Details);
         const { data } = await detailPaiementService.getDetail();
+
         if (userData.value.id === Details.user.id) {
             router.push(`/Details/${id}`);
         } else {

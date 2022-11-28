@@ -36,8 +36,8 @@ export const data: any = [
         elementType: 'textarea',
     },
     {
-        label: 'Titre du projet',
-        hint: 'Titre de votre projet',
+        label: 'Image',
+        hint: 'Telecharger image',
         name: 'image',
         type: 'file',
         elementType: 'inputFile',

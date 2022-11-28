@@ -12,12 +12,16 @@ const projectPersistDetails: any = getSessionPersistedStore({
     key: 'project_details',
     initValue: {},
 });
-const projectPersistInvest: any = getPersistedStore({
+const projectSingleInvestProject: any = getSessionPersistedStore({
+    key: 'project_invest_single',
+    initValue: {},
+});
+const projectPersistInvest: any = getSessionPersistedStore({
     key: 'project_invest',
     initValue: {},
 });
 
-const projectPersistdata: any = getPersistedStore({
+const projectPersistdata: any = getSessionPersistedStore({
     key: 'project_data',
     initValue: [],
 });
@@ -52,18 +56,18 @@ export const state = {
     projectData: projectPersistdata,
     projectDetails: projectPersistDetails,
     projectInvest: projectPersistInvest,
-    singleProjectInvest: {},
+    singleProjectInvest: projectSingleInvestProject,
 };
 export const actions = {
     async initializeData({ commit }: any) {
         const { data } = await projectService.getProject();
         commit(mutationType.GET_DATA, data);
-        setPersistStore({ key: 'project_data', value: data });
+        setSessionPersistStore({ key: 'project_data', value: data });
     },
     async setData({ commit }: any, payload: object) {
         const d = await projectService.addProject(payload);
         commit(mutationType.SET_DATA, d.data);
-        setPersistStore({ key: 'project_data', value: d });
+        setSessionPersistStore({ key: 'project_data', value: d });
     },
     async setDetails({ commit }: any, payload: object) {
         commit(mutationType.GET_DETAILS, payload);
@@ -71,12 +75,16 @@ export const actions = {
     },
     async setSingleProjectInvest({ commit }: any, payload: object) {
         commit(mutationType.GET_SINGLE_INVEST_PROJECT, payload);
+        setSessionPersistStore({
+            key: 'project_invest_single',
+            value: payload,
+        });
     },
     async setInvestProject({ commit }: any) {
         const { data } = await investService.getInvest();
 
         commit(mutationType.GET_INVEST_PROJECT, data);
-        setPersistStore({ key: 'project_invest', value: data });
+        setSessionPersistStore({ key: 'project_invest', value: data });
     },
 };
 export const getters = {

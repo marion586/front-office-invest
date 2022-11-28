@@ -146,7 +146,7 @@
             @apply flex justify-end;
         }
         label {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 500;
             color: black;
             font-weight: bold;

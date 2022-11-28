@@ -63,6 +63,12 @@ const routes = <Array<RouteRecordRaw>>[
         path: '/invest-sent',
         component: () => import('@/pages/investSent/index.vue'),
     },
+    {
+        name: 'projectPaymentSuccess',
+        path: '/project-payment-success',
+        component: () => import('@/pages/project-success/index.vue'),
+    },
+    ,
 ];
 
 export default routes;

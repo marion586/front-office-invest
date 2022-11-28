@@ -9,7 +9,7 @@
         </div>
 
         <figure>
-            <img src="@/static/images/bg-auth.png" />
+            <img src="@/static/images/invest1.jpg" />
         </figure>
     </div>
 </template>
@@ -27,6 +27,7 @@
             height: 100%;
             img {
                 height: 100%;
+                object-fit: cover;
             }
         }
     }

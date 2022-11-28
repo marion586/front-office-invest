@@ -13,7 +13,13 @@ interface ISetStoreParams {
  */
 export function getPersistedStore({ key, initValue }: ISetStoreParams): any {
     const stringifyInitValue: string = JSON.stringify(initValue);
-    return JSON.parse(localStorage.getItem(key) || stringifyInitValue);
+    console.log(stringifyInitValue, key, localStorage.getItem(key));
+    if (localStorage.getItem(key) !== 'undefined') {
+        console.log(localStorage.getItem(key));
+        return JSON.parse(localStorage.getItem(key) as any);
+    }
+
+    return JSON.parse(stringifyInitValue);
 }
 
 export function setPersistStore({ key, value }: IParams): void {

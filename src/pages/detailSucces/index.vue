@@ -15,11 +15,12 @@
     const userData: any = computed(
         () => store.getters['UserModule/getUserDetails']
     );
+    console.log(userData.value);
 
     async function setDetails() {
         try {
             let data = await detailPaiementService.createDetail({
-                user_id: userData.value.id,
+                user_id: userData.value._id,
                 project_id: projectData.value._id,
             });
             console.log(data, 'setting data detail');

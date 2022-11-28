@@ -20,6 +20,7 @@
         MenuItem as AMenuItem,
     } from 'ant-design-vue';
     import { useStore } from 'vuex';
+    import router from '@/routes';
 
     const activeUser = ref<any>({});
 
@@ -31,16 +32,22 @@
     const handleShowMenu = () => {
         isMenu.value = !isMenu.value;
     };
+
     onMounted(async () => {
         setTimeout(() => {
             fakeLoadAvatar.value = false;
         }, 1000);
 
-        let userStore = await computed(
+        const userStore = await computed(
             () => store.getters['UserModule/getUserDetails']
         );
-        activeUser.value = { ...userStore.value };
-        console.log(activeUser.value);
+        if (Object.keys(userStore.value).length !== 0) {
+            isLoggedIn.value = true;
+        } else {
+            router.push('/connexion');
+        }
+        Object.assign(activeUser, userStore);
+        console.log(isLoggedIn.value, 'isloggin');
     });
     watchEffect(() => {
         window.addEventListener('resize', () => {
@@ -54,10 +61,18 @@
     watch(
         () => store.getters['UserModule/getUserDetails'],
         function (user) {
-            isLoggedIn.value = !!user;
+            isLoggedIn.value = Object?.keys(user).length === 0 ? false : true;
+            Object.assign(activeUser, user);
+            console.log(isLoggedIn.value, 'uselogin');
         },
         { immediate: true, deep: true }
     );
+    async function logout() {
+        await store.dispatch('UserModule/setUserDetails', {});
+        Object.assign(activeUser, {});
+        isLoggedIn.value = false;
+        router.push('/connexion');
+    }
 </script>
 
 <template>
@@ -165,7 +180,10 @@
                     <a-menu mode="horizontal">
                         <template v-for="(d, index) in dataMenu">
                             <template v-if="!d.submenu && d.view === 'all'">
-                                <a-menu-item :key="`alipay-${index}`">
+                                <a-menu-item
+                                    v-if="isLoggedIn"
+                                    :key="`alipay-${index}`"
+                                >
                                     <router-link :to="d.path">
                                         {{ d.label }}
                                     </router-link>
@@ -204,16 +222,14 @@
                         </a-menu-item>
                         <a-sub-menu key="sub-100">
                             <template #title>
-                                <router-link to="/my-account">
-                                    <figure
-                                        v-if="!fakeLoadAvatar"
-                                        class="header__avatar"
-                                    >
+                                <router-link v-if="isLoggedIn" to="/my-account">
+                                    <figure class="header__avatar">
                                         <img :src="activeUser.image" />
                                         <!-- <img src="" alt="" /> -->
                                     </figure>
-
-                                    <span v-else><User /></span>
+                                </router-link>
+                                <router-link v-else to="/connexion">
+                                    <span><User /></span>
                                 </router-link>
                                 <ArrowBottom />
                             </template>
@@ -231,9 +247,7 @@
                             </a-menu-item-group>
                             <a-menu-item-group v-else>
                                 <a-menu-item :key="`setting:1002`">
-                                    <router-link to="/logout"
-                                        >Deconnection</router-link
-                                    >
+                                    <span @click="logout">Deconnection</span>
                                 </a-menu-item>
                             </a-menu-item-group>
                         </a-sub-menu>

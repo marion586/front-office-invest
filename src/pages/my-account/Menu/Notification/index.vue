@@ -4,11 +4,12 @@
 
     import contratInvest from '@/pages/investissement/contratInvest/index.vue';
     import Button from '@/components/Common/Button/Button.vue';
-    import investService from '@/services/investService';
+    import stripeService from '@/services/stripeService';
     import { computed, onMounted, ref, watch } from 'vue';
     import { useStore } from 'vuex';
     const store = useStore();
     const onload = ref(false);
+    const onSpin = ref(false);
     const myNotification = ref<any>([]);
     const userData: any = computed(
         () => store.getters['UserModule/getUserDetails']
@@ -42,14 +43,22 @@
         { immediate: true, deep: true }
     );
 
-    function showSingleContract(e: any) {
-        console.log(e);
+    async function showSingleContract(e: any) {
+        console.log(e, 'singleProject');
+        await store.dispatch('ProjectModule/setSingleProjectInvest', e.project);
         dataInvest.value = { ...e.project };
         DataResult.value = { ...e };
         currentType.value = 'contratInvest';
     }
 
-    function makePayment() {}
+    async function makePayment() {
+        onSpin.value = true;
+        const data = await stripeService.setPaiementSession({
+            priceId: 'price_1M8cdZIIynL6dlcZQehCbXRM',
+        });
+        window.location.href = data.url;
+        onSpin.value = false;
+    }
     onMounted(() => {
         initInvest();
     });
@@ -64,7 +73,7 @@
                     v-for="(demand, id) in myNotification"
                     :key="id"
                     :myDemandData="demand"
-                    @on-show-contrat="showSingleContract"
+                    @on-show-contrat="showSingleContract(demand)"
                 />
             </div>
             <a-empty v-else description="Aucun aucun Notification" />
@@ -76,7 +85,9 @@
                 :DataResult="DataResult"
             >
                 <div class="btn-group">
-                    <Button @on-click="makePayment"> Faire le payement </Button>
+                    <Button @on-click="makePayment">
+                        <a-spin v-if="onSpin" /> Faire le payement
+                    </Button>
                 </div>
             </contratInvest>
         </div>
