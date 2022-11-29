@@ -181,7 +181,7 @@
     .auth {
         @apply w-[400px];
         &__head {
-            @apply w-full flex flex-col items-center gap-[10px];
+            @apply w-full flex flex-col items-center gap-[7px];
             .custom-input__fields,
             .custom-select__wrapper {
                 width: 100%;
