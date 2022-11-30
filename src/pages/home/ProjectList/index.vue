@@ -182,8 +182,9 @@
         let Details = props.dataProps.find((item: any) => item._id === id);
         await store.dispatch('ProjectModule/setDetails', Details);
         const { data } = await detailPaiementService.getDetail();
-        console.log(userData.value.id, 'userser');
-        if (userData.value._id === Details.user.id) {
+        console.log(userData.value.id, 'userser', Details.user.id);
+        if (userData.value.id === Details.user.id) {
+            console.log(userData.value._id, 'is true');
             router.push(`/Details/${id}`);
         } else {
             if (data.length > 0) {
@@ -288,7 +289,10 @@
                                 @change-select="handleSelect"
                             />
                             <div class="button-section">
-                                <Button typeButton="secondary">
+                                <Button
+                                    typeButton="secondary"
+                                    @click="handleShowModal"
+                                >
                                     <span>Annuler</span>
                                 </Button>
 

@@ -151,7 +151,11 @@
         border-radius: 8px;
         width: auto;
         border: v-bind(border);
+        transition: transform 0.3s ease 0s;
         &__image {
+            &:hover {
+                transform: scale(1.1);
+            }
             width: auto;
             height: 160px;
             img {
