@@ -54,11 +54,7 @@ export const MENU_LIST: Array<{
         value: Facture,
         icon: Gift,
     },
-    {
-        label: "Chiffre d'affaire",
-        value: Chiffre,
-        icon: HalfEye,
-    },
+
     {
         label: 'Chart graphique',
         value: Chart,

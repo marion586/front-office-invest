@@ -44,7 +44,7 @@
         if (Object.keys(userStore.value).length !== 0) {
             isLoggedIn.value = true;
         } else {
-            router.push('/connexion');
+            router.push('/inscription');
         }
         Object.assign(activeUser, userStore);
         console.log(isLoggedIn.value, 'isloggin');

@@ -173,10 +173,9 @@
                 justify-content: space-between;
                 span,
                 p {
-                    color: var(--color-alert-str-rose);
-                    background: rgba(255, 130, 130, 0.15);
                     border-radius: 15px;
                     padding: 4px 12px;
+                    border: 1px solid #ccc;
                     font-family: 'Montserrat';
                     font-style: normal;
                     font-weight: 600;
@@ -215,11 +214,15 @@
                 font-weight: 600;
                 font-size: 12px;
                 line-height: 16px;
-                color: #797575;
             }
         }
         &--pending {
             @apply rounded-sm bg-[#ccc] p-1;
+        }
+        &--progress {
+            @apply rounded-sm  p-1;
+            background-color: #6497b1;
+            color: White;
         }
         &__adress {
             display: flex;

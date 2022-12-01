@@ -45,11 +45,6 @@ export const INVESTOR_MENU_LIST: Array<{
         icon: Gift,
     },
     {
-        label: "Chiffre d'affaire",
-        value: Chiffre,
-        icon: HalfEye,
-    },
-    {
         label: 'Chart graphique',
         value: Chart,
         icon: Payement,

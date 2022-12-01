@@ -1,23 +1,29 @@
 <script lang="ts" setup>
     import Title from '@/components/Common/Title/Title.vue';
     import projectService from '@/services/projectService';
+    import investService from '@/services/investService';
     import success from '@/components/Icon/success.vue';
     import { computed, onMounted } from 'vue';
     import { useStore } from 'vuex';
 
     const store = useStore();
-    async function setPostule() {
-        const data = await computed(
-            () => store.getters['StripeModule/getProjectData']
+    async function setInvest() {
+        const dataInvest = await computed(
+            () => store.getters['ProjectModule/getSingleProjectInvest']
         );
-        let d = projectService.updateProject(data.value._id, {
-            isPotuled: true,
-        });
-        console.log(d);
+        let { data } = await investService.getInvest();
+
+        console.log(dataInvest.value, 'investData');
+
+        const id = dataInvest.value._id;
+        const singleInvest = data.find((item: any) => item.project._id === id);
+
+        await investService.updateInvest(singleInvest._id, { is_paid: true });
+        await projectService.updateProject(id, { status: 'En cours' });
     }
 
     onMounted(() => {
-        setPostule();
+        setInvest();
     });
 </script>
 
