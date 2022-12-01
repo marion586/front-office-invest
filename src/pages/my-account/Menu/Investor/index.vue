@@ -8,19 +8,17 @@
     const dataCard = ref<any>([]);
 
     async function initData() {
-        console.log(userData.value);
         const { data } = await investService.getInvest();
-        console.log(data);
+
         if (data) {
             const d = data.filter(
                 (item: any) =>
                     item.apport_id === userData.value.id && item.is_paid
             );
-            console.log(d, 'ddd');
+
             if (d) {
                 d.forEach((item: any) => {
                     dataCard.value.push(item.user);
-                    console.log(dataCard.value, 'carr');
                 });
             }
         }

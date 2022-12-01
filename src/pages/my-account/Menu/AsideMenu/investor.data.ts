@@ -40,11 +40,6 @@ export const INVESTOR_MENU_LIST: Array<{
         icon: Ads,
     },
     {
-        label: 'Mes Factures',
-        value: Facture,
-        icon: Gift,
-    },
-    {
         label: 'Chart graphique',
         value: Chart,
         icon: Payement,
