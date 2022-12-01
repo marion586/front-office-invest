@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import { computed, onMounted, ref } from 'vue';
+    import { computed, onMounted, provide, ref } from 'vue';
     import { useStore } from 'vuex';
     import ProjectContainer from './ProjectList/index.vue';
     import Loader from '@/components/Common/Loader/Loader.vue';
@@ -22,6 +22,7 @@
     onMounted(async () => {
         await getProjectList();
     });
+    provide('isBordered', false);
 </script>
 
 <template>

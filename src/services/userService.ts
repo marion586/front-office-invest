@@ -9,6 +9,10 @@ export default class UserService {
         return await Http.post('/auth/inscription', params);
     }
 
+    static async getUser() {
+        return await Http.get('/auth/user');
+    }
+
     static async validate(params: Object) {
         return await Http.post(`/auth/validate/account/${(params as any).id}`);
     }

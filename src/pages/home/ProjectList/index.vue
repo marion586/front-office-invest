@@ -11,7 +11,7 @@
     import { useRouter } from 'vue-router';
     import { data } from './data';
 
-    import { computed, inject, onMounted, ref } from 'vue';
+    import { computed, inject, onMounted, provide, ref } from 'vue';
     import { useStore } from 'vuex';
 
     const isBordered = inject('isBordered');
@@ -94,7 +94,6 @@
     }
     function handleShowModal() {
         showModal.value = !showModal.value;
-        console.log(showModal.value);
     }
 
     async function getCategorie() {
@@ -119,7 +118,6 @@
     }
 
     function handleTextArea(e: any) {
-        console.log(e);
         addData.value = { ...addData.value, [e.target.name]: e.target.value };
     }
 
@@ -132,7 +130,6 @@
     }
 
     function categorieFilter(e: any) {
-        console.log(e);
         if (e['filter'] !== 'Tous') {
             dataCard.value = props.dataProps.filter(
                 (item: any) => e['filter'] === item.categorie
@@ -140,8 +137,6 @@
         } else {
             dataCard.value = props.dataProps.map((item: any) => item);
         }
-
-        console.log(dataCard.value);
     }
     function handleSearch(e: any) {
         if (e.target.value === '') {
@@ -153,7 +148,6 @@
         }
     }
     function filterAmount(e: any) {
-        console.log(e);
         if (e.trier === 'Mont asc') {
             dataCard.value = dataCard.value.sort(
                 (a: any, b: any) => a.amount - b.amount
@@ -166,7 +160,6 @@
     }
 
     function filterPostuled(e: any) {
-        console.log(e);
         if (e['postule'] === 'Postulé') {
             dataCard.value = dataCard.value.filter(
                 (item: any) => item.isPostuled == true
@@ -182,15 +175,14 @@
         let Details = props.dataProps.find((item: any) => item._id === id);
         await store.dispatch('ProjectModule/setDetails', Details);
         const { data } = await detailPaiementService.getDetail();
-        console.log(userData.value.id, 'userser', Details.user.id);
+
         if (userData.value.id === Details.user.id) {
-            console.log(userData.value._id, 'is true');
             router.push(`/Details/${id}`);
         } else {
             if (data.length > 0) {
                 const dataUserPayed = data.find(
                     (item: any) =>
-                        item.user_id === userData.value._id &&
+                        item.user_id === userData.value.id &&
                         Details._id === item.project_id
                 );
 
@@ -332,6 +324,7 @@
             @apply flex justify-end p-[20px] gap-[20px] items-end w-full  rounded-md;
             background-color: #fff;
             border: v-bind(border);
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         }
         &__list {
             @apply grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full  gap-[24px];

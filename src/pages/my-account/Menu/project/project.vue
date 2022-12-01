@@ -5,7 +5,7 @@
     import Loader from '@/components/Common/Loader/Loader.vue';
 
     const onload = ref(false);
-    provide('isBordered', true);
+    provide('isBordered', false);
     const store = useStore();
     const dataCard = ref<any>([]);
     const userData: any = computed(

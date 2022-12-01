@@ -61,7 +61,7 @@
             onload.value = false;
         }
     }
-    provide('isBordered', true);
+    provide('isBordered', false);
 </script>
 
 <template>
@@ -83,6 +83,7 @@
                 <contratInvest
                     :dataInvest="projetInvestData"
                     :DataResult="dataResult"
+                    @return="router.go(-1)"
                 />
             </div>
             <ProjectCard :DataCard="projetInvestData" />
@@ -92,13 +93,13 @@
 
 <style lang="scss" scoped>
     .container {
-        @apply grid grid-cols-5 mt-[20px] p-[20px] rounded-md;
+        @apply grid grid-cols-5 mt-[20px] p-[5px] rounded-md;
         background-color: #fff;
         &__left {
-            @apply col-span-2 flex flex-col gap-[40px] items-center;
+            @apply col-span-2 flex flex-col gap-[20px] items-center;
         }
         &__right {
-            @apply grid grid-cols-5 gap-[20px] col-span-3 p-[20px];
+            @apply grid grid-cols-5 gap-[10px] col-span-3 p-[10px] pt-[30px];
             border-left: 1px solid #ccc;
             box-shadow: 0px 0 #999, -3px 0 4px -4px;
             .contrat {

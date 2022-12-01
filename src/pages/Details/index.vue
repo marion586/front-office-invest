@@ -1,6 +1,6 @@
 <script lang="ts" setup>
     import ProjectCard from '@/components/Display/ProjectCard/ProjectCard.vue';
-    import { computed } from 'vue';
+    import { computed, ref } from 'vue';
     import { useRoute } from 'vue-router';
     import { useStore } from 'vuex';
     import HeadProduct from '@/components/Display/HeadProduct/HeadProduct.vue';
@@ -14,7 +14,7 @@
 
     const router = useRouter();
     const route = useRoute();
-
+    let Details = ref<any>({});
     const store = useStore();
     let dataStore = computed(() => store.getters['ProjectModule/getData']);
 
@@ -22,7 +22,7 @@
     const userData = computed(() => store.getters['UserModule/getUserDetails']);
 
     async function showDetails(id: any) {
-        let Details = dataStore.value.find((item: any) => item._id === id);
+        Details.value = dataStore.value.find((item: any) => item._id === id);
         await store.dispatch('ProjectModule/setDetails', Details);
         const { data } = await detailPaiementService.getDetail();
 
@@ -98,7 +98,13 @@
                 </div>
             </div>
 
-            <div class="details__btn">
+            <div
+                class="details__btn"
+                v-if="
+                    userData.typeUser === 'Investisseur' &&
+                    details.status === 'En attente'
+                "
+            >
                 <ButtonMenuVue
                     :isIcon="Finance"
                     @on-click="makeInvest"
@@ -127,13 +133,26 @@
         @apply p-[20px] grid grid-cols-4 gap-[20px] w-full;
 
         &__btn {
-            @apply flex gap-[20px] mt-[50px];
+            @apply flex gap-[20px] mt-[50px] justify-center;
+
+            button {
+                transition: 0.5s ease-in-out;
+                &:hover {
+                    transform: scale(1.1);
+                    border: none;
+                    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                }
+            }
         }
         &__details {
             @apply col-span-3  relative w-full h-[100vh];
         }
         &__image {
             object-fit: cover;
+            transition: 0.5s ease-in-out;
+            &:hover {
+                height: 88vh;
+            }
             @apply w-full h-[400px];
 
             img {
@@ -155,7 +174,12 @@
             margin-bottom: 20px;
         }
         &__content {
-            @apply border-[1px] rounded-md p-[20px] flex flex-col gap-[10px] mb-[10px];
+            @apply rounded-md p-[20px] flex flex-col gap-[10px] mb-[10px] bg-[#fff];
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            transition: 0.5s ease-in-out;
+            &:hover {
+                transform: translateY(-10px);
+            }
             &-type {
                 @apply flex justify-center gap-[100px];
                 span {

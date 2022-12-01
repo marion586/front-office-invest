@@ -68,6 +68,16 @@ const routes = <Array<RouteRecordRaw>>[
         path: '/project-payment-success',
         component: () => import('@/pages/project-success/index.vue'),
     },
+    {
+        name: 'apporteur',
+        path: '/apporteur',
+        component: () => import('@/pages/Apporteur/index.vue'),
+    },
+    {
+        name: 'investor',
+        path: '/investor',
+        component: () => import('@/pages/Investor/index.vue'),
+    },
     ,
 ];
 

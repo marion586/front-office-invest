@@ -116,7 +116,7 @@
         <div class="my-btn">
             <Button class="btn-export" @on-click="exportToPDF">
                 <a-spin v-if="loadSpin"></a-spin>
-                Export to pdf
+                Exporter en pdf
             </Button>
             <slot />
         </div>
@@ -125,8 +125,8 @@
 
 <style lang="scss" scoped>
     .invest {
-        @apply flex flex-col gap-[40px] p-4 rounded-md relative;
-        border: 1px solid #ccc;
+        @apply flex flex-col gap-[20px] p-[30px] rounded-md relative;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         &__back {
             position: absolute;
         }

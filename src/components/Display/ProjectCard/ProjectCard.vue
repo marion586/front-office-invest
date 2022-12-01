@@ -140,8 +140,12 @@
 </template>
 
 <style lang="scss" scoped>
+    .card:hover {
+        transform: translateY(-10px);
+    }
     .card {
         display: flex;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         flex-direction: column;
         width: auto;
         height: auto;

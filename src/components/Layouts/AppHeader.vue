@@ -47,7 +47,6 @@
             router.push('/inscription');
         }
         Object.assign(activeUser, userStore);
-        console.log(isLoggedIn.value, 'isloggin');
     });
     watchEffect(() => {
         window.addEventListener('resize', () => {
@@ -63,7 +62,6 @@
         function (user) {
             isLoggedIn.value = Object?.keys(user).length === 0 ? false : true;
             Object.assign(activeUser, user);
-            console.log(isLoggedIn.value, 'uselogin');
         },
         { immediate: true, deep: true }
     );

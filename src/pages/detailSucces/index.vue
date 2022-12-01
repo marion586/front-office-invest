@@ -19,8 +19,9 @@
 
     async function setDetails() {
         try {
+            console.log(userData.value.id);
             let data = await detailPaiementService.createDetail({
-                user_id: userData.value._id,
+                user_id: userData.value.id,
                 project_id: projectData.value._id,
             });
             console.log(data, 'setting data detail');

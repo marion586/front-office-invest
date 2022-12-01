@@ -1,8 +1,24 @@
 <script lang="ts" setup>
     import PieChartVue from '@/components/Common/Chart/PieChart.vue';
-    import { ref } from 'vue';
+    import projectService from '@/services/projectService';
+    import Title from '@/components/Common/Title/Title.vue';
+    import { onMounted, ref } from 'vue';
+
     const chartData = ref({
-        labels: ['un', 'un', 'un', 'un', 'un', 'un', 'un', 'un'],
+        labels: [
+            'Janvier',
+            'Fevrier',
+            'Mars',
+            'Avril',
+            'Mai',
+            'Juin',
+            'Juillet',
+            'Août',
+            'Septembre',
+            'Octobre',
+            'Novembre',
+            'Decembre',
+        ],
         datasets: [
             {
                 backgroundColor: [
@@ -15,18 +31,39 @@
                     '#fe2a16',
                     '#DD1B16',
                 ],
-                data: [1, 2, 1, 2, 4, 5, 6, 8],
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             },
         ],
+    });
+
+    async function getAllProject() {
+        const { data } = await projectService.getProject();
+        data.forEach((item: any) => {
+            let date = new Date(item.created_at);
+            let mounth = date.getMonth();
+            chartData.value.datasets[0].data[mounth]++;
+        });
+    }
+
+    onMounted(() => {
+        getAllProject();
     });
 </script>
 
 <template>
-    <div>
-        <h1>Mon chairt</h1>
-        <h1>Mon Cart 2</h1>
-        <PieChartVue />
+    <div class="container">
+        <Title
+            type="h3"
+            label="Chart graphique qui ulistre le nombre project par rapport au mois"
+            weight="bold"
+        />
+
+        <PieChartVue class="" :chartData="chartData" />
     </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+    .container {
+        @apply flex flex-col items-center gap-[20px];
+    }
+</style>

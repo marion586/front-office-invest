@@ -18,9 +18,6 @@
                                 <User size="lg" />
                             </div>
                         </div>
-                        <label class="img-photo" for="">
-                            <Photo />
-                        </label>
                     </figure>
                     <Title
                         type="h2"
@@ -39,7 +36,7 @@
                     <hr />
                     <div class="account__profil__details__row">
                         <Title label="Addresse" type="h5" weight="bold" />
-                        <Paragraphe>Tana </Paragraphe>
+                        <Paragraphe>{{ userData.address }} </Paragraphe>
                     </div>
                     <!-- <hr /> -->
                 </div>
@@ -135,4 +132,14 @@
     }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+    .account__profil__photo__content {
+        transition: transform 0.3s ease 0s;
+    }
+    .account__profil__photo__content:hover {
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+    .img-container:hover {
+        transform: scale(1.1);
+    }
+</style>

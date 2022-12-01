@@ -25,7 +25,7 @@
                 </vue-html2pdf
         >
         <Button class="btn-export" @on-click="generateReport">
-            Export to pdf
+            Exporter en pdf
         </Button>
     </div>
 </template>

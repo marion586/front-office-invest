@@ -71,14 +71,14 @@ export const dataMenu: Menu[] = [
         view: 'all',
     },
     {
-        label: 'Facture',
-        path: '/facture',
+        label: 'Apporteur',
+        path: '/apporteur',
         view: 'all',
         icon: Transport,
     },
     {
         label: 'Investisseurs',
-        path: '/invstor',
+        path: '/investor',
         view: 'all',
         icon: ArtHome,
     },
