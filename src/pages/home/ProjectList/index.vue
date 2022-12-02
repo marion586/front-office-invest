@@ -124,7 +124,14 @@
     async function addProject() {
         onload.value = true;
         await store.dispatch('ProjectModule/setData', addData.value);
-        dataCard.value.push(addData.value);
+        await store.dispatch('ProjectModule/initializeData');
+        let dataStore = await computed(
+            () => store.getters['ProjectModule/getData']
+        );
+        console.log(dataStore.value, 'dataStore');
+        dataStore.value.forEach((item: any) => {
+            dataCard.value.push(item);
+        });
         showModal.value = false;
         onload.value = false;
     }

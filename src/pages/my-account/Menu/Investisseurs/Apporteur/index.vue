@@ -38,13 +38,14 @@
 </script>
 
 <template>
-    <div class="dataUser">
+    <div class="dataUser" v-if="dataCard">
         <UserCard
             :dataUser="data"
             v-for="(data, index) in dataCard"
             :key="index"
         />
     </div>
+    <a-empty description="donnée vide" v-else />
 </template>
 
 <style lang="scss" scoped>

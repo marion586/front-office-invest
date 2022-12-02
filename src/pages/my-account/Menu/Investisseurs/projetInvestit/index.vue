@@ -17,8 +17,9 @@
             );
 
             if (d) {
-                d.forEach((item: any) => {
+                d.forEach((item: any, index: number) => {
                     dataCard.value.push(item.project);
+                    dataCard.value[index].status = 'En cours';
                 });
             }
         }
@@ -30,7 +31,7 @@
 </script>
 
 <template>
-    <div class="dataUser">
+    <div class="dataUser" v-if="dataCard.length">
         <ProjectCard
             :DataCard="data"
             v-for="(data, index) in dataCard"
@@ -38,6 +39,7 @@
             :isPublic="false"
         />
     </div>
+    <a-empty description="donnée vide" v-else />
 </template>
 
 <style lang="scss" scoped>

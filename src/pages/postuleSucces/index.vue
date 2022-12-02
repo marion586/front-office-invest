@@ -10,9 +10,16 @@
         const data = await computed(
             () => store.getters['StripeModule/getProjectData']
         );
-        let d = projectService.updateProject(data.value._id, {
-            isPotuled: true,
-        });
+        let Details = await computed(
+            () => store.getters['ProjectModule/getDetails']
+        );
+        console.log(data.value, 'data', Details);
+        let d = projectService.updateProject(
+            data.value._id ? data.value._id : Details.value._id,
+            {
+                isPotuled: true,
+            }
+        );
         console.log(d);
     }
 

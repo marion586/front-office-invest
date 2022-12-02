@@ -55,7 +55,12 @@
     );
 
     async function postulate(data: any) {
-        await store.dispatch('StripeModule/initializeProjectData', data);
+        await store.dispatch(
+            'StripeModule/initializeProjectData',
+            props.DataCard
+        );
+        await store.dispatch('ProjectModule/setDetails', props.DataCard);
+        console.log(props.DataCard);
         router.push('/postule');
     }
 
