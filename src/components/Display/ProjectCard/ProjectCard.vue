@@ -8,6 +8,7 @@
     import CardType from './CardType';
     import { useRouter } from 'vue-router';
     import { useStore } from 'vuex';
+import { json } from 'stream/consumers';
 
     const router = useRouter();
 
@@ -54,10 +55,12 @@
         }
     );
 
-    async function postulate(data: any) {
-        await store.dispatch('StripeModule/initializeProjectData', data);
-        router.push('/postule');
-    }
+        async function postulate(data: any) {
+            console.log(data , "data")
+            localStorage?.setItem('souscribeProject' , JSON.stringify(data) )  
+            await store.dispatch('StripeModule/initializeProjectData', data);
+            router.push('/postule');
+        }
 
     onMounted(() => {
         setStatus();

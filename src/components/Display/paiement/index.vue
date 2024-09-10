@@ -59,6 +59,7 @@
     }
 
     async function createSession(id: any) {
+        console.log(id,"ddddddddddddddddddddddddd")
         isSpin.value = true;
         let data: any = null;
         if (props.type === 'postule') {
@@ -103,7 +104,7 @@
                     <Title type="h5" label="Abonnement Vous" weight="bold" />
 
                     <Button @on-click="createSession(props.id)"
-                        ><a-spin v-if="isSpin" /> <span> Abonner </span>
+                        ><a-spin v-if="isSpin" /> <span> Abonner moi </span>
                     </Button>
                 </div>
             </div>

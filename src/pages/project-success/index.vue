@@ -11,6 +11,7 @@
         const dataInvest = await computed(
             () => store.getters['ProjectModule/getSingleProjectInvest']
         );
+        console.log(dataInvest.value)
         let { data } = await investService.getInvest();
 
         console.log(dataInvest.value, 'investData');
@@ -19,6 +20,8 @@
         const singleInvest = data.find((item: any) => item.project._id === id);
 
         await investService.updateInvest(singleInvest._id, { is_paid: true });
+const souscribeProject = localStorage.getItem('souscribeProject')
+console.log(souscribeProject , 'souscribeProject')
         await projectService.updateProject(id, { status: 'En cours' });
     }
 

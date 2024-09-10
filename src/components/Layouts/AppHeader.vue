@@ -60,8 +60,10 @@
     watch(
         () => store.getters['UserModule/getUserDetails'],
         function (user) {
-            isLoggedIn.value = Object?.keys(user).length === 0 ? false : true;
-            Object.assign(activeUser, user);
+            console.log(user)
+          //  isLoggedIn.value = Object?.keys(user)?.length === 0 ? false : true;
+          isLoggedIn.value = user === 0 ? false : true;
+            Object.assign(activeUser, user || null);
         },
         { immediate: true, deep: true }
     );

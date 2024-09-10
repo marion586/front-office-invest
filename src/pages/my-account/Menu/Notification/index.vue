@@ -20,19 +20,26 @@
     const currentType = ref('list');
     async function initInvest() {
         onload.value = true;
+       try {
         await store.dispatch('ProjectModule/setInvestProject');
         const dataStore = computed(
             () => store.getters['ProjectModule/getInvestProject']
         );
-        dataStore.value.forEach((item: any) => {
+        onload.value = false;
+        dataStore?.value.forEach((item: any) => {
             if (
-                userData.value.id === item.user.id &&
-                item.is_accepted == true &&
-                item.is_paid == false
+                userData?.value.id === item?.user.id &&
+                item?.is_accepted == true &&
+                item?.is_paid == false
             ) {
-                myNotification.value.push(item);
+                myNotification?.value.push(item);
             }
         });
+       } catch (error) {
+        
+       }finally {
+        onload.value = false;
+       }
         onload.value = false;
     }
     watch(

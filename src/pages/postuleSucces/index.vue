@@ -10,7 +10,8 @@
         const data = await computed(
             () => store.getters['StripeModule/getProjectData']
         );
-        let d = projectService.updateProject(data.value._id, {
+        const storedData  = localStorage?.getItem('souscribeProject');
+        let d = projectService.updateProject(JSON.parse(storedData as any)._id, {
             isPotuled: true,
         });
         console.log(d);

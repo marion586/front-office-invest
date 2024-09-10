@@ -21,15 +21,16 @@
         onload.value = true;
         await store.dispatch('ProjectModule/setInvestProject');
         const dataStore = computed(
-            () => store.getters['ProjectModule/getInvestProject']
+            () => store?.getters['ProjectModule/getInvestProject']
         );
+        onload.value = false;
         dataStore.value.forEach((item: any) => {
             console.log('value', item, userData.value.id);
             if (
-                userData.value.id === item.apport_id &&
-                item.is_accepted == false
+                userData?.value.id === item?.apport_id &&
+                item?.is_accepted == false
             ) {
-                myDemand.value.push(item);
+                myDemand?.value.push(item);
             }
         });
         onload.value = false;
