@@ -7,7 +7,7 @@
     import { computed, provide, ref } from 'vue';
     import { useStore } from 'vuex';
 
-    import Button from '@/components/common/Button/Button.vue';
+    import Button from '@/components/Common/Button/Button.vue';
     import { useRouter } from 'vue-router';
 
     const store = useStore();
