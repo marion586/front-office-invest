@@ -17,10 +17,19 @@
             "@/*": [
                 // / to begin with.
                 "src/*"
-            ]
+            ],
+            "*": ["types/*"]
         },
-        "types": ["vite/client", "leaflet", "geojson"]
+        "types": ["vite/client", "leaflet", "geojson"],
+        "allowJs": true,
+        "checkJs": false // Optional: Prevent TypeScript from checking JavaScript files for type errors
     },
-    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.d.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue",
+        "types"
+    ]
     // "references": [{ "path": "./tsconfig.node.json" }]
 }

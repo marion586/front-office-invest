@@ -41,7 +41,7 @@
         const userStore = await computed(
             () => store.getters['UserModule/getUserDetails']
         );
-        if (Object.keys(userStore.value).length !== 0) {
+        if (Object?.keys(userStore?.value)?.length !== 0) {
             isLoggedIn.value = true;
         } else {
             router.push('/inscription');
@@ -60,9 +60,9 @@
     watch(
         () => store.getters['UserModule/getUserDetails'],
         function (user) {
-            console.log(user)
-          //  isLoggedIn.value = Object?.keys(user)?.length === 0 ? false : true;
-          isLoggedIn.value = user === 0 ? false : true;
+            console.log(user);
+            //  isLoggedIn.value = Object?.keys(user)?.length === 0 ? false : true;
+            isLoggedIn.value = user === 0 ? false : true;
             Object.assign(activeUser, user || null);
         },
         { immediate: true, deep: true }
